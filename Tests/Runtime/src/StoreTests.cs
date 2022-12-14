@@ -73,7 +73,7 @@ namespace RGN.Store.Tests.Runtime
         [UnityTest]
         public IEnumerator AddVirtualItemShopOffer_ChecksCreatedOffer()
         {
-            yield return SetAsAdminTester();
+            yield return LoginAsAdminTester();
             
             var task = AddStoreOffer();
             yield return task.AsIEnumeratorReturnNull();
@@ -87,7 +87,7 @@ namespace RGN.Store.Tests.Runtime
         [UnityTest]
         public IEnumerator AddVirtualItemShopOffer_CanBeCalledOnlyWithAdminRights()
         {
-            yield return SetAsNormalTester();
+            yield return LoginAsNormalTester();
             
             var task = AddStoreOffer();
             yield return task.AsIEnumeratorReturnNullDontThrow();
@@ -228,7 +228,7 @@ namespace RGN.Store.Tests.Runtime
         [UnityTest]
         public IEnumerator SetTags_ChecksSetTags()
         {
-            yield return SetAsAdminTester();
+            yield return LoginAsAdminTester();
             
             var newTags = new []
             {
@@ -270,7 +270,7 @@ namespace RGN.Store.Tests.Runtime
         [UnityTest]
         public IEnumerator SetName_ChecksSetName()
         {
-            yield return SetAsAdminTester();
+            yield return LoginAsAdminTester();
             
             var newName = "New name for test";
             
@@ -294,7 +294,7 @@ namespace RGN.Store.Tests.Runtime
         [UnityTest]
         public IEnumerator SetDescription_ChecksSetName()
         {
-            yield return SetAsAdminTester();
+            yield return LoginAsAdminTester();
             
             var newDescription = "New description for test";
             
@@ -318,7 +318,7 @@ namespace RGN.Store.Tests.Runtime
         [UnityTest]
         public IEnumerator SetPrices_ChecksSetPrices()
         {
-            yield return SetAsAdminTester();
+            yield return LoginAsAdminTester();
             
             var newPrices = new []
             {
@@ -359,7 +359,7 @@ namespace RGN.Store.Tests.Runtime
         [UnityTest]
         public IEnumerator SetTime_ChecksSetTime()
         {
-            yield return SetAsAdminTester();
+            yield return LoginAsAdminTester();
             
             var newTime = new RGNStoreOfferTime(0, 1000, 100, 50);
             
@@ -383,7 +383,7 @@ namespace RGN.Store.Tests.Runtime
         [UnityTest]
         public IEnumerator SetImageUrl_ChecksSetImageUrl()
         {
-            yield return SetAsAdminTester();
+            yield return LoginAsAdminTester();
             
             var newImageUrl = "New image url for test";
             
@@ -407,7 +407,7 @@ namespace RGN.Store.Tests.Runtime
         [UnityTest]
         public IEnumerator DeleteStoreOffer_ConfirmDeleting()
         {
-            yield return SetAsAdminTester();
+            yield return LoginAsAdminTester();
             
             var addStoreOfferTask = AddStoreOffer();
             yield return addStoreOfferTask.AsIEnumeratorReturnNull();
@@ -426,7 +426,7 @@ namespace RGN.Store.Tests.Runtime
         [UnityTest]
         public IEnumerator SetProperties_ReturnsPropertiesThatWasSet()
         {
-            yield return SetAsAdminTester();
+            yield return LoginAsAdminTester();
             
             var storeOfferId = "bZqexd5Ily1HzhqUZcrd";
             var propertiesToSet = "{}";
