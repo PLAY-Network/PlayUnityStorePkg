@@ -59,17 +59,68 @@ namespace RGN.Store.Tests.Runtime
         #region Tests
         
         [UnityTest]
-        public IEnumerator BuyVirtualItems()
+        public IEnumerator BuyVirtualItems_WithoutOffer()
         {
-            throw new Exception();
+            yield return LoginAsNormalTester();
+
+            // specially created item for tests
+            var itemsToPurchase = new[] { "ed589211-466b-4d87-9c94-e6ba03a10765" };
+            var currencyId = "test-coin";
+
+            var task = RGNCoreBuilder.I.GetModule<StoreModule>()
+                .BuyVirtualItems(itemsToPurchase, currencyId);
+            yield return task.AsIEnumeratorReturnNull();
+            var result = task.Result;
+            
+            Assert.IsNotEmpty(result.purchasedItems);
+            Assert.IsNotEmpty(result.purchasedItems[0]);
+            
+            // TODO: if not enough currency to buy, automatically add it to tester account
+            // TODO: purchased items should be removed from inventory
         }
         
         [UnityTest]
-        public IEnumerator BuyVirtualItem()
+        public IEnumerator BuyVirtualItems_WithOffer()
         {
-            throw new Exception();
+            yield return LoginAsNormalTester();
+
+            // specially created item for tests
+            var itemsToPurchase = new[] { "ed589211-466b-4d87-9c94-e6ba03a10765" };
+            // specially created offer for tests
+            var offerToPurchase = "NEIoJ3uobAWr4CrFNrW6";
+            var currencyId = "test-coin";
+
+            var task = RGNCoreBuilder.I.GetModule<StoreModule>()
+                .BuyVirtualItems(itemsToPurchase, currencyId, offerToPurchase);
+            yield return task.AsIEnumeratorReturnNull();
+            var result = task.Result;
+            
+            Assert.IsNotEmpty(result.purchasedItems);
+            Assert.IsNotEmpty(result.purchasedItems[0]);
+            
+            // TODO: if not enough currency to buy, automatically add it to tester account
+            // TODO: purchased items should be removed from inventory
         }
         
+        [UnityTest]
+        public IEnumerator BuyVirtualItems_CheckUserCurrencies()
+        {
+            yield return LoginAsNormalTester();
+
+            // specially created item for tests
+            var itemsToPurchase = new[] { "ed589211-466b-4d87-9c94-e6ba03a10765" };
+            // specially created offer for tests
+            var offerToPurchase = "NEIoJ3uobAWr4CrFNrW6";
+            var currencyId = "currency-that-no-one-else-have";
+
+            var task = RGNCoreBuilder.I.GetModule<StoreModule>()
+                .BuyVirtualItems(itemsToPurchase, currencyId, offerToPurchase);
+            yield return task.AsIEnumeratorReturnNull();
+            var result = task.Result;
+            
+            Assert.IsEmpty(result.purchasedItems, "User could purchase item even without currency");
+        }
+
         [UnityTest]
         public IEnumerator AddVirtualItemShopOffer_ChecksCreatedOffer()
         {
@@ -463,7 +514,7 @@ namespace RGN.Store.Tests.Runtime
         {
             var task = RGNCoreBuilder.I.GetModule<StoreModule>().AddVirtualItemsShopOffer(
                 new [] { "io.getready.rgntest", "anotherAppId" },
-                new [] { "itemId1" },
+                new [] { "ed589211-466b-4d87-9c94-e6ba03a10765" },
                 "testItemName",
                 "testItemDesc",
                 new [] { "testItemTag1", "testItemTag2" });
