@@ -16,7 +16,8 @@
     "precompiledReferences": [
         "nunit.framework.dll",
         "RGNCore.dll",
-        "RGNStore.dll"
+        "RGNStore.dll",
+        "RGNVirtualItems.dll"
     ],
     "autoReferenced": false,
     "defineConstraints": [
