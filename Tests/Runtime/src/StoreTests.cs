@@ -58,17 +58,18 @@ namespace RGN.Store.Tests.Runtime
 
         #region Tests
         
+        private static string[][] _testCurrencies1 = { new [] { "test-coin" }, new [] { "test-coin", "test2-coin" } };
+        
         [UnityTest]
-        public IEnumerator BuyVirtualItems_WithoutOffer()
+        public IEnumerator BuyVirtualItems_WithoutOffer([ValueSource(nameof(_testCurrencies1))] string[] currencies)
         {
             yield return LoginAsNormalTester();
 
             // specially created item for tests
             var itemsToPurchase = new[] { "ed589211-466b-4d87-9c94-e6ba03a10765" };
-            var currencyId = "test-coin";
 
             var task = RGNCoreBuilder.I.GetModule<StoreModule>()
-                .BuyVirtualItems(itemsToPurchase, currencyId);
+                .BuyVirtualItems(itemsToPurchase, currencies);
             yield return task.AsIEnumeratorReturnNull();
             var result = task.Result;
             
@@ -80,7 +81,7 @@ namespace RGN.Store.Tests.Runtime
         }
         
         [UnityTest]
-        public IEnumerator BuyVirtualItems_WithOffer()
+        public IEnumerator BuyVirtualItems_WithOffer([ValueSource(nameof(_testCurrencies1))] string[] currencies)
         {
             yield return LoginAsNormalTester();
 
@@ -88,10 +89,9 @@ namespace RGN.Store.Tests.Runtime
             var itemsToPurchase = new[] { "ed589211-466b-4d87-9c94-e6ba03a10765" };
             // specially created offer for tests
             var offerToPurchase = "NEIoJ3uobAWr4CrFNrW6";
-            var currencyId = "test-coin";
 
             var task = RGNCoreBuilder.I.GetModule<StoreModule>()
-                .BuyVirtualItems(itemsToPurchase, currencyId, offerToPurchase);
+                .BuyVirtualItems(itemsToPurchase, currencies, offerToPurchase);
             yield return task.AsIEnumeratorReturnNull();
             var result = task.Result;
             
@@ -105,16 +105,18 @@ namespace RGN.Store.Tests.Runtime
         [UnityTest]
         public IEnumerator BuyVirtualItems_CheckUserCurrencies()
         {
+            throw new NotImplementedException();
+            
             yield return LoginAsNormalTester();
 
             // specially created item for tests
             var itemsToPurchase = new[] { "ed589211-466b-4d87-9c94-e6ba03a10765" };
             // specially created offer for tests
             var offerToPurchase = "NEIoJ3uobAWr4CrFNrW6";
-            var currencyId = "currency-that-no-one-else-have";
+            var currencies = new[] { "currency-that-no-one-else-have" };
 
             var task = RGNCoreBuilder.I.GetModule<StoreModule>()
-                .BuyVirtualItems(itemsToPurchase, currencyId, offerToPurchase);
+                .BuyVirtualItems(itemsToPurchase, currencies, offerToPurchase);
             yield return task.AsIEnumeratorReturnNull();
             var result = task.Result;
             
@@ -178,6 +180,12 @@ namespace RGN.Store.Tests.Runtime
                 .GroupBy(x => x.id).Any(g => g.Count() <= 1);
             
             Assert.True(noDuplicates, "Request returns duplicated store offers");
+        }
+        
+        [UnityTest]
+        public IEnumerator GetByTimestamp_ReturnsArrayOfOffers()
+        {
+            throw new NotImplementedException();
         }
         
         [UnityTest]
@@ -373,8 +381,8 @@ namespace RGN.Store.Tests.Runtime
             
             var newPrices = new []
             {
-                new RGNStoreOfferPrice("itemId1", "currency1", 1),
-                new RGNStoreOfferPrice("itemId1", "currency2", 1),
+                new StoreOfferPrice("itemId1", "currency1", 1),
+                new StoreOfferPrice("itemId1", "currency2", 1),
             };
             
             var addStoreOfferTask = AddStoreOffer();
@@ -412,7 +420,7 @@ namespace RGN.Store.Tests.Runtime
         {
             yield return LoginAsAdminTester();
             
-            var newTime = new RGNStoreOfferTime(0, 1000, 100, 50);
+            var newTime = new StoreOfferTime(0, 1000, 100, 50);
             
             var addStoreOfferTask = AddStoreOffer();
             yield return addStoreOfferTask.AsIEnumeratorReturnNull();
@@ -479,7 +487,7 @@ namespace RGN.Store.Tests.Runtime
         {
             yield return LoginAsAdminTester();
             
-            var storeOfferId = "bZqexd5Ily1HzhqUZcrd";
+            var storeOfferId = "NEIoJ3uobAWr4CrFNrW6";
             var propertiesToSet = "{}";
         
             var task = RGNCoreBuilder.I.GetModule<StoreModule>().SetProperties(storeOfferId, propertiesToSet);
@@ -494,7 +502,7 @@ namespace RGN.Store.Tests.Runtime
         [UnityTest]
         public IEnumerator GetProperties_ReturnsPropertiesThatWasSetBeforeInDB()
         {
-            var storeOfferId = "bZqexd5Ily1HzhqUZcrd";
+            var storeOfferId = "NEIoJ3uobAWr4CrFNrW6";
             var expectedProperties = "{}";
         
             var task = RGNCoreBuilder.I.GetModule<StoreModule>().GetProperties(storeOfferId);
@@ -510,7 +518,7 @@ namespace RGN.Store.Tests.Runtime
         
         #region Common methods
         
-        private async Task<RGNStoreOffer> AddStoreOffer()
+        private async Task<StoreOffer> AddStoreOffer()
         {
             var task = RGNCoreBuilder.I.GetModule<StoreModule>().AddVirtualItemsShopOffer(
                 new [] { "io.getready.rgntest", "anotherAppId" },
@@ -522,7 +530,7 @@ namespace RGN.Store.Tests.Runtime
             return result;
         }
         
-        private async Task<RGNStoreOffer> GetStoreOffer(string offerId)
+        private async Task<StoreOffer> GetStoreOffer(string offerId)
         {
             var task = RGNCoreBuilder.I.GetModule<StoreModule>().GetByIds(new [] { offerId });
             var result = await task;
