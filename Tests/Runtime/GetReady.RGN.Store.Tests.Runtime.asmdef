@@ -7,7 +7,7 @@
         "GetReady.RGN.Core.Runtime",
         "GetReady.RGN.Impl.Firebase.Runtime",
         "Unity.PerformanceTesting",
-        "GetReady.RGN.SignIn.Email.Runtime"
+        "GetReady.RGN.Tests.Runtime"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

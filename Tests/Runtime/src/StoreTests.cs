@@ -1,9 +1,4 @@
 using NUnit.Framework;
-using RGN.Dependencies;
-using RGN.Dependencies.Core;
-using RGN.Extensions;
-using RGN.Impl.Firebase.Core;
-using RGN.Modules.EmailSignIn;
 using RGN.Modules.Store;
 using RGN.Modules.VirtualItems;
 using RGN.Tests;
@@ -12,50 +7,18 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using RGN.Extensions;
 using UnityEngine;
 using UnityEngine.TestTools;
 
 namespace RGN.Store.Tests.Runtime
 {
-    [TestFixture]
     public class StoreTests : BaseTests
     {
-        #region Configuration
-
-        protected override IDependencies Dependencies => new Impl.Firebase.Dependencies(new AppOptions
+        protected override List<IRGNModule> Modules { get; } = new List<IRGNModule>()
         {
-            ApiKey = AppOptions.ApiKey,
-            AppId = AppOptions.AppId,
-            ProjectId = AppOptions.ProjectId
-        }, ApplicationStore.I.RGNStorageURL);
-        protected override IAppOptions AppOptions => new AppOptions
-        {
-            ApiKey = ApplicationStore.I.RGNMasterApiKey,
-            AppId = ApplicationStore.I.RGNAppId,
-            ProjectId = ApplicationStore.I.RGNMasterProjectId,
-        };
-        protected override string StorageUrl => ApplicationStore.I.RGNStorageURL;
-        protected override bool UseEmulator => ApplicationStore.I.usingEmulator;
-        protected override string EmulatorServerIp => ApplicationStore.I.emulatorServerIp;
-        protected override string EmulatorFunctionsPort => ApplicationStore.I.functionsPort;
-        protected override string EmulatorFirestorePort => ApplicationStore.I.firestorePort;
-        protected override List<IRGNModule> Modules => new List<IRGNModule>()
-        {
-            emailSignInModule,
             new StoreModule()
         };
-        protected override EmailLogInDelegate EmailLogIn => emailSignInModule.OnSignInWithEmail;
-        protected override EmailLogOutDelegate EmailLogOut => emailSignInModule.SignOutFromEmail;
-
-        private readonly EmailSignInModule emailSignInModule = new EmailSignInModule();
-
-        [UnitySetUp]
-        public IEnumerator UnitySetUp()
-        {
-            yield return SetUp();
-        }
-
-        #endregion
 
         #region Tests
 
@@ -69,16 +32,13 @@ namespace RGN.Store.Tests.Runtime
             // specially created item for tests
             var itemsToPurchase = new[] { "ed589211-466b-4d87-9c94-e6ba03a10765" };
 
-            var task = RGNCoreBuilder.I.GetModule<StoreModule>()
-                .BuyVirtualItems(itemsToPurchase, currencies);
+            var task = RGNCoreBuilder.I.GetModule<StoreModule>().BuyVirtualItems(itemsToPurchase, currencies);
+            var test = StoreModule.I.BuyVirtualItems(itemsToPurchase, currencies);
             yield return task.AsIEnumeratorReturnNull();
             var result = task.Result;
 
             Assert.IsNotEmpty(result.purchasedItems);
             Assert.IsNotEmpty(result.purchasedItems[0]);
-
-            // TODO: if not enough currency to buy, automatically add it to tester account
-            // TODO: purchased items should be removed from inventory
         }
 
         [UnityTest]
@@ -98,16 +58,11 @@ namespace RGN.Store.Tests.Runtime
 
             Assert.IsNotEmpty(result.purchasedItems);
             Assert.IsNotEmpty(result.purchasedItems[0]);
-
-            // TODO: if not enough currency to buy, automatically add it to tester account
-            // TODO: purchased items should be removed from inventory
         }
 
         [UnityTest]
         public IEnumerator BuyVirtualItems_CheckUserCurrencies()
         {
-            throw new NotImplementedException();
-
             yield return LoginAsNormalTester();
 
             // specially created item for tests
@@ -122,6 +77,24 @@ namespace RGN.Store.Tests.Runtime
             var result = task.Result;
 
             Assert.IsEmpty(result.purchasedItems, "User could purchase item even without currency");
+        }
+        
+        [UnityTest]
+        public IEnumerator BuyStoreOffer([ValueSource(nameof(_testCurrencies1))] string[] currencies)
+        {
+            yield return LoginAsNormalTester();
+            
+            // specially created offer for tests
+            var offerToPurchase = "NEIoJ3uobAWr4CrFNrW6";
+
+            var task = RGNCoreBuilder.I.GetModule<StoreModule>()
+                .BuyStoreOffer(offerToPurchase, currencies);
+            yield return task.AsIEnumeratorReturnNull();
+            var result = task.Result;
+
+            Assert.IsNotEmpty(result.purchasedItems);
+            Assert.IsNotEmpty(result.purchasedItems[0]);
+            Assert.IsNotEmpty(result.purchasedItems[1]);
         }
 
         [UnityTest]
@@ -157,6 +130,8 @@ namespace RGN.Store.Tests.Runtime
         [UnityTest]
         public IEnumerator GetByTags_ReturnsArrayOfOffers()
         {
+            yield return LoginAsAdminTester();
+            
             var tagsToFind = new[] { "testItemTag1", "testItemTag2" };
 
             var addStoreOfferTask = AddStoreOffer();
@@ -186,12 +161,35 @@ namespace RGN.Store.Tests.Runtime
         [UnityTest]
         public IEnumerator GetByTimestamp_ReturnsArrayOfOffers()
         {
-            throw new NotImplementedException();
+            yield return LoginAsAdminTester();
+
+            var newTime = new TimeInfo(0, 1000, 100, 50);
+            var dateTime = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+
+            var addStoreOfferTask = AddStoreOffer(new [] { "not-exist-app-id" });
+            yield return addStoreOfferTask.AsIEnumeratorReturnNull();
+            var addStoreOfferResult = addStoreOfferTask.Result;
+
+            var setTimeTask = RGNCoreBuilder.I.GetModule<StoreModule>()
+                .SetTime(addStoreOfferResult.id, newTime);
+            yield return setTimeTask.AsIEnumeratorReturnNull();
+            
+            var getStoreOffersTimestampTask = RGNCoreBuilder.I.GetModule<StoreModule>()
+                .GetByTimestamp("not-exist-app-id", dateTime);
+            yield return getStoreOffersTimestampTask.AsIEnumeratorReturnNull();
+            var getStoreOffersByTimestampResult = getStoreOffersTimestampTask.Result;
+
+            yield return DeleteStoreOffer(addStoreOfferResult.id);
+
+            Assert.IsNotEmpty(getStoreOffersByTimestampResult.offers);
+            Assert.AreEqual(addStoreOfferResult.id, getStoreOffersByTimestampResult.offers[0].id, "Wrong retrieved offers");
         }
 
         [UnityTest]
         public IEnumerator GetByAppIds_ReturnsArrayOfOffers()
         {
+            yield return LoginAsAdminTester();
+            
             var appIdsToFind = new[] { "io.getready.rgntest", "anotherAppId" };
 
             var addStoreOfferTask = AddStoreOffer();
@@ -221,6 +219,8 @@ namespace RGN.Store.Tests.Runtime
         [UnityTest]
         public IEnumerator GetByIds_ReturnsArrayOfOffers()
         {
+            yield return LoginAsAdminTester();
+            
             string[] idsToFind = new string[2];
 
             var addStoreOfferTask = AddStoreOffer();
@@ -252,6 +252,8 @@ namespace RGN.Store.Tests.Runtime
         [UnityTest]
         public IEnumerator GetTags_ReturnsArrayOfOfferTags()
         {
+            yield return LoginAsAdminTester();
+            
             var expectedTags = new[]
             {
                 "testItemTag1", "testItemTag2"
@@ -519,16 +521,15 @@ namespace RGN.Store.Tests.Runtime
 
         #region Common methods
 
-        private async Task<StoreOffer> AddStoreOffer()
+        private Task<StoreOffer> AddStoreOffer(string[] customAppIds = null)
         {
             var task = RGNCoreBuilder.I.GetModule<StoreModule>().AddVirtualItemsShopOffer(
-                new[] { "io.getready.rgntest", "anotherAppId" },
+                customAppIds ?? new[] { "io.getready.rgntest", "anotherAppId" },
                 new[] { "ed589211-466b-4d87-9c94-e6ba03a10765" },
                 "testItemName",
                 "testItemDesc",
                 new[] { "testItemTag1", "testItemTag2" });
-            var result = await task;
-            return result;
+            return task;
         }
 
         private async Task<StoreOffer> GetStoreOffer(string offerId)
@@ -538,9 +539,9 @@ namespace RGN.Store.Tests.Runtime
             return result.offers.Length > 0 ? result.offers[0] : null;
         }
 
-        private async Task DeleteStoreOffer(string offerId)
+        private Task DeleteStoreOffer(string offerId)
         {
-            await RGNCoreBuilder.I.GetModule<StoreModule>().DeleteStoreOffer(offerId);
+            return RGNCoreBuilder.I.GetModule<StoreModule>().DeleteStoreOffer(offerId);
         }
 
         #endregion
