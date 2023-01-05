@@ -32,8 +32,7 @@ namespace RGN.Store.Tests.Runtime
             // specially created item for tests
             var itemsToPurchase = new[] { "ed589211-466b-4d87-9c94-e6ba03a10765" };
 
-            var task = RGNCoreBuilder.I.GetModule<StoreModule>().BuyVirtualItems(itemsToPurchase, currencies);
-            var test = StoreModule.I.BuyVirtualItems(itemsToPurchase, currencies);
+            var task = RGNCoreBuilder.I.GetModule<StoreModule>().BuyVirtualItemsAsync(itemsToPurchase, currencies);
             yield return task.AsIEnumeratorReturnNull();
             var result = task.Result;
 
@@ -52,7 +51,7 @@ namespace RGN.Store.Tests.Runtime
             var offerToPurchase = "NEIoJ3uobAWr4CrFNrW6";
 
             var task = RGNCoreBuilder.I.GetModule<StoreModule>()
-                .BuyVirtualItems(itemsToPurchase, currencies, offerToPurchase);
+                .BuyVirtualItemsAsync(itemsToPurchase, currencies, offerToPurchase);
             yield return task.AsIEnumeratorReturnNull();
             var result = task.Result;
 
@@ -72,7 +71,7 @@ namespace RGN.Store.Tests.Runtime
             var currencies = new[] { "currency-that-no-one-else-have" };
 
             var task = RGNCoreBuilder.I.GetModule<StoreModule>()
-                .BuyVirtualItems(itemsToPurchase, currencies, offerToPurchase);
+                .BuyVirtualItemsAsync(itemsToPurchase, currencies, offerToPurchase);
             yield return task.AsIEnumeratorReturnNull();
             var result = task.Result;
 
@@ -88,7 +87,7 @@ namespace RGN.Store.Tests.Runtime
             var offerToPurchase = "NEIoJ3uobAWr4CrFNrW6";
 
             var task = RGNCoreBuilder.I.GetModule<StoreModule>()
-                .BuyStoreOffer(offerToPurchase, currencies);
+                .BuyStoreOfferAsync(offerToPurchase, currencies);
             yield return task.AsIEnumeratorReturnNull();
             var result = task.Result;
 
@@ -102,11 +101,11 @@ namespace RGN.Store.Tests.Runtime
         {
             yield return LoginAsAdminTester();
 
-            var task = AddStoreOffer();
+            var task = AddStoreOfferAsync();
             yield return task.AsIEnumeratorReturnNull();
             var result = task.Result;
 
-            yield return DeleteStoreOffer(result.id);
+            yield return DeleteStoreOfferAsync(result.id);
 
             Assert.NotNull(result, "Store offer didn't added to db");
         }
@@ -116,12 +115,12 @@ namespace RGN.Store.Tests.Runtime
         {
             yield return LoginAsNormalTester();
 
-            var task = AddStoreOffer();
+            var task = AddStoreOfferAsync();
             yield return task.AsIEnumeratorReturnNullDontThrow();
 
             if (!task.IsFaulted)
             {
-                yield return DeleteStoreOffer(task.Result.id);
+                yield return DeleteStoreOfferAsync(task.Result.id);
             }
 
             Assert.True(task.IsFaulted, "Store offer anyway was added to db even with no admin rights");
@@ -134,16 +133,16 @@ namespace RGN.Store.Tests.Runtime
             
             var tagsToFind = new[] { "testItemTag1", "testItemTag2" };
 
-            var addStoreOfferTask = AddStoreOffer();
+            var addStoreOfferTask = AddStoreOfferAsync();
             yield return addStoreOfferTask.AsIEnumeratorReturnNull();
             var addStoreOfferResult = addStoreOfferTask.Result;
 
             var getStoreOffersByTagsTask = RGNCoreBuilder.I.GetModule<StoreModule>()
-                .GetByTags(tagsToFind);
+                .GetByTagsAsync(tagsToFind);
             yield return getStoreOffersByTagsTask.AsIEnumeratorReturnNull();
             var getStoreOffersByTagsResult = getStoreOffersByTagsTask.Result;
 
-            yield return DeleteStoreOffer(addStoreOfferResult.id);
+            yield return DeleteStoreOfferAsync(addStoreOfferResult.id);
 
             Assert.IsNotEmpty(getStoreOffersByTagsResult.offers);
 
@@ -166,20 +165,20 @@ namespace RGN.Store.Tests.Runtime
             var newTime = new TimeInfo(0, 1000, 100, 50);
             var dateTime = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
 
-            var addStoreOfferTask = AddStoreOffer(new [] { "not-exist-app-id" });
+            var addStoreOfferTask = AddStoreOfferAsync(new [] { "not-exist-app-id" });
             yield return addStoreOfferTask.AsIEnumeratorReturnNull();
             var addStoreOfferResult = addStoreOfferTask.Result;
 
             var setTimeTask = RGNCoreBuilder.I.GetModule<StoreModule>()
-                .SetTime(addStoreOfferResult.id, newTime);
+                .SetTimeAsync(addStoreOfferResult.id, newTime);
             yield return setTimeTask.AsIEnumeratorReturnNull();
             
             var getStoreOffersTimestampTask = RGNCoreBuilder.I.GetModule<StoreModule>()
-                .GetByTimestamp("not-exist-app-id", dateTime);
+                .GetByTimestampAsync("not-exist-app-id", dateTime);
             yield return getStoreOffersTimestampTask.AsIEnumeratorReturnNull();
             var getStoreOffersByTimestampResult = getStoreOffersTimestampTask.Result;
 
-            yield return DeleteStoreOffer(addStoreOfferResult.id);
+            yield return DeleteStoreOfferAsync(addStoreOfferResult.id);
 
             Assert.IsNotEmpty(getStoreOffersByTimestampResult.offers);
             Assert.AreEqual(addStoreOfferResult.id, getStoreOffersByTimestampResult.offers[0].id, "Wrong retrieved offers");
@@ -192,16 +191,16 @@ namespace RGN.Store.Tests.Runtime
             
             var appIdsToFind = new[] { "io.getready.rgntest", "anotherAppId" };
 
-            var addStoreOfferTask = AddStoreOffer();
+            var addStoreOfferTask = AddStoreOfferAsync();
             yield return addStoreOfferTask.AsIEnumeratorReturnNull();
             var addStoreOfferResult = addStoreOfferTask.Result;
 
             var getStoreOffersByAppIdsTask = RGNCoreBuilder.I.GetModule<StoreModule>()
-                .GetByAppIds(appIdsToFind, 2);
+                .GetByAppIdsAsync(appIdsToFind, 2);
             yield return getStoreOffersByAppIdsTask.AsIEnumeratorReturnNull();
             var getStoreOffersByAppIdsResult = getStoreOffersByAppIdsTask.Result;
 
-            yield return DeleteStoreOffer(addStoreOfferResult.id);
+            yield return DeleteStoreOfferAsync(addStoreOfferResult.id);
 
             Assert.IsNotEmpty(getStoreOffersByAppIdsResult.offers);
 
@@ -223,7 +222,7 @@ namespace RGN.Store.Tests.Runtime
             
             string[] idsToFind = new string[2];
 
-            var addStoreOfferTask = AddStoreOffer();
+            var addStoreOfferTask = AddStoreOfferAsync();
             yield return addStoreOfferTask.AsIEnumeratorReturnNull();
             var addStoreOfferResult = addStoreOfferTask.Result;
 
@@ -231,11 +230,11 @@ namespace RGN.Store.Tests.Runtime
             idsToFind[1] = addStoreOfferResult.id;
 
             var getStoreOffersByIdsTask = RGNCoreBuilder.I.GetModule<StoreModule>()
-                .GetByIds(idsToFind);
+                .GetByIdsAsync(idsToFind);
             yield return getStoreOffersByIdsTask.AsIEnumeratorReturnNull();
             var getStoreOffersByIdsResult = getStoreOffersByIdsTask.Result;
 
-            yield return DeleteStoreOffer(addStoreOfferResult.id);
+            yield return DeleteStoreOfferAsync(addStoreOfferResult.id);
 
             Assert.IsNotEmpty(getStoreOffersByIdsResult.offers);
 
@@ -259,16 +258,16 @@ namespace RGN.Store.Tests.Runtime
                 "testItemTag1", "testItemTag2"
             };
 
-            var addStoreOfferTask = AddStoreOffer();
+            var addStoreOfferTask = AddStoreOfferAsync();
             yield return addStoreOfferTask.AsIEnumeratorReturnNull();
             var addStoreOfferResult = addStoreOfferTask.Result;
 
             var getStoreOfferTagsTask = RGNCoreBuilder.I.GetModule<StoreModule>()
-                .GetTags(addStoreOfferResult.id);
+                .GetTagsAsync(addStoreOfferResult.id);
             yield return getStoreOfferTagsTask.AsIEnumeratorReturnNull();
             var getStoreOfferTagsResult = getStoreOfferTagsTask.Result;
 
-            yield return DeleteStoreOffer(addStoreOfferResult.id);
+            yield return DeleteStoreOfferAsync(addStoreOfferResult.id);
 
             var tagsAreEqual = expectedTags.Length == getStoreOfferTagsResult.tags.Length;
             if (tagsAreEqual)
@@ -299,19 +298,19 @@ namespace RGN.Store.Tests.Runtime
                 "tag3",
             };
 
-            var addStoreOfferTask = AddStoreOffer();
+            var addStoreOfferTask = AddStoreOfferAsync();
             yield return addStoreOfferTask.AsIEnumeratorReturnNull();
             var addStoreOfferResult = addStoreOfferTask.Result;
 
             var setTagsTask = RGNCoreBuilder.I.GetModule<StoreModule>()
-                .SetTags(addStoreOfferResult.id, newTags);
+                .SetTagsAsync(addStoreOfferResult.id, newTags);
             yield return setTagsTask.AsIEnumeratorReturnNull();
 
-            var getStoreOfferTask = GetStoreOffer(addStoreOfferResult.id);
+            var getStoreOfferTask = GetStoreOfferAsync(addStoreOfferResult.id);
             yield return getStoreOfferTask.AsIEnumeratorReturnNull();
             var getStoreOfferResult = getStoreOfferTask.Result;
 
-            yield return DeleteStoreOffer(addStoreOfferResult.id);
+            yield return DeleteStoreOfferAsync(addStoreOfferResult.id);
 
             var tagsAreEqual = newTags.Length == getStoreOfferResult.tags.Length;
             if (tagsAreEqual)
@@ -336,19 +335,19 @@ namespace RGN.Store.Tests.Runtime
 
             var newName = "New name for test";
 
-            var addStoreOfferTask = AddStoreOffer();
+            var addStoreOfferTask = AddStoreOfferAsync();
             yield return addStoreOfferTask.AsIEnumeratorReturnNull();
             var addStoreOfferResult = addStoreOfferTask.Result;
 
             var setNameTask = RGNCoreBuilder.I.GetModule<StoreModule>()
-                .SetName(addStoreOfferResult.id, newName);
+                .SetNameAsync(addStoreOfferResult.id, newName);
             yield return setNameTask.AsIEnumeratorReturnNull();
 
-            var getStoreOfferTask = GetStoreOffer(addStoreOfferResult.id);
+            var getStoreOfferTask = GetStoreOfferAsync(addStoreOfferResult.id);
             yield return getStoreOfferTask.AsIEnumeratorReturnNull();
             var getStoreOfferResult = getStoreOfferTask.Result;
 
-            yield return DeleteStoreOffer(addStoreOfferResult.id);
+            yield return DeleteStoreOfferAsync(addStoreOfferResult.id);
 
             Assert.AreEqual(newName, getStoreOfferResult.name, "Name field didn't set properly");
         }
@@ -360,19 +359,19 @@ namespace RGN.Store.Tests.Runtime
 
             var newDescription = "New description for test";
 
-            var addStoreOfferTask = AddStoreOffer();
+            var addStoreOfferTask = AddStoreOfferAsync();
             yield return addStoreOfferTask.AsIEnumeratorReturnNull();
             var addStoreOfferResult = addStoreOfferTask.Result;
 
             var setDescriptionTask = RGNCoreBuilder.I.GetModule<StoreModule>()
-                .SetDescription(addStoreOfferResult.id, newDescription);
+                .SetDescriptionAsync(addStoreOfferResult.id, newDescription);
             yield return setDescriptionTask.AsIEnumeratorReturnNull();
 
-            var getStoreOfferTask = GetStoreOffer(addStoreOfferResult.id);
+            var getStoreOfferTask = GetStoreOfferAsync(addStoreOfferResult.id);
             yield return getStoreOfferTask.AsIEnumeratorReturnNull();
             var getStoreOfferResult = getStoreOfferTask.Result;
 
-            yield return DeleteStoreOffer(addStoreOfferResult.id);
+            yield return DeleteStoreOfferAsync(addStoreOfferResult.id);
 
             Assert.AreEqual(newDescription, getStoreOfferResult.description, "Description field didn't set properly");
         }
@@ -388,19 +387,19 @@ namespace RGN.Store.Tests.Runtime
                 new PriceInfo("itemId1", "currency2", 1),
             };
 
-            var addStoreOfferTask = AddStoreOffer();
+            var addStoreOfferTask = AddStoreOfferAsync();
             yield return addStoreOfferTask.AsIEnumeratorReturnNull();
             var addStoreOfferResult = addStoreOfferTask.Result;
 
             var setPricesTask = RGNCoreBuilder.I.GetModule<StoreModule>()
-                .SetPrices(addStoreOfferResult.id, newPrices);
+                .SetPricesAsync(addStoreOfferResult.id, newPrices);
             yield return setPricesTask.AsIEnumeratorReturnNull();
 
-            var getStoreOfferTask = GetStoreOffer(addStoreOfferResult.id);
+            var getStoreOfferTask = GetStoreOfferAsync(addStoreOfferResult.id);
             yield return getStoreOfferTask.AsIEnumeratorReturnNull();
             var getStoreOfferResult = getStoreOfferTask.Result;
 
-            yield return DeleteStoreOffer(addStoreOfferResult.id);
+            yield return DeleteStoreOfferAsync(addStoreOfferResult.id);
 
             var pricesAreEqual = newPrices.Length == getStoreOfferResult.prices.Count;
             if (pricesAreEqual)
@@ -425,19 +424,19 @@ namespace RGN.Store.Tests.Runtime
 
             var newTime = new TimeInfo(0, 1000, 100, 50);
 
-            var addStoreOfferTask = AddStoreOffer();
+            var addStoreOfferTask = AddStoreOfferAsync();
             yield return addStoreOfferTask.AsIEnumeratorReturnNull();
             var addStoreOfferResult = addStoreOfferTask.Result;
 
             var setTimeTask = RGNCoreBuilder.I.GetModule<StoreModule>()
-                .SetTime(addStoreOfferResult.id, newTime);
+                .SetTimeAsync(addStoreOfferResult.id, newTime);
             yield return setTimeTask.AsIEnumeratorReturnNull();
 
-            var getStoreOfferTask = GetStoreOffer(addStoreOfferResult.id);
+            var getStoreOfferTask = GetStoreOfferAsync(addStoreOfferResult.id);
             yield return getStoreOfferTask.AsIEnumeratorReturnNull();
             var getStoreOfferResult = getStoreOfferTask.Result;
 
-            yield return DeleteStoreOffer(addStoreOfferResult.id);
+            yield return DeleteStoreOfferAsync(addStoreOfferResult.id);
 
             Assert.AreEqual(newTime, getStoreOfferResult.time, "Time field didn't set properly");
         }
@@ -449,19 +448,19 @@ namespace RGN.Store.Tests.Runtime
 
             var newImageUrl = "New image url for test";
 
-            var addStoreOfferTask = AddStoreOffer();
+            var addStoreOfferTask = AddStoreOfferAsync();
             yield return addStoreOfferTask.AsIEnumeratorReturnNull();
             var addStoreOfferResult = addStoreOfferTask.Result;
 
             var setImageUrlTask = RGNCoreBuilder.I.GetModule<StoreModule>()
-                .SetImageUrl(addStoreOfferResult.id, newImageUrl);
+                .SetImageUrlAsync(addStoreOfferResult.id, newImageUrl);
             yield return setImageUrlTask.AsIEnumeratorReturnNull();
 
-            var getStoreOfferTask = GetStoreOffer(addStoreOfferResult.id);
+            var getStoreOfferTask = GetStoreOfferAsync(addStoreOfferResult.id);
             yield return getStoreOfferTask.AsIEnumeratorReturnNull();
             var getStoreOfferResult = getStoreOfferTask.Result;
 
-            yield return DeleteStoreOffer(addStoreOfferResult.id);
+            yield return DeleteStoreOfferAsync(addStoreOfferResult.id);
 
             Assert.AreEqual(newImageUrl, getStoreOfferResult.imageUrl, "ImageUrl field didn't set properly");
         }
@@ -471,14 +470,14 @@ namespace RGN.Store.Tests.Runtime
         {
             yield return LoginAsAdminTester();
 
-            var addStoreOfferTask = AddStoreOffer();
+            var addStoreOfferTask = AddStoreOfferAsync();
             yield return addStoreOfferTask.AsIEnumeratorReturnNull();
             var addStoreOfferResult = addStoreOfferTask.Result;
 
-            var deleteStoreOfferTask = DeleteStoreOffer(addStoreOfferResult.id);
+            var deleteStoreOfferTask = DeleteStoreOfferAsync(addStoreOfferResult.id);
             yield return deleteStoreOfferTask.AsIEnumeratorReturnNull();
 
-            var getStoreOfferTask = GetStoreOffer(addStoreOfferResult.id);
+            var getStoreOfferTask = GetStoreOfferAsync(addStoreOfferResult.id);
             yield return getStoreOfferTask.AsIEnumeratorReturnNull();
             var getStoreOfferResult = getStoreOfferTask.Result;
 
@@ -493,7 +492,7 @@ namespace RGN.Store.Tests.Runtime
             var storeOfferId = "NEIoJ3uobAWr4CrFNrW6";
             var propertiesToSet = "{}";
 
-            var task = RGNCoreBuilder.I.GetModule<StoreModule>().SetProperties(storeOfferId, propertiesToSet);
+            var task = RGNCoreBuilder.I.GetModule<StoreModule>().SetPropertiesAsync(storeOfferId, propertiesToSet);
             yield return task.AsIEnumeratorReturnNull();
             var result = task.Result;
 
@@ -508,7 +507,7 @@ namespace RGN.Store.Tests.Runtime
             var storeOfferId = "NEIoJ3uobAWr4CrFNrW6";
             var expectedProperties = "{}";
 
-            var task = RGNCoreBuilder.I.GetModule<StoreModule>().GetProperties(storeOfferId);
+            var task = RGNCoreBuilder.I.GetModule<StoreModule>().GetPropertiesAsync(storeOfferId);
             yield return task.AsIEnumeratorReturnNull();
             var result = task.Result;
 
@@ -521,9 +520,9 @@ namespace RGN.Store.Tests.Runtime
 
         #region Common methods
 
-        private Task<StoreOffer> AddStoreOffer(string[] customAppIds = null)
+        private Task<StoreOffer> AddStoreOfferAsync(string[] customAppIds = null)
         {
-            var task = RGNCoreBuilder.I.GetModule<StoreModule>().AddVirtualItemsShopOffer(
+            var task = RGNCoreBuilder.I.GetModule<StoreModule>().AddVirtualItemsShopOfferAsync(
                 customAppIds ?? new[] { "io.getready.rgntest", "anotherAppId" },
                 new[] { "ed589211-466b-4d87-9c94-e6ba03a10765" },
                 "testItemName",
@@ -532,16 +531,16 @@ namespace RGN.Store.Tests.Runtime
             return task;
         }
 
-        private async Task<StoreOffer> GetStoreOffer(string offerId)
+        private async Task<StoreOffer> GetStoreOfferAsync(string offerId)
         {
-            var task = RGNCoreBuilder.I.GetModule<StoreModule>().GetByIds(new[] { offerId });
+            var task = RGNCoreBuilder.I.GetModule<StoreModule>().GetByIdsAsync(new[] { offerId });
             var result = await task;
             return result.offers.Length > 0 ? result.offers[0] : null;
         }
 
-        private Task DeleteStoreOffer(string offerId)
+        private Task DeleteStoreOfferAsync(string offerId)
         {
-            return RGNCoreBuilder.I.GetModule<StoreModule>().DeleteStoreOffer(offerId);
+            return RGNCoreBuilder.I.GetModule<StoreModule>().DeleteStoreOfferAsync(offerId);
         }
 
         #endregion
