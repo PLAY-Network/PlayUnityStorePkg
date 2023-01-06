@@ -125,6 +125,30 @@ namespace RGN.Store.Tests.Runtime
 
             Assert.True(task.IsFaulted, "Store offer anyway was added to db even with no admin rights");
         }
+        
+        [UnityTest]
+        public IEnumerator ImportStoreOffersFromCSV_ReturnArrayOfImportedOffers()
+        {
+            yield return LoginAsAdminTester();
+
+            var csvContent = "name,description,appIds,tags,imageUrl,time,properties,itemIds,prices\nitem1,item1," +
+                             "\"[\"\"app1\"\",\"\"app2\"\"]\",\"[\"\"tag1\"\",\"\"tag2\"\"]\",https://site.com/image.png," +
+                             "\"{\"\"start\"\":null,\"\"end\"\":null,\"\"intervalDuration\"\":null," +
+                             "\"\"intervalDelay\"\":null}\",[],\"[\"\"item1Id\"\"]\",[]";
+            var csvDelimiter = ",";
+
+            var task = RGNCoreBuilder.I.GetModule<StoreModule>().ImportStoreOffersFromCSV(csvContent, csvDelimiter);
+            yield return task.AsIEnumeratorReturnNullDontThrow();
+
+            StoreOffer[] importedOffers = task.Result.offers;
+            
+            foreach (StoreOffer importedOffer in importedOffers)
+            {
+                yield return DeleteStoreOfferAsync(importedOffer.id);
+            }
+
+            Assert.IsNotEmpty(importedOffers);
+        }
 
         [UnityTest]
         public IEnumerator GetByTags_ReturnsArrayOfOffers()
