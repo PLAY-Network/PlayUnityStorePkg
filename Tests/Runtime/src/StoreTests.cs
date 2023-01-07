@@ -95,6 +95,56 @@ namespace RGN.Store.Tests.Runtime
             Assert.IsNotEmpty(result.purchasedItems[0]);
             Assert.IsNotEmpty(result.purchasedItems[1]);
         }
+        
+        [UnityTest]
+        public IEnumerator BuyVirtualItems_WithoutOffer_Simplified()
+        {
+            yield return LoginAsNormalTester();
+
+            // specially created item for tests
+            var itemsToPurchase = new[] { "fcb8b866-2ec6-46c1-9dde-3740fa5ebbba" };
+
+            var task = RGNCoreBuilder.I.GetModule<StoreModule>().BuyVirtualItemsAsync(itemsToPurchase, null);
+            yield return task.AsIEnumeratorReturnNull();
+            var result = task.Result;
+
+            Assert.IsNotEmpty(result.purchasedItems);
+            Assert.IsNotEmpty(result.purchasedItems[0]);
+        }
+
+        [UnityTest]
+        public IEnumerator BuyVirtualItems_WithOffer_Simplified()
+        {
+            yield return LoginAsNormalTester();
+
+            // specially created item for tests
+            var itemsToPurchase = new[] { "fcb8b866-2ec6-46c1-9dde-3740fa5ebbba" };
+            // specially created offer for tests
+            var offerToPurchase = "H8piC6rc9CYTLNUIGcJ4";
+
+            var task = RGNCoreBuilder.I.GetModule<StoreModule>().BuyVirtualItemsAsync(itemsToPurchase, offerToPurchase);
+            yield return task.AsIEnumeratorReturnNull();
+            var result = task.Result;
+
+            Assert.IsNotEmpty(result.purchasedItems);
+            Assert.IsNotEmpty(result.purchasedItems[0]);
+        }
+        
+        [UnityTest]
+        public IEnumerator BuyStoreOffer_Simplified()
+        {
+            yield return LoginAsNormalTester();
+            
+            // specially created offer for tests
+            var offerToPurchase = "H8piC6rc9CYTLNUIGcJ4";
+
+            var task = RGNCoreBuilder.I.GetModule<StoreModule>().BuyStoreOfferAsync(offerToPurchase);
+            yield return task.AsIEnumeratorReturnNull();
+            var result = task.Result;
+
+            Assert.IsNotEmpty(result.purchasedItems);
+            Assert.IsNotEmpty(result.purchasedItems[0]);
+        }
 
         [UnityTest]
         public IEnumerator AddVirtualItemShopOffer_ChecksCreatedOffer()
