@@ -28,54 +28,48 @@ namespace RGN.Store.Tests.Runtime
         public IEnumerator BuyVirtualItems_WithoutOffer([ValueSource(nameof(_testCurrencies1))] string[] currencies)
         {
             yield return LoginAsNormalTester();
+            
+            var itemIds = new[] { "ed589211-466b-4d87-9c94-e6ba03a10765" }; // specially created item for tests
 
-            // specially created item for tests
-            var itemsToPurchase = new[] { "ed589211-466b-4d87-9c94-e6ba03a10765" };
-
-            var task = RGNCoreBuilder.I.GetModule<StoreModule>().BuyVirtualItemsAsync(itemsToPurchase, currencies);
+            var task = RGNCoreBuilder.I.GetModule<StoreModule>().BuyVirtualItemsAsync(itemIds, currencies);
             yield return task.AsIEnumeratorReturnNull();
             var result = task.Result;
 
-            Assert.IsNotEmpty(result.purchasedItems);
-            Assert.IsNotEmpty(result.purchasedItems[0]);
+            Assert.IsNotEmpty(result.itemIds);
+            Assert.IsNotEmpty(result.itemIds[0]);
         }
 
         [UnityTest]
         public IEnumerator BuyVirtualItems_WithOffer([ValueSource(nameof(_testCurrencies1))] string[] currencies)
         {
             yield return LoginAsNormalTester();
+            
+            var itemIds = new[] { "ed589211-466b-4d87-9c94-e6ba03a10765" }; // specially created item for tests
+            var offerId = "NEIoJ3uobAWr4CrFNrW6"; // specially created offer for tests
 
-            // specially created item for tests
-            var itemsToPurchase = new[] { "ed589211-466b-4d87-9c94-e6ba03a10765" };
-            // specially created offer for tests
-            var offerToPurchase = "NEIoJ3uobAWr4CrFNrW6";
-
-            var task = RGNCoreBuilder.I.GetModule<StoreModule>()
-                .BuyVirtualItemsAsync(itemsToPurchase, currencies, offerToPurchase);
+            var task = RGNCoreBuilder.I.GetModule<StoreModule>().BuyVirtualItemsAsync(itemIds, currencies, offerId);
             yield return task.AsIEnumeratorReturnNull();
             var result = task.Result;
 
-            Assert.IsNotEmpty(result.purchasedItems);
-            Assert.IsNotEmpty(result.purchasedItems[0]);
+            Assert.IsNotEmpty(result.offerId);
+            Assert.IsNotEmpty(result.itemIds);
+            Assert.IsNotEmpty(result.itemIds[0]);
         }
 
         [UnityTest]
         public IEnumerator BuyVirtualItems_CheckUserCurrencies()
         {
             yield return LoginAsNormalTester();
-
-            // specially created item for tests
-            var itemsToPurchase = new[] { "ed589211-466b-4d87-9c94-e6ba03a10765" };
-            // specially created offer for tests
-            var offerToPurchase = "NEIoJ3uobAWr4CrFNrW6";
+            
+            var itemIds = new[] { "ed589211-466b-4d87-9c94-e6ba03a10765" }; // specially created item for tests
+            var offerId = "NEIoJ3uobAWr4CrFNrW6"; // specially created offer for tests
             var currencies = new[] { "currency-that-no-one-else-have" };
 
-            var task = RGNCoreBuilder.I.GetModule<StoreModule>()
-                .BuyVirtualItemsAsync(itemsToPurchase, currencies, offerToPurchase);
+            var task = RGNCoreBuilder.I.GetModule<StoreModule>().BuyVirtualItemsAsync(itemIds, currencies, offerId);
             yield return task.AsIEnumeratorReturnNull();
             var result = task.Result;
 
-            Assert.IsEmpty(result.purchasedItems, "User could purchase item even without currency");
+            Assert.IsEmpty(result.itemIds, "User could purchase item even without currency");
         }
         
         [UnityTest]
@@ -83,51 +77,46 @@ namespace RGN.Store.Tests.Runtime
         {
             yield return LoginAsNormalTester();
             
-            // specially created offer for tests
-            var offerToPurchase = "NEIoJ3uobAWr4CrFNrW6";
+            var offerId = "NEIoJ3uobAWr4CrFNrW6"; // specially created offer for tests
 
-            var task = RGNCoreBuilder.I.GetModule<StoreModule>()
-                .BuyStoreOfferAsync(offerToPurchase, currencies);
+            var task = RGNCoreBuilder.I.GetModule<StoreModule>().BuyStoreOfferAsync(offerId, currencies);
             yield return task.AsIEnumeratorReturnNull();
             var result = task.Result;
 
-            Assert.IsNotEmpty(result.purchasedItems);
-            Assert.IsNotEmpty(result.purchasedItems[0]);
-            Assert.IsNotEmpty(result.purchasedItems[1]);
+            Assert.IsNotEmpty(result.offerId);
+            Assert.IsNotEmpty(result.itemIds);
         }
         
         [UnityTest]
         public IEnumerator BuyVirtualItems_WithoutOffer_Simplified()
         {
             yield return LoginAsNormalTester();
+            
+            var itemIds = new[] { "fcb8b866-2ec6-46c1-9dde-3740fa5ebbba" }; // specially created item for tests
 
-            // specially created item for tests
-            var itemsToPurchase = new[] { "fcb8b866-2ec6-46c1-9dde-3740fa5ebbba" };
-
-            var task = RGNCoreBuilder.I.GetModule<StoreModule>().BuyVirtualItemsAsync(itemsToPurchase, null);
+            var task = RGNCoreBuilder.I.GetModule<StoreModule>().BuyVirtualItemsAsync(itemIds);
             yield return task.AsIEnumeratorReturnNull();
             var result = task.Result;
 
-            Assert.IsNotEmpty(result.purchasedItems);
-            Assert.IsNotEmpty(result.purchasedItems[0]);
+            Assert.IsNotEmpty(result.itemIds);
+            Assert.IsNotEmpty(result.itemIds[0]);
         }
 
         [UnityTest]
         public IEnumerator BuyVirtualItems_WithOffer_Simplified()
         {
             yield return LoginAsNormalTester();
+            
+            var itemIds = new[] { "fcb8b866-2ec6-46c1-9dde-3740fa5ebbba" }; // specially created item for tests
+            var offerId = "H8piC6rc9CYTLNUIGcJ4"; // specially created offer for tests
 
-            // specially created item for tests
-            var itemsToPurchase = new[] { "fcb8b866-2ec6-46c1-9dde-3740fa5ebbba" };
-            // specially created offer for tests
-            var offerToPurchase = "H8piC6rc9CYTLNUIGcJ4";
-
-            var task = RGNCoreBuilder.I.GetModule<StoreModule>().BuyVirtualItemsAsync(itemsToPurchase, offerToPurchase);
+            var task = RGNCoreBuilder.I.GetModule<StoreModule>().BuyVirtualItemsAsync(itemIds, null, offerId);
             yield return task.AsIEnumeratorReturnNull();
             var result = task.Result;
 
-            Assert.IsNotEmpty(result.purchasedItems);
-            Assert.IsNotEmpty(result.purchasedItems[0]);
+            Assert.IsNotEmpty(result.offerId);
+            Assert.IsNotEmpty(result.itemIds);
+            Assert.IsNotEmpty(result.itemIds[0]);
         }
         
         [UnityTest]
@@ -135,15 +124,14 @@ namespace RGN.Store.Tests.Runtime
         {
             yield return LoginAsNormalTester();
             
-            // specially created offer for tests
-            var offerToPurchase = "H8piC6rc9CYTLNUIGcJ4";
+            var offerId = "H8piC6rc9CYTLNUIGcJ4"; // specially created offer for tests
 
-            var task = RGNCoreBuilder.I.GetModule<StoreModule>().BuyStoreOfferAsync(offerToPurchase);
+            var task = RGNCoreBuilder.I.GetModule<StoreModule>().BuyStoreOfferAsync(offerId);
             yield return task.AsIEnumeratorReturnNull();
             var result = task.Result;
 
-            Assert.IsNotEmpty(result.purchasedItems);
-            Assert.IsNotEmpty(result.purchasedItems[0]);
+            Assert.IsNotEmpty(result.offerId);
+            Assert.IsNotEmpty(result.itemIds);
         }
 
         [UnityTest]
@@ -187,17 +175,16 @@ namespace RGN.Store.Tests.Runtime
                              "\"\"intervalDelay\"\":null}\",[],\"[\"\"item1Id\"\"]\",[]";
             var csvDelimiter = ",";
 
-            var task = RGNCoreBuilder.I.GetModule<StoreModule>().ImportStoreOffersFromCSV(csvContent, csvDelimiter);
+            var task = RGNCoreBuilder.I.GetModule<StoreModule>().ImportStoreOffersFromCSVAsync(csvContent, csvDelimiter);
             yield return task.AsIEnumeratorReturnNullDontThrow();
-
-            StoreOffer[] importedOffers = task.Result.offers;
+            var result = task.Result;
             
-            foreach (StoreOffer importedOffer in importedOffers)
+            foreach (StoreOffer storeOffer in result)
             {
-                yield return DeleteStoreOfferAsync(importedOffer.id);
+                yield return DeleteStoreOfferAsync(storeOffer.id);
             }
 
-            Assert.IsNotEmpty(importedOffers);
+            Assert.IsNotEmpty(result);
         }
 
         [UnityTest]
@@ -211,22 +198,22 @@ namespace RGN.Store.Tests.Runtime
             yield return addStoreOfferTask.AsIEnumeratorReturnNull();
             var addStoreOfferResult = addStoreOfferTask.Result;
 
-            var getStoreOffersByTagsTask = RGNCoreBuilder.I.GetModule<StoreModule>()
-                .GetByTagsAsync(tagsToFind);
+            var getStoreOffersByTagsTask = RGNCoreBuilder.I.GetModule<StoreModule>().GetByTagsAsync(tagsToFind);
             yield return getStoreOffersByTagsTask.AsIEnumeratorReturnNull();
             var getStoreOffersByTagsResult = getStoreOffersByTagsTask.Result;
 
             yield return DeleteStoreOfferAsync(addStoreOfferResult.id);
 
-            Assert.IsNotEmpty(getStoreOffersByTagsResult.offers);
+            Assert.IsNotEmpty(getStoreOffersByTagsResult);
 
             var areOfferTagsCorrect =
-                tagsToFind.Any(x => getStoreOffersByTagsResult.offers[0].tags.Contains(x));
+                tagsToFind.Any(x => getStoreOffersByTagsResult[0].tags.Contains(x));
 
             Assert.True(areOfferTagsCorrect, "Retrieved store offer doesn't contains any requested tag");
 
-            var noDuplicates = getStoreOffersByTagsResult.offers
-                .GroupBy(x => x.id).Any(g => g.Count() <= 1);
+            var noDuplicates = getStoreOffersByTagsResult
+                .GroupBy(x => x.id)
+                .Any(g => g.Count() <= 1);
 
             Assert.True(noDuplicates, "Request returns duplicated store offers");
         }
@@ -254,8 +241,8 @@ namespace RGN.Store.Tests.Runtime
 
             yield return DeleteStoreOfferAsync(addStoreOfferResult.id);
 
-            Assert.IsNotEmpty(getStoreOffersByTimestampResult.offers);
-            Assert.AreEqual(addStoreOfferResult.id, getStoreOffersByTimestampResult.offers[0].id, "Wrong retrieved offers");
+            Assert.IsNotEmpty(getStoreOffersByTimestampResult);
+            Assert.AreEqual(addStoreOfferResult.id, getStoreOffersByTimestampResult[0].id, "Wrong retrieved offers");
         }
 
         [UnityTest]
@@ -276,14 +263,14 @@ namespace RGN.Store.Tests.Runtime
 
             yield return DeleteStoreOfferAsync(addStoreOfferResult.id);
 
-            Assert.IsNotEmpty(getStoreOffersByAppIdsResult.offers);
+            Assert.IsNotEmpty(getStoreOffersByAppIdsResult);
 
             var areOfferAppIdsCorrect =
-                appIdsToFind.Any(x => getStoreOffersByAppIdsResult.offers[0].appIds.Contains(x));
+                appIdsToFind.Any(x => getStoreOffersByAppIdsResult[0].appIds.Contains(x));
 
             Assert.True(areOfferAppIdsCorrect, "Retrieved store offer doesn't contains any requested appId");
 
-            var noDuplicates = getStoreOffersByAppIdsResult.offers
+            var noDuplicates = getStoreOffersByAppIdsResult
                 .GroupBy(x => x.id).Any(g => g.Count() <= 1);
 
             Assert.True(noDuplicates, "Request returns duplicated store offers");
@@ -310,13 +297,13 @@ namespace RGN.Store.Tests.Runtime
 
             yield return DeleteStoreOfferAsync(addStoreOfferResult.id);
 
-            Assert.IsNotEmpty(getStoreOffersByIdsResult.offers);
+            Assert.IsNotEmpty(getStoreOffersByIdsResult);
 
-            var areOfferIdsCorrect = getStoreOffersByIdsResult.offers.All(x => idsToFind.Contains(x.id));
+            var areOfferIdsCorrect = getStoreOffersByIdsResult.All(x => idsToFind.Contains(x.id));
 
             Assert.True(areOfferIdsCorrect, "Retrieved store offer doesn't much requested any id");
 
-            var noDuplicates = getStoreOffersByIdsResult.offers
+            var noDuplicates = getStoreOffersByIdsResult
                 .GroupBy(x => x.id).Any(g => g.Count() <= 1);
 
             Assert.True(noDuplicates, "Request returns duplicated store offers");
@@ -343,12 +330,12 @@ namespace RGN.Store.Tests.Runtime
 
             yield return DeleteStoreOfferAsync(addStoreOfferResult.id);
 
-            var tagsAreEqual = expectedTags.Length == getStoreOfferTagsResult.tags.Length;
+            var tagsAreEqual = expectedTags.Length == getStoreOfferTagsResult.Length;
             if (tagsAreEqual)
             {
                 for (var i = 0; i < expectedTags.Length; i++)
                 {
-                    if (expectedTags[i].Equals(getStoreOfferTagsResult.tags[i]))
+                    if (expectedTags[i].Equals(getStoreOfferTagsResult[i]))
                     {
                         continue;
                     }
@@ -371,13 +358,13 @@ namespace RGN.Store.Tests.Runtime
                 "tag2",
                 "tag3",
             };
+            string appId = "io.getready.rgntest";
 
             var addStoreOfferTask = AddStoreOfferAsync();
             yield return addStoreOfferTask.AsIEnumeratorReturnNull();
             var addStoreOfferResult = addStoreOfferTask.Result;
 
-            var setTagsTask = RGNCoreBuilder.I.GetModule<StoreModule>()
-                .SetTagsAsync(addStoreOfferResult.id, newTags);
+            var setTagsTask = RGNCoreBuilder.I.GetModule<StoreModule>().SetTagsAsync(addStoreOfferResult.id, newTags, appId);
             yield return setTagsTask.AsIEnumeratorReturnNull();
 
             var getStoreOfferTask = GetStoreOfferAsync(addStoreOfferResult.id);
@@ -391,7 +378,10 @@ namespace RGN.Store.Tests.Runtime
             {
                 for (var i = 0; i < newTags.Length; i++)
                 {
-                    if (newTags[i].Equals(getStoreOfferResult.tags[i]))
+                    string expectedTag = $"{newTags[i]}_{appId}";
+                    string actualTag = getStoreOfferResult.tags[i];
+                    
+                    if (expectedTag.Equals(actualTag))
                     {
                         continue;
                     }
@@ -609,7 +599,7 @@ namespace RGN.Store.Tests.Runtime
         {
             var task = RGNCoreBuilder.I.GetModule<StoreModule>().GetByIdsAsync(new[] { offerId });
             var result = await task;
-            return result.offers.Length > 0 ? result.offers[0] : null;
+            return result.Length > 0 ? result[0] : null;
         }
 
         private Task DeleteStoreOfferAsync(string offerId)
