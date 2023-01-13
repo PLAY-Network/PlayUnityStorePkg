@@ -277,6 +277,98 @@ namespace RGN.Store.Tests.Runtime
         }
 
         [UnityTest]
+        public IEnumerator GetByAppIds_PaginationTest()
+        {
+            yield return LoginAsAdminTester();
+            
+            var appIdToFind = new [] { "io.getready.rgntest.ordering" };
+            var countOffers = 7; // must be odd
+
+            var createdOffers = new string[countOffers];
+            for (int i = 0; i < countOffers; i++)
+            {
+                var addStoreOfferTask = AddStoreOfferAsync(appIdToFind);
+                yield return addStoreOfferTask.AsIEnumeratorReturnNull();
+                var addStoreOfferResult = addStoreOfferTask.Result;
+                createdOffers[i] = addStoreOfferResult.id;
+            }
+            Array.Sort(createdOffers, StringComparer.Ordinal);
+
+            var firstPartitionTask = RGNCoreBuilder.I.GetModule<StoreModule>()
+                .GetByAppIdsAsync(appIdToFind, 3, createdOffers[0], true);
+            yield return firstPartitionTask.AsIEnumeratorReturnNull();
+            var firstPartitionResult = firstPartitionTask.Result;
+            
+            var secondPartitionTask = RGNCoreBuilder.I.GetModule<StoreModule>()
+                .GetByAppIdsAsync(appIdToFind, 3, createdOffers[3], true);
+            yield return secondPartitionTask.AsIEnumeratorReturnNull();
+            var secondPartitionResult = secondPartitionTask.Result;
+
+            for (int i = 0; i < countOffers; i++)
+            {
+                yield return DeleteStoreOfferAsync(createdOffers[i]);
+            }
+
+            string[] expectedIds = createdOffers.Skip(1).ToArray();
+            string[] firstPartitionIds = firstPartitionResult.Select(x => x.id).ToArray();
+            string[] secondPartitionIds = secondPartitionResult.Select(x => x.id).ToArray();
+            string[] actualIds = firstPartitionIds.Concat(secondPartitionIds).ToArray();
+            
+            Assert.AreEqual(expectedIds, actualIds);
+        }
+        
+        [UnityTest]
+        public IEnumerator GetByAppIds_Over10ElementsTest()
+        {
+            yield return LoginAsAdminTester();
+            
+            var appIdToFind = new [] { "io.getready.rgntest" };
+            var countOffers = 15;
+
+            var createdOffers = new string[countOffers];
+            for (int i = 0; i < countOffers; i++)
+            {
+                var addStoreOfferTask = AddStoreOfferAsync(appIdToFind);
+                yield return addStoreOfferTask.AsIEnumeratorReturnNull();
+                var addStoreOfferResult = addStoreOfferTask.Result;
+                createdOffers[i] = addStoreOfferResult.id;
+            }
+
+            var getOffersTask = RGNCoreBuilder.I.GetModule<StoreModule>().GetByAppIdsAsync(appIdToFind, 20);
+            yield return getOffersTask.AsIEnumeratorReturnNull();
+            var getOffersResult = getOffersTask.Result;
+
+            for (int i = 0; i < countOffers; i++)
+            {
+                yield return DeleteStoreOfferAsync(createdOffers[i]);
+            }
+
+            Assert.GreaterOrEqual(getOffersResult.Length, createdOffers.Length);
+        }
+        
+        [UnityTest]
+        public IEnumerator GetWithVirtualItemsDataByAppIdsAsync_ReturnsArrayOfOffers()
+        {
+            yield return LoginAsAdminTester();
+            
+            var appIdsToFind = new[] { "GetWithVirtualItemsDataByAppIdsAsync_ReturnsArrayOfOffers" };
+
+            var addStoreOfferTask = AddStoreOfferAsync(appIdsToFind);
+            yield return addStoreOfferTask.AsIEnumeratorReturnNull();
+            var addStoreOfferResult = addStoreOfferTask.Result;
+
+            var getStoreOffersByAppIdsTask = RGNCoreBuilder.I.GetModule<StoreModule>()
+                .GetWithVirtualItemsDataByAppIdsAsync(appIdsToFind, 1);
+            yield return getStoreOffersByAppIdsTask.AsIEnumeratorReturnNull();
+            var getStoreOffersByAppIdsResult = getStoreOffersByAppIdsTask.Result;
+
+            yield return DeleteStoreOfferAsync(addStoreOfferResult.id);
+
+            Assert.IsNotEmpty(getStoreOffersByAppIdsResult);
+            Assert.AreEqual(getStoreOffersByAppIdsResult[0].itemIds[0], getStoreOffersByAppIdsResult[0].Items[0].id);
+        }
+        
+        [UnityTest]
         public IEnumerator GetByIds_ReturnsArrayOfOffers()
         {
             yield return LoginAsAdminTester();
@@ -309,6 +401,35 @@ namespace RGN.Store.Tests.Runtime
             Assert.True(noDuplicates, "Request returns duplicated store offers");
         }
 
+        [UnityTest]
+        public IEnumerator GetByIds_Over10ElementsTest()
+        {
+            yield return LoginAsAdminTester();
+            
+            var appIdToFind = new [] { "io.getready.rgntest" };
+            var countOffers = 15;
+
+            var createdOffers = new string[countOffers];
+            for (int i = 0; i < countOffers; i++)
+            {
+                var addStoreOfferTask = AddStoreOfferAsync(appIdToFind);
+                yield return addStoreOfferTask.AsIEnumeratorReturnNull();
+                var addStoreOfferResult = addStoreOfferTask.Result;
+                createdOffers[i] = addStoreOfferResult.id;
+            }
+
+            var getOffersTask = RGNCoreBuilder.I.GetModule<StoreModule>().GetByIdsAsync(createdOffers);
+            yield return getOffersTask.AsIEnumeratorReturnNull();
+            var getOffersResult = getOffersTask.Result;
+
+            for (int i = 0; i < countOffers; i++)
+            {
+                yield return DeleteStoreOfferAsync(createdOffers[i]);
+            }
+
+            Assert.AreEqual(getOffersResult.Length, createdOffers.Length);
+        }
+        
         [UnityTest]
         public IEnumerator GetTags_ReturnsArrayOfOfferTags()
         {
