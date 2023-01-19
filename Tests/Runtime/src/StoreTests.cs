@@ -31,7 +31,7 @@ namespace RGN.Store.Tests.Runtime
             
             var itemIds = new[] { "ed589211-466b-4d87-9c94-e6ba03a10765" }; // specially created item for tests
 
-            var task = RGNCoreBuilder.I.GetModule<StoreModule>().BuyVirtualItemsAsync(itemIds, currencies);
+            var task = StoreModule.I.BuyVirtualItemsAsync(itemIds, currencies);
             yield return task.AsIEnumeratorReturnNull();
             var result = task.Result;
 
@@ -47,7 +47,7 @@ namespace RGN.Store.Tests.Runtime
             var itemIds = new[] { "ed589211-466b-4d87-9c94-e6ba03a10765" }; // specially created item for tests
             var offerId = "NEIoJ3uobAWr4CrFNrW6"; // specially created offer for tests
 
-            var task = RGNCoreBuilder.I.GetModule<StoreModule>().BuyVirtualItemsAsync(itemIds, currencies, offerId);
+            var task = StoreModule.I.BuyVirtualItemsAsync(itemIds, currencies, offerId);
             yield return task.AsIEnumeratorReturnNull();
             var result = task.Result;
 
@@ -65,7 +65,7 @@ namespace RGN.Store.Tests.Runtime
             var offerId = "NEIoJ3uobAWr4CrFNrW6"; // specially created offer for tests
             var currencies = new[] { "currency-that-no-one-else-have" };
 
-            var task = RGNCoreBuilder.I.GetModule<StoreModule>().BuyVirtualItemsAsync(itemIds, currencies, offerId);
+            var task = StoreModule.I.BuyVirtualItemsAsync(itemIds, currencies, offerId);
             yield return task.AsIEnumeratorReturnNull();
             var result = task.Result;
 
@@ -79,7 +79,7 @@ namespace RGN.Store.Tests.Runtime
             
             var offerId = "NEIoJ3uobAWr4CrFNrW6"; // specially created offer for tests
 
-            var task = RGNCoreBuilder.I.GetModule<StoreModule>().BuyStoreOfferAsync(offerId, currencies);
+            var task = StoreModule.I.BuyStoreOfferAsync(offerId, currencies);
             yield return task.AsIEnumeratorReturnNull();
             var result = task.Result;
 
@@ -94,7 +94,7 @@ namespace RGN.Store.Tests.Runtime
             
             var itemIds = new[] { "fcb8b866-2ec6-46c1-9dde-3740fa5ebbba" }; // specially created item for tests
 
-            var task = RGNCoreBuilder.I.GetModule<StoreModule>().BuyVirtualItemsAsync(itemIds);
+            var task = StoreModule.I.BuyVirtualItemsAsync(itemIds);
             yield return task.AsIEnumeratorReturnNull();
             var result = task.Result;
 
@@ -110,7 +110,7 @@ namespace RGN.Store.Tests.Runtime
             var itemIds = new[] { "fcb8b866-2ec6-46c1-9dde-3740fa5ebbba" }; // specially created item for tests
             var offerId = "H8piC6rc9CYTLNUIGcJ4"; // specially created offer for tests
 
-            var task = RGNCoreBuilder.I.GetModule<StoreModule>().BuyVirtualItemsAsync(itemIds, null, offerId);
+            var task = StoreModule.I.BuyVirtualItemsAsync(itemIds, null, offerId);
             yield return task.AsIEnumeratorReturnNull();
             var result = task.Result;
 
@@ -126,7 +126,7 @@ namespace RGN.Store.Tests.Runtime
             
             var offerId = "H8piC6rc9CYTLNUIGcJ4"; // specially created offer for tests
 
-            var task = RGNCoreBuilder.I.GetModule<StoreModule>().BuyStoreOfferAsync(offerId);
+            var task = StoreModule.I.BuyStoreOfferAsync(offerId);
             yield return task.AsIEnumeratorReturnNull();
             var result = task.Result;
 
@@ -175,7 +175,7 @@ namespace RGN.Store.Tests.Runtime
                              "\"\"intervalDelay\"\":null}\",[],\"[\"\"item1Id\"\"]\",[]";
             var csvDelimiter = ",";
 
-            var task = RGNCoreBuilder.I.GetModule<StoreModule>().ImportStoreOffersFromCSVAsync(csvContent, csvDelimiter);
+            var task = StoreModule.I.ImportStoreOffersFromCSVAsync(csvContent, csvDelimiter);
             yield return task.AsIEnumeratorReturnNullDontThrow();
             var result = task.Result;
             
@@ -198,7 +198,7 @@ namespace RGN.Store.Tests.Runtime
             yield return addStoreOfferTask.AsIEnumeratorReturnNull();
             var addStoreOfferResult = addStoreOfferTask.Result;
 
-            var getStoreOffersByTagsTask = RGNCoreBuilder.I.GetModule<StoreModule>().GetByTagsAsync(tagsToFind);
+            var getStoreOffersByTagsTask = StoreModule.I.GetByTagsAsync(tagsToFind);
             yield return getStoreOffersByTagsTask.AsIEnumeratorReturnNull();
             var getStoreOffersByTagsResult = getStoreOffersByTagsTask.Result;
 
@@ -230,11 +230,11 @@ namespace RGN.Store.Tests.Runtime
             yield return addStoreOfferTask.AsIEnumeratorReturnNull();
             var addStoreOfferResult = addStoreOfferTask.Result;
 
-            var setTimeTask = RGNCoreBuilder.I.GetModule<StoreModule>()
+            var setTimeTask = StoreModule.I
                 .SetTimeAsync(addStoreOfferResult.id, newTime);
             yield return setTimeTask.AsIEnumeratorReturnNull();
             
-            var getStoreOffersTimestampTask = RGNCoreBuilder.I.GetModule<StoreModule>()
+            var getStoreOffersTimestampTask = StoreModule.I
                 .GetByTimestampAsync("not-exist-app-id", dateTime);
             yield return getStoreOffersTimestampTask.AsIEnumeratorReturnNull();
             var getStoreOffersByTimestampResult = getStoreOffersTimestampTask.Result;
@@ -256,7 +256,7 @@ namespace RGN.Store.Tests.Runtime
             yield return addStoreOfferTask.AsIEnumeratorReturnNull();
             var addStoreOfferResult = addStoreOfferTask.Result;
 
-            var getStoreOffersByAppIdsTask = RGNCoreBuilder.I.GetModule<StoreModule>()
+            var getStoreOffersByAppIdsTask = StoreModule.I
                 .GetByAppIdsAsync(appIdsToFind, 2);
             yield return getStoreOffersByAppIdsTask.AsIEnumeratorReturnNull();
             var getStoreOffersByAppIdsResult = getStoreOffersByAppIdsTask.Result;
@@ -271,6 +271,34 @@ namespace RGN.Store.Tests.Runtime
             Assert.True(areOfferAppIdsCorrect, "Retrieved store offer doesn't contains any requested appId");
 
             var noDuplicates = getStoreOffersByAppIdsResult
+                .GroupBy(x => x.id).Any(g => g.Count() <= 1);
+
+            Assert.True(noDuplicates, "Request returns duplicated store offers");
+        }
+
+        [UnityTest]
+        public IEnumerator GetByCurrentAppId_ReturnsArrayOfOffers()
+        {
+            yield return LoginAsAdminTester();
+            
+            var addStoreOfferTask = AddStoreOfferAsync();
+            yield return addStoreOfferTask.AsIEnumeratorReturnNull();
+            var addStoreOfferResult = addStoreOfferTask.Result;
+
+            var getStoreOffersForCurrentAppIdTask = StoreModule.I.GetForCurrentAppAsync(3);
+            yield return getStoreOffersForCurrentAppIdTask.AsIEnumeratorReturnNull();
+            var getStoreOffersForCurrentAppIdResult = getStoreOffersForCurrentAppIdTask.Result;
+
+            yield return DeleteStoreOfferAsync(addStoreOfferResult.id);
+
+            Assert.IsNotEmpty(getStoreOffersForCurrentAppIdResult);
+
+            var areOfferAppIdsCorrect =
+                getStoreOffersForCurrentAppIdResult.All(x => x.appIds.Contains(RGNCore.I.AppIDForRequests));
+
+            Assert.True(areOfferAppIdsCorrect, "Retrieved store offer doesn't contains current app id");
+
+            var noDuplicates = getStoreOffersForCurrentAppIdResult
                 .GroupBy(x => x.id).Any(g => g.Count() <= 1);
 
             Assert.True(noDuplicates, "Request returns duplicated store offers");
@@ -294,12 +322,12 @@ namespace RGN.Store.Tests.Runtime
             }
             Array.Sort(createdOffers, StringComparer.Ordinal);
 
-            var firstPartitionTask = RGNCoreBuilder.I.GetModule<StoreModule>()
+            var firstPartitionTask = StoreModule.I
                 .GetByAppIdsAsync(appIdToFind, 3, createdOffers[0], true);
             yield return firstPartitionTask.AsIEnumeratorReturnNull();
             var firstPartitionResult = firstPartitionTask.Result;
             
-            var secondPartitionTask = RGNCoreBuilder.I.GetModule<StoreModule>()
+            var secondPartitionTask = StoreModule.I
                 .GetByAppIdsAsync(appIdToFind, 3, createdOffers[3], true);
             yield return secondPartitionTask.AsIEnumeratorReturnNull();
             var secondPartitionResult = secondPartitionTask.Result;
@@ -334,7 +362,7 @@ namespace RGN.Store.Tests.Runtime
                 createdOffers[i] = addStoreOfferResult.id;
             }
 
-            var getOffersTask = RGNCoreBuilder.I.GetModule<StoreModule>().GetByAppIdsAsync(appIdToFind, 20);
+            var getOffersTask = StoreModule.I.GetByAppIdsAsync(appIdToFind, 20);
             yield return getOffersTask.AsIEnumeratorReturnNull();
             var getOffersResult = getOffersTask.Result;
 
@@ -357,7 +385,7 @@ namespace RGN.Store.Tests.Runtime
             yield return addStoreOfferTask.AsIEnumeratorReturnNull();
             var addStoreOfferResult = addStoreOfferTask.Result;
 
-            var getStoreOffersByAppIdsTask = RGNCoreBuilder.I.GetModule<StoreModule>()
+            var getStoreOffersByAppIdsTask = StoreModule.I
                 .GetWithVirtualItemsDataByAppIdsAsync(appIdsToFind, 1);
             yield return getStoreOffersByAppIdsTask.AsIEnumeratorReturnNull();
             var getStoreOffersByAppIdsResult = getStoreOffersByAppIdsTask.Result;
@@ -382,7 +410,7 @@ namespace RGN.Store.Tests.Runtime
             idsToFind[0] = addStoreOfferResult.id;
             idsToFind[1] = addStoreOfferResult.id;
 
-            var getStoreOffersByIdsTask = RGNCoreBuilder.I.GetModule<StoreModule>()
+            var getStoreOffersByIdsTask = StoreModule.I
                 .GetByIdsAsync(idsToFind);
             yield return getStoreOffersByIdsTask.AsIEnumeratorReturnNull();
             var getStoreOffersByIdsResult = getStoreOffersByIdsTask.Result;
@@ -418,7 +446,7 @@ namespace RGN.Store.Tests.Runtime
                 createdOffers[i] = addStoreOfferResult.id;
             }
 
-            var getOffersTask = RGNCoreBuilder.I.GetModule<StoreModule>().GetByIdsAsync(createdOffers);
+            var getOffersTask = StoreModule.I.GetByIdsAsync(createdOffers);
             yield return getOffersTask.AsIEnumeratorReturnNull();
             var getOffersResult = getOffersTask.Result;
 
@@ -444,7 +472,7 @@ namespace RGN.Store.Tests.Runtime
             yield return addStoreOfferTask.AsIEnumeratorReturnNull();
             var addStoreOfferResult = addStoreOfferTask.Result;
 
-            var getStoreOfferTagsTask = RGNCoreBuilder.I.GetModule<StoreModule>()
+            var getStoreOfferTagsTask = StoreModule.I
                 .GetTagsAsync(addStoreOfferResult.id);
             yield return getStoreOfferTagsTask.AsIEnumeratorReturnNull();
             var getStoreOfferTagsResult = getStoreOfferTagsTask.Result;
@@ -485,7 +513,7 @@ namespace RGN.Store.Tests.Runtime
             yield return addStoreOfferTask.AsIEnumeratorReturnNull();
             var addStoreOfferResult = addStoreOfferTask.Result;
 
-            var setTagsTask = RGNCoreBuilder.I.GetModule<StoreModule>().SetTagsAsync(addStoreOfferResult.id, newTags, appId);
+            var setTagsTask = StoreModule.I.SetTagsAsync(addStoreOfferResult.id, newTags, appId);
             yield return setTagsTask.AsIEnumeratorReturnNull();
 
             var getStoreOfferTask = GetStoreOfferAsync(addStoreOfferResult.id);
@@ -524,7 +552,7 @@ namespace RGN.Store.Tests.Runtime
             yield return addStoreOfferTask.AsIEnumeratorReturnNull();
             var addStoreOfferResult = addStoreOfferTask.Result;
 
-            var setNameTask = RGNCoreBuilder.I.GetModule<StoreModule>()
+            var setNameTask = StoreModule.I
                 .SetNameAsync(addStoreOfferResult.id, newName);
             yield return setNameTask.AsIEnumeratorReturnNull();
 
@@ -548,7 +576,7 @@ namespace RGN.Store.Tests.Runtime
             yield return addStoreOfferTask.AsIEnumeratorReturnNull();
             var addStoreOfferResult = addStoreOfferTask.Result;
 
-            var setDescriptionTask = RGNCoreBuilder.I.GetModule<StoreModule>()
+            var setDescriptionTask = StoreModule.I
                 .SetDescriptionAsync(addStoreOfferResult.id, newDescription);
             yield return setDescriptionTask.AsIEnumeratorReturnNull();
 
@@ -576,7 +604,7 @@ namespace RGN.Store.Tests.Runtime
             yield return addStoreOfferTask.AsIEnumeratorReturnNull();
             var addStoreOfferResult = addStoreOfferTask.Result;
 
-            var setPricesTask = RGNCoreBuilder.I.GetModule<StoreModule>()
+            var setPricesTask = StoreModule.I
                 .SetPricesAsync(addStoreOfferResult.id, newPrices);
             yield return setPricesTask.AsIEnumeratorReturnNull();
 
@@ -613,7 +641,7 @@ namespace RGN.Store.Tests.Runtime
             yield return addStoreOfferTask.AsIEnumeratorReturnNull();
             var addStoreOfferResult = addStoreOfferTask.Result;
 
-            var setTimeTask = RGNCoreBuilder.I.GetModule<StoreModule>()
+            var setTimeTask = StoreModule.I
                 .SetTimeAsync(addStoreOfferResult.id, newTime);
             yield return setTimeTask.AsIEnumeratorReturnNull();
 
@@ -637,7 +665,7 @@ namespace RGN.Store.Tests.Runtime
             yield return addStoreOfferTask.AsIEnumeratorReturnNull();
             var addStoreOfferResult = addStoreOfferTask.Result;
 
-            var setImageUrlTask = RGNCoreBuilder.I.GetModule<StoreModule>()
+            var setImageUrlTask = StoreModule.I
                 .SetImageUrlAsync(addStoreOfferResult.id, newImageUrl);
             yield return setImageUrlTask.AsIEnumeratorReturnNull();
 
@@ -677,7 +705,7 @@ namespace RGN.Store.Tests.Runtime
             var storeOfferId = "NEIoJ3uobAWr4CrFNrW6";
             var propertiesToSet = "{}";
 
-            var task = RGNCoreBuilder.I.GetModule<StoreModule>().SetPropertiesAsync(storeOfferId, propertiesToSet);
+            var task = StoreModule.I.SetPropertiesAsync(storeOfferId, propertiesToSet);
             yield return task.AsIEnumeratorReturnNull();
             var result = task.Result;
 
@@ -692,7 +720,7 @@ namespace RGN.Store.Tests.Runtime
             var storeOfferId = "NEIoJ3uobAWr4CrFNrW6";
             var expectedProperties = "{}";
 
-            var task = RGNCoreBuilder.I.GetModule<StoreModule>().GetPropertiesAsync(storeOfferId);
+            var task = StoreModule.I.GetPropertiesAsync(storeOfferId);
             yield return task.AsIEnumeratorReturnNull();
             var result = task.Result;
 
@@ -707,7 +735,7 @@ namespace RGN.Store.Tests.Runtime
 
         private Task<StoreOffer> AddStoreOfferAsync(string[] customAppIds = null)
         {
-            var task = RGNCoreBuilder.I.GetModule<StoreModule>().AddVirtualItemsShopOfferAsync(
+            var task = StoreModule.I.AddVirtualItemsStoreOfferAsync(
                 customAppIds ?? new[] { "io.getready.rgntest", "anotherAppId" },
                 new[] { "ed589211-466b-4d87-9c94-e6ba03a10765" },
                 "testItemName",
@@ -718,14 +746,14 @@ namespace RGN.Store.Tests.Runtime
 
         private async Task<StoreOffer> GetStoreOfferAsync(string offerId)
         {
-            var task = RGNCoreBuilder.I.GetModule<StoreModule>().GetByIdsAsync(new[] { offerId });
+            var task = StoreModule.I.GetByIdsAsync(new[] { offerId });
             var result = await task;
             return result.Length > 0 ? result[0] : null;
         }
 
         private Task DeleteStoreOfferAsync(string offerId)
         {
-            return RGNCoreBuilder.I.GetModule<StoreModule>().DeleteStoreOfferAsync(offerId);
+            return StoreModule.I.DeleteStoreOfferAsync(offerId);
         }
 
         #endregion
