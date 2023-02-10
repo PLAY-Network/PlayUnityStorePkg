@@ -394,7 +394,7 @@ namespace RGN.Store.Tests.Runtime
             yield return DeleteStoreOfferAsync(addStoreOfferResult.id);
 
             Assert.IsNotEmpty(getStoreOffersByAppIdsResult);
-            Assert.AreEqual(getStoreOffersByAppIdsResult[0].itemIds[0], getStoreOffersByAppIdsResult[0].Items[0].id);
+            Assert.AreEqual(getStoreOffersByAppIdsResult[0].itemIds[0], getStoreOffersByAppIdsResult[0].GetItems()[0].id);
         }
         
         [UnityTest]
