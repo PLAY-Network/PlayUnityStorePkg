@@ -224,10 +224,12 @@ namespace RGN.Store.Tests.Runtime
         {
             yield return LoginAsAdminTester();
 
+            var randomAppId = Guid.NewGuid().ToString();
+            
             var newTime = TimeInfo.CreateWithStartAndEndTime(0, 1000);
             var dateTime = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
             
-            var addStoreOfferTask = AddStoreOfferAsync(new [] { "not-exist-app-id-by-time" });
+            var addStoreOfferTask = AddStoreOfferAsync(new [] { randomAppId });
             yield return addStoreOfferTask.AsIEnumeratorReturnNull();
             var addStoreOfferResult = addStoreOfferTask.Result;
 
@@ -236,7 +238,7 @@ namespace RGN.Store.Tests.Runtime
             yield return setTimeTask.AsIEnumeratorReturnNull();
             
             var getStoreOffersTimestampTask = StoreModule.I
-                .GetByTimestampAsync("not-exist-app-id-by-time", dateTime);
+                .GetByTimestampAsync(randomAppId, dateTime);
             yield return getStoreOffersTimestampTask.AsIEnumeratorReturnNull();
             var getStoreOffersByTimestampResult = getStoreOffersTimestampTask.Result;
 
@@ -636,9 +638,10 @@ namespace RGN.Store.Tests.Runtime
         {
             yield return LoginAsAdminTester();
 
+            var randomAppId = Guid.NewGuid().ToString();
             var newTime = TimeInfo.CreateWithStartAndEndTime(0, 1000);
 
-            var addStoreOfferTask = AddStoreOfferAsync(new[] {"not-exist-app-id-by-time"});
+            var addStoreOfferTask = AddStoreOfferAsync(new[] { randomAppId });
             yield return addStoreOfferTask.AsIEnumeratorReturnNull();
             var addStoreOfferResult = addStoreOfferTask.Result;
 
