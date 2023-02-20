@@ -22,14 +22,16 @@ namespace RGN.Store.Tests.Runtime
 
         #region Tests
 
-        private static string[][] _testCurrencies1 = { new[] { "test-coin" }, new[] { "test-coin", "test2-coin" } };
+        private static List<List<string>> _testCurrencies1 = new List<List<string>> {
+            new List<string> { "test-coin" },
+            new List<string> { "test-coin", "test2-coin" } };
 
         [UnityTest]
-        public IEnumerator BuyVirtualItems_WithoutOffer([ValueSource(nameof(_testCurrencies1))] string[] currencies)
+        public IEnumerator BuyVirtualItems_WithoutOffer([ValueSource(nameof(_testCurrencies1))] List<string> currencies)
         {
             yield return LoginAsNormalTester();
             
-            var itemIds = new[] { "ed589211-466b-4d87-9c94-e6ba03a10765" }; // specially created item for tests
+            var itemIds = new List<string> { "ed589211-466b-4d87-9c94-e6ba03a10765" }; // specially created item for tests
 
             var task = StoreModule.I.BuyVirtualItemsAsync(itemIds, currencies);
             yield return task.AsIEnumeratorReturnNull();
@@ -40,11 +42,11 @@ namespace RGN.Store.Tests.Runtime
         }
 
         [UnityTest]
-        public IEnumerator BuyVirtualItems_WithOffer([ValueSource(nameof(_testCurrencies1))] string[] currencies)
+        public IEnumerator BuyVirtualItems_WithOffer([ValueSource(nameof(_testCurrencies1))] List<string> currencies)
         {
             yield return LoginAsNormalTester();
             
-            var itemIds = new[] { "ed589211-466b-4d87-9c94-e6ba03a10765" }; // specially created item for tests
+            var itemIds = new List<string> { "ed589211-466b-4d87-9c94-e6ba03a10765" }; // specially created item for tests
             var offerId = "NEIoJ3uobAWr4CrFNrW6"; // specially created offer for tests
 
             var task = StoreModule.I.BuyVirtualItemsAsync(itemIds, currencies, offerId);
@@ -61,9 +63,9 @@ namespace RGN.Store.Tests.Runtime
         {
             yield return LoginAsNormalTester();
             
-            var itemIds = new[] { "ed589211-466b-4d87-9c94-e6ba03a10765" }; // specially created item for tests
+            var itemIds = new List<string> { "ed589211-466b-4d87-9c94-e6ba03a10765" }; // specially created item for tests
             var offerId = "NEIoJ3uobAWr4CrFNrW6"; // specially created offer for tests
-            var currencies = new[] { "currency-that-no-one-else-have" };
+            var currencies = new List<string> { "currency-that-no-one-else-have" };
 
             var task = StoreModule.I.BuyVirtualItemsAsync(itemIds, currencies, offerId);
             yield return task.AsIEnumeratorReturnNull();
@@ -73,7 +75,7 @@ namespace RGN.Store.Tests.Runtime
         }
         
         [UnityTest]
-        public IEnumerator BuyStoreOffer([ValueSource(nameof(_testCurrencies1))] string[] currencies)
+        public IEnumerator BuyStoreOffer([ValueSource(nameof(_testCurrencies1))] List<string> currencies)
         {
             yield return LoginAsNormalTester();
             
@@ -92,7 +94,7 @@ namespace RGN.Store.Tests.Runtime
         {
             yield return LoginAsNormalTester();
             
-            var itemIds = new[] { "fcb8b866-2ec6-46c1-9dde-3740fa5ebbba" }; // specially created item for tests
+            var itemIds = new List<string> { "fcb8b866-2ec6-46c1-9dde-3740fa5ebbba" }; // specially created item for tests
 
             var task = StoreModule.I.BuyVirtualItemsAsync(itemIds);
             yield return task.AsIEnumeratorReturnNull();
@@ -107,7 +109,7 @@ namespace RGN.Store.Tests.Runtime
         {
             yield return LoginAsNormalTester();
             
-            var itemIds = new[] { "fcb8b866-2ec6-46c1-9dde-3740fa5ebbba" }; // specially created item for tests
+            var itemIds = new List<string> { "fcb8b866-2ec6-46c1-9dde-3740fa5ebbba" }; // specially created item for tests
             var offerId = "H8piC6rc9CYTLNUIGcJ4"; // specially created offer for tests
 
             var task = StoreModule.I.BuyVirtualItemsAsync(itemIds, null, offerId);
@@ -193,7 +195,7 @@ namespace RGN.Store.Tests.Runtime
         {
             yield return LoginAsAdminTester();
             
-            var tagsToFind = new[] { "testItemTag1", "testItemTag2" };
+            var tagsToFind = new List<string> { "testItemTag1", "testItemTag2" };
 
             var addStoreOfferTask = AddStoreOfferAsync();
             yield return addStoreOfferTask.AsIEnumeratorReturnNull();
@@ -229,7 +231,7 @@ namespace RGN.Store.Tests.Runtime
             var newTime = TimeInfo.CreateWithStartAndEndTime(0, 1000);
             var dateTime = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
             
-            var addStoreOfferTask = AddStoreOfferAsync(new [] { randomAppId });
+            var addStoreOfferTask = AddStoreOfferAsync(new List<string> { randomAppId });
             yield return addStoreOfferTask.AsIEnumeratorReturnNull();
             var addStoreOfferResult = addStoreOfferTask.Result;
 
@@ -253,7 +255,7 @@ namespace RGN.Store.Tests.Runtime
         {
             yield return LoginAsAdminTester();
             
-            var appIdsToFind = new[] { "io.getready.rgntest", "anotherAppId" };
+            var appIdsToFind = new List<string> { "io.getready.rgntest", "anotherAppId" };
 
             var addStoreOfferTask = AddStoreOfferAsync();
             yield return addStoreOfferTask.AsIEnumeratorReturnNull();
@@ -312,18 +314,18 @@ namespace RGN.Store.Tests.Runtime
         {
             yield return LoginAsAdminTester();
             
-            var appIdToFind = new [] { "io.getready.rgntest.ordering" };
+            var appIdToFind = new List<string> { "io.getready.rgntest.ordering" };
             var countOffers = 7; // must be odd
 
-            var createdOffers = new string[countOffers];
+            var createdOffers = new List<string>();
             for (int i = 0; i < countOffers; i++)
             {
                 var addStoreOfferTask = AddStoreOfferAsync(appIdToFind);
                 yield return addStoreOfferTask.AsIEnumeratorReturnNull();
                 var addStoreOfferResult = addStoreOfferTask.Result;
-                createdOffers[i] = addStoreOfferResult.id;
+                createdOffers.Add(addStoreOfferResult.id);
             }
-            Array.Sort(createdOffers, StringComparer.Ordinal);
+            createdOffers.Sort(StringComparer.Ordinal);
 
             var firstPartitionTask = StoreModule.I
                 .GetByAppIdsAsync(appIdToFind, 3, createdOffers[0], true);
@@ -353,7 +355,7 @@ namespace RGN.Store.Tests.Runtime
         {
             yield return LoginAsAdminTester();
             
-            var appIdToFind = new [] { "io.getready.rgntest" };
+            var appIdToFind = new List<string> { "io.getready.rgntest" };
             var countOffers = 15;
 
             var createdOffers = new string[countOffers];
@@ -374,7 +376,7 @@ namespace RGN.Store.Tests.Runtime
                 yield return DeleteStoreOfferAsync(createdOffers[i]);
             }
 
-            Assert.GreaterOrEqual(getOffersResult.Length, createdOffers.Length);
+            Assert.GreaterOrEqual(getOffersResult.Count, createdOffers.Length);
         }
         
         [UnityTest]
@@ -382,7 +384,7 @@ namespace RGN.Store.Tests.Runtime
         {
             yield return LoginAsAdminTester();
             
-            var appIdsToFind = new[] { "GetWithVirtualItemsDataByAppIdsAsync_ReturnsArrayOfOffers" };
+            var appIdsToFind = new List<string> { "GetWithVirtualItemsDataByAppIdsAsync_ReturnsArrayOfOffers" };
 
             var addStoreOfferTask = AddStoreOfferAsync(appIdsToFind);
             yield return addStoreOfferTask.AsIEnumeratorReturnNull();
@@ -403,15 +405,15 @@ namespace RGN.Store.Tests.Runtime
         public IEnumerator GetByIds_ReturnsArrayOfOffers()
         {
             yield return LoginAsAdminTester();
-            
-            string[] idsToFind = new string[2];
+
+            List<string> idsToFind = new List<string>();
 
             var addStoreOfferTask = AddStoreOfferAsync();
             yield return addStoreOfferTask.AsIEnumeratorReturnNull();
             var addStoreOfferResult = addStoreOfferTask.Result;
 
-            idsToFind[0] = addStoreOfferResult.id;
-            idsToFind[1] = addStoreOfferResult.id;
+            idsToFind.Add(addStoreOfferResult.id);
+            idsToFind.Add(addStoreOfferResult.id);
 
             var getStoreOffersByIdsTask = StoreModule.I
                 .GetByIdsAsync(idsToFind);
@@ -437,16 +439,16 @@ namespace RGN.Store.Tests.Runtime
         {
             yield return LoginAsAdminTester();
             
-            var appIdToFind = new [] { "io.getready.rgntest" };
+            var appIdToFind = new List<string> { "io.getready.rgntest" };
             var countOffers = 15;
 
-            var createdOffers = new string[countOffers];
+            var createdOffers = new List<string>(countOffers);
             for (int i = 0; i < countOffers; i++)
             {
                 var addStoreOfferTask = AddStoreOfferAsync(appIdToFind);
                 yield return addStoreOfferTask.AsIEnumeratorReturnNull();
                 var addStoreOfferResult = addStoreOfferTask.Result;
-                createdOffers[i] = addStoreOfferResult.id;
+                createdOffers.Add(addStoreOfferResult.id);
             }
 
             var getOffersTask = StoreModule.I.GetByIdsAsync(createdOffers);
@@ -458,7 +460,7 @@ namespace RGN.Store.Tests.Runtime
                 yield return DeleteStoreOfferAsync(createdOffers[i]);
             }
 
-            Assert.AreEqual(getOffersResult.Length, createdOffers.Length);
+            Assert.AreEqual(getOffersResult.Count, createdOffers.Count);
         }
         
         [UnityTest]
@@ -482,7 +484,7 @@ namespace RGN.Store.Tests.Runtime
 
             yield return DeleteStoreOfferAsync(addStoreOfferResult.id);
 
-            var tagsAreEqual = expectedTags.Length == getStoreOfferTagsResult.Length;
+            var tagsAreEqual = expectedTags.Length == getStoreOfferTagsResult.Count;
             if (tagsAreEqual)
             {
                 for (var i = 0; i < expectedTags.Length; i++)
@@ -504,7 +506,7 @@ namespace RGN.Store.Tests.Runtime
         {
             yield return LoginAsAdminTester();
 
-            var newTags = new[]
+            var newTags = new List<string>
             {
                 "tag1",
                 "tag2",
@@ -525,10 +527,10 @@ namespace RGN.Store.Tests.Runtime
 
             yield return DeleteStoreOfferAsync(addStoreOfferResult.id);
 
-            var tagsAreEqual = newTags.Length == getStoreOfferResult.tags.Length;
+            var tagsAreEqual = newTags.Count == getStoreOfferResult.tags.Count;
             if (tagsAreEqual)
             {
-                for (var i = 0; i < newTags.Length; i++)
+                for (var i = 0; i < newTags.Count; i++)
                 {
                     string expectedTag = $"{newTags[i]}_{appId}";
                     string actualTag = getStoreOfferResult.tags[i];
@@ -597,7 +599,7 @@ namespace RGN.Store.Tests.Runtime
         {
             yield return LoginAsAdminTester();
 
-            var newPrices = new[]
+            var newPrices = new List<PriceInfo>
             {
                 new PriceInfo("itemId1", "currency1", 1),
                 new PriceInfo("itemId1", "currency2", 1),
@@ -617,10 +619,10 @@ namespace RGN.Store.Tests.Runtime
 
             yield return DeleteStoreOfferAsync(addStoreOfferResult.id);
 
-            var pricesAreEqual = newPrices.Length == getStoreOfferResult.prices.Count;
+            var pricesAreEqual = newPrices.Count == getStoreOfferResult.prices.Count;
             if (pricesAreEqual)
             {
-                for (var i = 0; i < newPrices.Length; i++)
+                for (var i = 0; i < newPrices.Count; i++)
                 {
                     if (newPrices[i].Equals(getStoreOfferResult.prices[i]))
                     {
@@ -641,7 +643,7 @@ namespace RGN.Store.Tests.Runtime
             var randomAppId = Guid.NewGuid().ToString();
             var newTime = TimeInfo.CreateWithStartAndEndTime(0, 1000);
 
-            var addStoreOfferTask = AddStoreOfferAsync(new[] { randomAppId });
+            var addStoreOfferTask = AddStoreOfferAsync(new List<string> { randomAppId });
             yield return addStoreOfferTask.AsIEnumeratorReturnNull();
             var addStoreOfferResult = addStoreOfferTask.Result;
 
@@ -737,11 +739,11 @@ namespace RGN.Store.Tests.Runtime
 
         #region Common methods
 
-        private Task<StoreOffer> AddStoreOfferAsync(string[] customAppIds = null)
+        private Task<StoreOffer> AddStoreOfferAsync(List<string> customAppIds = null)
         {
             var task = StoreModule.I.AddVirtualItemsStoreOfferAsync(
-                customAppIds ?? new[] { "io.getready.rgntest", "anotherAppId" },
-                new[] { "ed589211-466b-4d87-9c94-e6ba03a10765" },
+                customAppIds ?? new List<string> { "io.getready.rgntest", "anotherAppId" },
+                new List<string> { "ed589211-466b-4d87-9c94-e6ba03a10765" },
                 "testItemName",
                 "testItemDesc",
                 new[] { "testItemTag1", "testItemTag2" });
@@ -750,9 +752,9 @@ namespace RGN.Store.Tests.Runtime
 
         private async Task<StoreOffer> GetStoreOfferAsync(string offerId)
         {
-            var task = StoreModule.I.GetByIdsAsync(new[] { offerId });
+            var task = StoreModule.I.GetByIdsAsync(new List<string> { offerId });
             var result = await task;
-            return result.Length > 0 ? result[0] : null;
+            return result.Count > 0 ? result[0] : null;
         }
 
         private Task DeleteStoreOfferAsync(string offerId)
