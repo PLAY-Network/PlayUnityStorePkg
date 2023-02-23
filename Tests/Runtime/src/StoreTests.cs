@@ -90,6 +90,38 @@ namespace RGN.Store.Tests.Runtime
         }
         
         [UnityTest]
+        public IEnumerator BuyVirtualItems_WithoutOffer_NoPrice()
+        {
+            yield return LoginAsNormalTester();
+            
+            var itemIds = new List<string> { "7dNN81eLr8XsMxFlgsbH" }; // specially created item for tests
+
+            var task = StoreModule.I.BuyVirtualItemsAsync(itemIds);
+            yield return task.AsIEnumeratorReturnNull();
+            var result = task.Result;
+
+            Assert.IsNotEmpty(result.itemIds);
+            Assert.IsNotEmpty(result.itemIds[0]);
+        }
+        
+        [UnityTest]
+        public IEnumerator BuyVirtualItems_WithOffer_NoPrice()
+        {
+            yield return LoginAsNormalTester();
+            
+            var itemIds = new List<string> { "7dNN81eLr8XsMxFlgsbH" }; // specially created item for tests
+            var offerId = "G0mEAb1LK1aPn9DGsKUo"; // specially created offer for tests
+
+            var task = StoreModule.I.BuyVirtualItemsAsync(itemIds, null, offerId);
+            yield return task.AsIEnumeratorReturnNull();
+            var result = task.Result;
+
+            Assert.IsNotEmpty(result.offerId);
+            Assert.IsNotEmpty(result.itemIds);
+            Assert.IsNotEmpty(result.itemIds[0]);
+        }
+        
+        [UnityTest]
         public IEnumerator BuyVirtualItems_WithoutOffer_Simplified()
         {
             yield return LoginAsNormalTester();
@@ -255,7 +287,7 @@ namespace RGN.Store.Tests.Runtime
         {
             yield return LoginAsAdminTester();
             
-            var appIdsToFind = new List<string> { "io.getready.rgntest", "anotherAppId" };
+            var appIdsToFind = new List<string> { RGNCoreBuilder.I.AppIDForRequests, "anotherAppId" };
 
             var addStoreOfferTask = AddStoreOfferAsync();
             yield return addStoreOfferTask.AsIEnumeratorReturnNull();
@@ -314,7 +346,7 @@ namespace RGN.Store.Tests.Runtime
         {
             yield return LoginAsAdminTester();
             
-            var appIdToFind = new List<string> { "io.getready.rgntest.ordering" };
+            var appIdToFind = new List<string> { RGNCoreBuilder.I.AppIDForRequests + ".ordering" };
             var countOffers = 7; // must be odd
 
             var createdOffers = new List<string>();
@@ -355,7 +387,7 @@ namespace RGN.Store.Tests.Runtime
         {
             yield return LoginAsAdminTester();
             
-            var appIdToFind = new List<string> { "io.getready.rgntest" };
+            var appIdToFind = new List<string> { RGNCoreBuilder.I.AppIDForRequests };
             var countOffers = 15;
 
             var createdOffers = new string[countOffers];
@@ -439,7 +471,7 @@ namespace RGN.Store.Tests.Runtime
         {
             yield return LoginAsAdminTester();
             
-            var appIdToFind = new List<string> { "io.getready.rgntest" };
+            var appIdToFind = new List<string> { RGNCoreBuilder.I.AppIDForRequests };
             var countOffers = 15;
 
             var createdOffers = new List<string>(countOffers);
@@ -512,7 +544,7 @@ namespace RGN.Store.Tests.Runtime
                 "tag2",
                 "tag3",
             };
-            string appId = "io.getready.rgntest";
+            string appId = RGNCoreBuilder.I.AppIDForRequests;
 
             var addStoreOfferTask = AddStoreOfferAsync();
             yield return addStoreOfferTask.AsIEnumeratorReturnNull();
@@ -601,8 +633,8 @@ namespace RGN.Store.Tests.Runtime
 
             var newPrices = new List<PriceInfo>
             {
-                new PriceInfo("itemId1", "currency1", 1),
-                new PriceInfo("itemId1", "currency2", 1),
+                new PriceInfo(new List<string>() { RGNCoreBuilder.I.AppIDForRequests },"itemId1", "currency1", 1),
+                new PriceInfo(new List<string>() { RGNCoreBuilder.I.AppIDForRequests },"itemId1", "currency2", 1),
             };
 
             var addStoreOfferTask = AddStoreOfferAsync();
@@ -742,7 +774,7 @@ namespace RGN.Store.Tests.Runtime
         private Task<StoreOffer> AddStoreOfferAsync(List<string> customAppIds = null)
         {
             var task = StoreModule.I.AddVirtualItemsStoreOfferAsync(
-                customAppIds ?? new List<string> { "io.getready.rgntest", "anotherAppId" },
+                customAppIds ?? new List<string> { RGNCoreBuilder.I.AppIDForRequests, "anotherAppId" },
                 new List<string> { "ed589211-466b-4d87-9c94-e6ba03a10765" },
                 "testItemName",
                 "testItemDesc",
