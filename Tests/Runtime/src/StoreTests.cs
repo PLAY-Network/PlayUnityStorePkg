@@ -97,11 +97,9 @@ namespace RGN.Store.Tests.Runtime
             var itemIds = new List<string> { "7dNN81eLr8XsMxFlgsbH" }; // specially created item for tests
 
             var task = StoreModule.I.BuyVirtualItemsAsync(itemIds);
-            yield return task.AsIEnumeratorReturnNull();
-            var result = task.Result;
-
-            Assert.IsNotEmpty(result.itemIds);
-            Assert.IsNotEmpty(result.itemIds[0]);
+            yield return task.AsIEnumeratorReturnNullDontThrow();
+            
+            Assert.True(task.IsFaulted, "Virtual items purchased with broken prices");
         }
         
         [UnityTest]
@@ -113,12 +111,9 @@ namespace RGN.Store.Tests.Runtime
             var offerId = "G0mEAb1LK1aPn9DGsKUo"; // specially created offer for tests
 
             var task = StoreModule.I.BuyVirtualItemsAsync(itemIds, null, offerId);
-            yield return task.AsIEnumeratorReturnNull();
-            var result = task.Result;
+            yield return task.AsIEnumeratorReturnNullDontThrow();
 
-            Assert.IsNotEmpty(result.offerId);
-            Assert.IsNotEmpty(result.itemIds);
-            Assert.IsNotEmpty(result.itemIds[0]);
+            Assert.True(task.IsFaulted, "Virtual items purchased with broken prices");
         }
         
         [UnityTest]
