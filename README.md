@@ -1,2 +1,2 @@
-# RGN Store# RGN Store
-version: 0.1.0-dev.105
+# RGN Store
+version: 0.1.0-dev.106
