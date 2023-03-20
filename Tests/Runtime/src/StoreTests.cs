@@ -37,8 +37,8 @@ namespace RGN.Store.Tests.Runtime
             yield return task.AsIEnumeratorReturnNull();
             var result = task.Result;
 
-            Assert.IsNotEmpty(result.itemIds);
-            Assert.IsNotEmpty(result.itemIds[0]);
+            Assert.IsNotEmpty(result.items);
+            Assert.IsNotEmpty(result.items[0].inventoryItemId);
         }
 
         [UnityTest]
@@ -54,8 +54,8 @@ namespace RGN.Store.Tests.Runtime
             var result = task.Result;
 
             Assert.IsNotEmpty(result.offerId);
-            Assert.IsNotEmpty(result.itemIds);
-            Assert.IsNotEmpty(result.itemIds[0]);
+            Assert.IsNotEmpty(result.items);
+            Assert.IsNotEmpty(result.items[0].inventoryItemId);
         }
 
         [UnityTest]
@@ -68,10 +68,9 @@ namespace RGN.Store.Tests.Runtime
             var currencies = new List<string> { "currency-that-no-one-else-have" };
 
             var task = StoreModule.I.BuyVirtualItemsAsync(itemIds, currencies, offerId);
-            yield return task.AsIEnumeratorReturnNull();
-            var result = task.Result;
+            yield return task.AsIEnumeratorReturnNullDontThrow();
 
-            Assert.IsEmpty(result.itemIds, "User could purchase item even without currency");
+            Assert.True(task.IsFaulted, "User could purchase item even without currency");
         }
         
         [UnityTest]
@@ -86,7 +85,7 @@ namespace RGN.Store.Tests.Runtime
             var result = task.Result;
 
             Assert.IsNotEmpty(result.offerId);
-            Assert.IsNotEmpty(result.itemIds);
+            Assert.IsNotEmpty(result.items);
         }
         
         [UnityTest]
@@ -127,8 +126,8 @@ namespace RGN.Store.Tests.Runtime
             yield return task.AsIEnumeratorReturnNull();
             var result = task.Result;
 
-            Assert.IsNotEmpty(result.itemIds);
-            Assert.IsNotEmpty(result.itemIds[0]);
+            Assert.IsNotEmpty(result.items);
+            Assert.IsNotEmpty(result.items[0].inventoryItemId);
         }
 
         [UnityTest]
@@ -144,8 +143,8 @@ namespace RGN.Store.Tests.Runtime
             var result = task.Result;
 
             Assert.IsNotEmpty(result.offerId);
-            Assert.IsNotEmpty(result.itemIds);
-            Assert.IsNotEmpty(result.itemIds[0]);
+            Assert.IsNotEmpty(result.items);
+            Assert.IsNotEmpty(result.items[0].inventoryItemId);
         }
         
         [UnityTest]
@@ -160,7 +159,7 @@ namespace RGN.Store.Tests.Runtime
             var result = task.Result;
 
             Assert.IsNotEmpty(result.offerId);
-            Assert.IsNotEmpty(result.itemIds);
+            Assert.IsNotEmpty(result.items);
         }
 
         [UnityTest]
