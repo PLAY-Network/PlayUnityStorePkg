@@ -262,7 +262,7 @@ namespace RGN.Store.Tests.Runtime
             var newTime = TimeInfo.CreateWithStartAndEndTime(0, 1000);
             var dateTime = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
             
-            var addStoreOfferTask = AddStoreOfferAsync(new List<string> { randomAppId });
+            var addStoreOfferTask = AddStoreOfferAsync(new List<string> { randomAppId, RGNCoreBuilder.I.AppIDForRequests });
             yield return addStoreOfferTask.AsIEnumeratorReturnNull();
             var addStoreOfferResult = addStoreOfferTask.Result;
 
@@ -777,7 +777,7 @@ namespace RGN.Store.Tests.Runtime
             var randomAppId = Guid.NewGuid().ToString();
             var newTime = TimeInfo.CreateWithStartAndEndTime(0, 1000);
 
-            var addStoreOfferTask = AddStoreOfferAsync(new List<string> { randomAppId });
+            var addStoreOfferTask = AddStoreOfferAsync(new List<string> { randomAppId, RGNCoreBuilder.I.AppIDForRequests });
             yield return addStoreOfferTask.AsIEnumeratorReturnNull();
             var addStoreOfferResult = addStoreOfferTask.Result;
 
