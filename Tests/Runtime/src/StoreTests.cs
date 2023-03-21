@@ -166,11 +166,11 @@ namespace RGN.Store.Tests.Runtime
         public IEnumerator AddVirtualItemShopOffer_ChecksCreatedOffer()
         {
             yield return LoginAsAdminTester();
-
+            
             var task = AddStoreOfferAsync();
             yield return task.AsIEnumeratorReturnNull();
             var result = task.Result;
-
+            
             yield return DeleteStoreOfferAsync(result.id);
 
             Assert.NotNull(result, "Store offer didn't added to db");
@@ -228,7 +228,12 @@ namespace RGN.Store.Tests.Runtime
             var addStoreOfferResult = addStoreOfferTask.Result;
 
             var getStoreOffersByTagsTask = StoreModule.I.GetByTagsAsync(tagsToFind);
-            yield return getStoreOffersByTagsTask.AsIEnumeratorReturnNull();
+            yield return getStoreOffersByTagsTask.AsIEnumeratorReturnNullDontThrow();
+            if (getStoreOffersByTagsTask.IsFaulted)
+            {
+                yield return DeleteStoreOfferAsync(addStoreOfferResult.id);
+                throw getStoreOffersByTagsTask.Exception!;
+            }
             var getStoreOffersByTagsResult = getStoreOffersByTagsTask.Result;
 
             yield return DeleteStoreOfferAsync(addStoreOfferResult.id);
@@ -261,13 +266,21 @@ namespace RGN.Store.Tests.Runtime
             yield return addStoreOfferTask.AsIEnumeratorReturnNull();
             var addStoreOfferResult = addStoreOfferTask.Result;
 
-            var setTimeTask = StoreModule.I
-                .SetTimeAsync(addStoreOfferResult.id, newTime);
-            yield return setTimeTask.AsIEnumeratorReturnNull();
+            var setTimeTask = StoreModule.I.SetTimeAsync(addStoreOfferResult.id, newTime);
+            yield return setTimeTask.AsIEnumeratorReturnNullDontThrow();
+            if (setTimeTask.IsFaulted)
+            {
+                yield return DeleteStoreOfferAsync(addStoreOfferResult.id);
+                throw setTimeTask.Exception!;
+            }
             
-            var getStoreOffersTimestampTask = StoreModule.I
-                .GetByTimestampAsync(randomAppId, dateTime);
-            yield return getStoreOffersTimestampTask.AsIEnumeratorReturnNull();
+            var getStoreOffersTimestampTask = StoreModule.I.GetByTimestampAsync(randomAppId, dateTime);
+            yield return getStoreOffersTimestampTask.AsIEnumeratorReturnNullDontThrow();
+            if (getStoreOffersTimestampTask.IsFaulted)
+            {
+                yield return DeleteStoreOfferAsync(addStoreOfferResult.id);
+                throw getStoreOffersTimestampTask.Exception!;
+            }
             var getStoreOffersByTimestampResult = getStoreOffersTimestampTask.Result;
 
             yield return DeleteStoreOfferAsync(addStoreOfferResult.id);
@@ -289,7 +302,12 @@ namespace RGN.Store.Tests.Runtime
 
             var getStoreOffersByAppIdsTask = StoreModule.I
                 .GetByAppIdsAsync(appIdsToFind, 2);
-            yield return getStoreOffersByAppIdsTask.AsIEnumeratorReturnNull();
+            yield return getStoreOffersByAppIdsTask.AsIEnumeratorReturnNullDontThrow();
+            if (getStoreOffersByAppIdsTask.IsFaulted)
+            {
+                yield return DeleteStoreOfferAsync(addStoreOfferResult.id);
+                throw getStoreOffersByAppIdsTask.Exception!;
+            }
             var getStoreOffersByAppIdsResult = getStoreOffersByAppIdsTask.Result;
 
             yield return DeleteStoreOfferAsync(addStoreOfferResult.id);
@@ -317,7 +335,12 @@ namespace RGN.Store.Tests.Runtime
             var addStoreOfferResult = addStoreOfferTask.Result;
 
             var getStoreOffersForCurrentAppIdTask = StoreModule.I.GetForCurrentAppAsync(3);
-            yield return getStoreOffersForCurrentAppIdTask.AsIEnumeratorReturnNull();
+            yield return getStoreOffersForCurrentAppIdTask.AsIEnumeratorReturnNullDontThrow();
+            if (getStoreOffersForCurrentAppIdTask.IsFaulted)
+            {
+                yield return DeleteStoreOfferAsync(addStoreOfferResult.id);
+                throw getStoreOffersForCurrentAppIdTask.Exception!;
+            }
             var getStoreOffersForCurrentAppIdResult = getStoreOffersForCurrentAppIdTask.Result;
 
             yield return DeleteStoreOfferAsync(addStoreOfferResult.id);
@@ -353,14 +376,28 @@ namespace RGN.Store.Tests.Runtime
             }
             createdOffers.Sort(StringComparer.Ordinal);
 
-            var firstPartitionTask = StoreModule.I
-                .GetByAppIdsAsync(appIdToFind, 3, createdOffers[0], true);
-            yield return firstPartitionTask.AsIEnumeratorReturnNull();
+            var firstPartitionTask = StoreModule.I.GetByAppIdsAsync(appIdToFind, 3, createdOffers[0], true);
+            yield return firstPartitionTask.AsIEnumeratorReturnNullDontThrow();
+            if (firstPartitionTask.IsFaulted)
+            {
+                for (int i = 0; i < countOffers; i++)
+                {
+                    yield return DeleteStoreOfferAsync(createdOffers[i]);
+                }
+                throw firstPartitionTask.Exception!;
+            }
             var firstPartitionResult = firstPartitionTask.Result;
             
-            var secondPartitionTask = StoreModule.I
-                .GetByAppIdsAsync(appIdToFind, 3, createdOffers[3], true);
-            yield return secondPartitionTask.AsIEnumeratorReturnNull();
+            var secondPartitionTask = StoreModule.I.GetByAppIdsAsync(appIdToFind, 3, createdOffers[3], true);
+            yield return secondPartitionTask.AsIEnumeratorReturnNullDontThrow();
+            if (secondPartitionTask.IsFaulted)
+            {
+                for (int i = 0; i < countOffers; i++)
+                {
+                    yield return DeleteStoreOfferAsync(createdOffers[i]);
+                }
+                throw secondPartitionTask.Exception!;
+            }
             var secondPartitionResult = secondPartitionTask.Result;
 
             for (int i = 0; i < countOffers; i++)
@@ -394,7 +431,15 @@ namespace RGN.Store.Tests.Runtime
             }
 
             var getOffersTask = StoreModule.I.GetByAppIdsAsync(appIdToFind, 20);
-            yield return getOffersTask.AsIEnumeratorReturnNull();
+            yield return getOffersTask.AsIEnumeratorReturnNullDontThrow();
+            if (getOffersTask.IsFaulted)
+            {
+                for (int i = 0; i < countOffers; i++)
+                {
+                    yield return DeleteStoreOfferAsync(createdOffers[i]);
+                }
+                throw getOffersTask.Exception!;
+            }
             var getOffersResult = getOffersTask.Result;
 
             for (int i = 0; i < countOffers; i++)
@@ -418,7 +463,12 @@ namespace RGN.Store.Tests.Runtime
 
             var getStoreOffersByAppIdsTask = StoreModule.I
                 .GetWithVirtualItemsDataByAppIdsAsync(appIdsToFind, 1);
-            yield return getStoreOffersByAppIdsTask.AsIEnumeratorReturnNull();
+            yield return getStoreOffersByAppIdsTask.AsIEnumeratorReturnNullDontThrow();
+            if (getStoreOffersByAppIdsTask.IsFaulted)
+            {
+                yield return DeleteStoreOfferAsync(addStoreOfferResult.id);
+                throw getStoreOffersByAppIdsTask.Exception!;
+            }
             var getStoreOffersByAppIdsResult = getStoreOffersByAppIdsTask.Result;
 
             yield return DeleteStoreOfferAsync(addStoreOfferResult.id);
@@ -443,7 +493,12 @@ namespace RGN.Store.Tests.Runtime
 
             var getStoreOffersByIdsTask = StoreModule.I
                 .GetByIdsAsync(idsToFind);
-            yield return getStoreOffersByIdsTask.AsIEnumeratorReturnNull();
+            yield return getStoreOffersByIdsTask.AsIEnumeratorReturnNullDontThrow();
+            if (getStoreOffersByIdsTask.IsFaulted)
+            {
+                yield return DeleteStoreOfferAsync(addStoreOfferResult.id);
+                throw getStoreOffersByIdsTask.Exception!;
+            }
             var getStoreOffersByIdsResult = getStoreOffersByIdsTask.Result;
 
             yield return DeleteStoreOfferAsync(addStoreOfferResult.id);
@@ -478,7 +533,15 @@ namespace RGN.Store.Tests.Runtime
             }
 
             var getOffersTask = StoreModule.I.GetByIdsAsync(createdOffers);
-            yield return getOffersTask.AsIEnumeratorReturnNull();
+            yield return getOffersTask.AsIEnumeratorReturnNullDontThrow();
+            if (getOffersTask.IsFaulted)
+            {
+                for (int i = 0; i < countOffers; i++)
+                {
+                    yield return DeleteStoreOfferAsync(createdOffers[i]);
+                }
+                throw getOffersTask.Exception!;
+            }
             var getOffersResult = getOffersTask.Result;
 
             for (int i = 0; i < countOffers; i++)
@@ -505,7 +568,12 @@ namespace RGN.Store.Tests.Runtime
 
             var getStoreOfferTagsTask = StoreModule.I
                 .GetTagsAsync(addStoreOfferResult.id);
-            yield return getStoreOfferTagsTask.AsIEnumeratorReturnNull();
+            yield return getStoreOfferTagsTask.AsIEnumeratorReturnNullDontThrow();
+            if (getStoreOfferTagsTask.IsFaulted)
+            {
+                yield return DeleteStoreOfferAsync(addStoreOfferResult.id);
+                throw getStoreOfferTagsTask.Exception!;
+            }
             var getStoreOfferTagsResult = getStoreOfferTagsTask.Result;
 
             yield return DeleteStoreOfferAsync(addStoreOfferResult.id);
@@ -545,10 +613,20 @@ namespace RGN.Store.Tests.Runtime
             var addStoreOfferResult = addStoreOfferTask.Result;
 
             var setTagsTask = StoreModule.I.SetTagsAsync(addStoreOfferResult.id, newTags, appId);
-            yield return setTagsTask.AsIEnumeratorReturnNull();
+            yield return setTagsTask.AsIEnumeratorReturnNullDontThrow();
+            if (setTagsTask.IsFaulted)
+            {
+                yield return DeleteStoreOfferAsync(addStoreOfferResult.id);
+                throw setTagsTask.Exception!;
+            }
 
             var getStoreOfferTask = GetStoreOfferAsync(addStoreOfferResult.id);
-            yield return getStoreOfferTask.AsIEnumeratorReturnNull();
+            yield return getStoreOfferTask.AsIEnumeratorReturnNullDontThrow();
+            if (getStoreOfferTask.IsFaulted)
+            {
+                yield return DeleteStoreOfferAsync(addStoreOfferResult.id);
+                throw getStoreOfferTask.Exception!;
+            }
             var getStoreOfferResult = getStoreOfferTask.Result;
 
             yield return DeleteStoreOfferAsync(addStoreOfferResult.id);
@@ -585,10 +663,20 @@ namespace RGN.Store.Tests.Runtime
 
             var setNameTask = StoreModule.I
                 .SetNameAsync(addStoreOfferResult.id, newName);
-            yield return setNameTask.AsIEnumeratorReturnNull();
+            yield return setNameTask.AsIEnumeratorReturnNullDontThrow();
+            if (setNameTask.IsFaulted)
+            {
+                yield return DeleteStoreOfferAsync(addStoreOfferResult.id);
+                throw setNameTask.Exception!;
+            }
 
             var getStoreOfferTask = GetStoreOfferAsync(addStoreOfferResult.id);
-            yield return getStoreOfferTask.AsIEnumeratorReturnNull();
+            yield return getStoreOfferTask.AsIEnumeratorReturnNullDontThrow();
+            if (getStoreOfferTask.IsFaulted)
+            {
+                yield return DeleteStoreOfferAsync(addStoreOfferResult.id);
+                throw getStoreOfferTask.Exception!;
+            }
             var getStoreOfferResult = getStoreOfferTask.Result;
 
             yield return DeleteStoreOfferAsync(addStoreOfferResult.id);
@@ -609,10 +697,20 @@ namespace RGN.Store.Tests.Runtime
 
             var setDescriptionTask = StoreModule.I
                 .SetDescriptionAsync(addStoreOfferResult.id, newDescription);
-            yield return setDescriptionTask.AsIEnumeratorReturnNull();
+            yield return setDescriptionTask.AsIEnumeratorReturnNullDontThrow();
+            if (setDescriptionTask.IsFaulted)
+            {
+                yield return DeleteStoreOfferAsync(addStoreOfferResult.id);
+                throw setDescriptionTask.Exception!;
+            }
 
             var getStoreOfferTask = GetStoreOfferAsync(addStoreOfferResult.id);
-            yield return getStoreOfferTask.AsIEnumeratorReturnNull();
+            yield return getStoreOfferTask.AsIEnumeratorReturnNullDontThrow();
+            if (getStoreOfferTask.IsFaulted)
+            {
+                yield return DeleteStoreOfferAsync(addStoreOfferResult.id);
+                throw getStoreOfferTask.Exception!;
+            }
             var getStoreOfferResult = getStoreOfferTask.Result;
 
             yield return DeleteStoreOfferAsync(addStoreOfferResult.id);
@@ -637,10 +735,20 @@ namespace RGN.Store.Tests.Runtime
 
             var setPricesTask = StoreModule.I
                 .SetPricesAsync(addStoreOfferResult.id, newPrices);
-            yield return setPricesTask.AsIEnumeratorReturnNull();
+            yield return setPricesTask.AsIEnumeratorReturnNullDontThrow();
+            if (setPricesTask.IsFaulted)
+            {
+                yield return DeleteStoreOfferAsync(addStoreOfferResult.id);
+                throw setPricesTask.Exception!;
+            }
 
             var getStoreOfferTask = GetStoreOfferAsync(addStoreOfferResult.id);
-            yield return getStoreOfferTask.AsIEnumeratorReturnNull();
+            yield return getStoreOfferTask.AsIEnumeratorReturnNullDontThrow();
+            if (getStoreOfferTask.IsFaulted)
+            {
+                yield return DeleteStoreOfferAsync(addStoreOfferResult.id);
+                throw getStoreOfferTask.Exception!;
+            }
             var getStoreOfferResult = getStoreOfferTask.Result;
 
             yield return DeleteStoreOfferAsync(addStoreOfferResult.id);
@@ -676,9 +784,19 @@ namespace RGN.Store.Tests.Runtime
             var setTimeTask = StoreModule.I
                 .SetTimeAsync(addStoreOfferResult.id, newTime);
             yield return setTimeTask.AsIEnumeratorReturnNull();
+            if (setTimeTask.IsFaulted)
+            {
+                yield return DeleteStoreOfferAsync(addStoreOfferResult.id);
+                throw setTimeTask.Exception!;
+            }
 
             var getStoreOfferTask = GetStoreOfferAsync(addStoreOfferResult.id);
-            yield return getStoreOfferTask.AsIEnumeratorReturnNull();
+            yield return getStoreOfferTask.AsIEnumeratorReturnNullDontThrow();
+            if (getStoreOfferTask.IsFaulted)
+            {
+                yield return DeleteStoreOfferAsync(addStoreOfferResult.id);
+                throw getStoreOfferTask.Exception!;
+            }
             var getStoreOfferResult = getStoreOfferTask.Result;
 
             yield return DeleteStoreOfferAsync(addStoreOfferResult.id);
@@ -699,10 +817,20 @@ namespace RGN.Store.Tests.Runtime
 
             var setImageUrlTask = StoreModule.I
                 .SetImageUrlAsync(addStoreOfferResult.id, newImageUrl);
-            yield return setImageUrlTask.AsIEnumeratorReturnNull();
+            yield return setImageUrlTask.AsIEnumeratorReturnNullDontThrow();
+            if (setImageUrlTask.IsFaulted)
+            {
+                yield return DeleteStoreOfferAsync(addStoreOfferResult.id);
+                throw setImageUrlTask.Exception!;
+            }
 
             var getStoreOfferTask = GetStoreOfferAsync(addStoreOfferResult.id);
-            yield return getStoreOfferTask.AsIEnumeratorReturnNull();
+            yield return getStoreOfferTask.AsIEnumeratorReturnNullDontThrow();
+            if (getStoreOfferTask.IsFaulted)
+            {
+                yield return DeleteStoreOfferAsync(addStoreOfferResult.id);
+                throw getStoreOfferTask.Exception!;
+            }
             var getStoreOfferResult = getStoreOfferTask.Result;
 
             yield return DeleteStoreOfferAsync(addStoreOfferResult.id);
