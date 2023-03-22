@@ -23,9 +23,7 @@
     "/package.json",
     "/package.json.meta",
     "/ReadyGamesNetwork",
-    "/ReadyGamesNetwork.meta",
-    "/Tests",
-    "/Tests.meta"
+    "/ReadyGamesNetwork.meta"
   ],
   "dependencies": {
     "io.getready.rgn.core": "0.1.0",
