@@ -1,0 +1,141 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>RGNStore</name>
+    </assembly>
+    <members>
+        <member name="F:RGN.Modules.Store.StoreOffer.id">
+            <summary>
+            Unique id of the store offer
+            </summary>
+        </member>
+        <member name="F:RGN.Modules.Store.StoreOffer.name">
+            <summary>
+            Store offer name
+            Is used also to store localization key for the name
+            </summary>
+        </member>
+        <member name="F:RGN.Modules.Store.StoreOffer.description">
+            <summary>
+            Store offer description
+            Is used also to store localization key for the name
+            </summary>
+        </member>
+        <member name="F:RGN.Modules.Store.StoreOffer.appIds">
+            <summary>
+            List of application ids where this item is used
+            </summary>
+        </member>
+        <member name="F:RGN.Modules.Store.StoreOffer.tags">
+            <summary>
+            List of tags to filter the offers
+            You can place multiple store offers into one category tag
+            For example in a shooter game: "guns", "rifles"
+            Or you can also have one store offer for every category
+            with multiple virtual items
+            </summary>
+        </member>
+        <member name="F:RGN.Modules.Store.StoreOffer.imageUrl">
+            <summary>
+            Store offer image url
+            </summary>
+        </member>
+        <member name="F:RGN.Modules.Store.StoreOffer.createdAt">
+            <summary>
+            Date and time when the store offer was created
+            In milliseconds since midnight, January 1, 1970 UTC.
+            This field is automatically populated by the backend
+            </summary>
+        </member>
+        <member name="F:RGN.Modules.Store.StoreOffer.updatedAt">
+            <summary>
+            Date and time when the store offer data was last time updated
+            In milliseconds since midnight, January 1, 1970 UTC.
+            This field is automatically populated by the backend
+            </summary>
+        </member>
+        <member name="F:RGN.Modules.Store.StoreOffer.createdBy">
+            <summary>
+            User Id who created the store offer
+            This field is automatically populated by the backend
+            </summary>
+        </member>
+        <member name="F:RGN.Modules.Store.StoreOffer.updatedBy">
+            <summary>
+            User Id who last time updated the store offer
+            This field is automatically populated by the backend
+            </summary>
+        </member>
+        <member name="F:RGN.Modules.Store.StoreOffer.time">
+            <summary>
+            The time when the store offer is available
+            This is used for limited time offers (LTO)
+            </summary>
+        </member>
+        <member name="F:RGN.Modules.Store.StoreOffer.properties">
+            <summary>
+            List of store offer custom json. It is used to store
+            game specific json in json format.
+            For example: you can attach some json like
+            "additiona_description", "in_app_products" to this offer
+            </summary>
+        </member>
+        <member name="F:RGN.Modules.Store.StoreOffer.itemIds">
+            <summary>
+            Virtual items ids list
+            It contains the virtual items available to sell
+            </summary>
+        </member>
+        <member name="F:RGN.Modules.Store.StoreOffer.prices">
+            <summary>
+            Price information for the store offer virtual items
+            It is very powerful: you can sell the same virtual item for different
+            currencies and prices in the same store offer.
+            You can also combine two and more {currency, price} to sell one item
+            by using the group field. To "group" currencies and prices together.
+            </summary>
+        </member>
+        <member name="M:RGN.Modules.Store.StoreOffer.GetVirtualItems">
+            <summary>
+            The Virtual Items data
+            This is populated only when the 
+            <see cref="M:RGN.Modules.Store.StoreModule.GetWithVirtualItemsDataForCurrentAppAsync(System.Int32,System.String,System.Boolean)"/> or
+            <see cref="M:RGN.Modules.Store.StoreModule.GetWithVirtualItemsDataByAppIdsAsync(System.Collections.Generic.List{System.String},System.Int32,System.String,System.Boolean)"/>
+            methods are used.
+            In all other cases this method will return null
+            </summary>
+        </member>
+        <member name="M:RGN.Modules.Store.StoreModule.BuyVirtualItemsAsync(System.Collections.Generic.List{System.String},System.Collections.Generic.List{System.String},System.String)">
+            <summary>
+            Purchase virtual virtualItems
+            </summary>
+            <param name="itemIds"></param>
+            <param name="currencies">Specify to use concrete currencies while purchasing, leave null to make choice automatically (may throws an exception)</param>
+            <param name="offerId">Specify to use offer while purchasing</param>
+            <returns></returns>
+        </member>
+        <member name="M:RGN.Modules.Store.StoreModule.BuyStoreOfferAsync(System.String,System.Collections.Generic.List{System.String})">
+            <summary>
+            Purchase store offer
+            </summary>
+            <param name="offerId"></param>
+            <param name="currencies">Specify to use concrete currencies while purchasing, leave null to make choice automatically (may throws an exception)</param>
+            <returns></returns>
+        </member>
+        <member name="M:RGN.Modules.Store.StoreModule.GetPropertiesAsync(System.String)">
+            <summary>
+            Returns json string or throws an exception if there are no json for store offer
+            </summary>
+            <param name="storeOfferId"></param>
+            <returns>Returns json as string</returns>
+        </member>
+        <member name="M:RGN.Modules.Store.StoreModule.SetPropertiesAsync(System.String,System.String)">
+            <summary>
+            Set json on a given store offer id.
+            </summary>
+            <param name="storeOfferId"></param>
+            <param name="json"></param>
+            <returns>Returns json as string</returns>
+        </member>
+    </members>
+</doc>
