@@ -97,45 +97,458 @@
         </member>
         <member name="M:RGN.Modules.Store.StoreOffer.GetVirtualItems">
             <summary>
-            The Virtual Items data
-            This is populated only when the 
+            Gets the list of associated <see cref="T:RGN.Modules.VirtualItems.VirtualItem"/> objects for this store offer.
+            </summary>
+            <remarks>
+            This property is populated only when the 
             <see cref="M:RGN.Modules.Store.StoreModule.GetWithVirtualItemsDataForCurrentAppAsync(System.Int32,System.String,System.Boolean)"/> or
             <see cref="M:RGN.Modules.Store.StoreModule.GetWithVirtualItemsDataByAppIdsAsync(System.Collections.Generic.List{System.String},System.Int32,System.String,System.Boolean)"/>
-            methods are used.
-            In all other cases this method will return null
+            methods are used. In all other cases, this method will return null.
+            </remarks>
+            <returns>A list of <see cref="T:RGN.Modules.VirtualItems.VirtualItem"/> objects associated with this store offer, or null if not available.</returns>
+        </member>
+        <member name="T:RGN.Modules.Store.TimeInfo">
+            <summary>
+            Represents the time information related to an offer in the store.
+            This information can be used for time-limited offers.
+            </summary>
+        </member>
+        <member name="F:RGN.Modules.Store.TimeInfo.hasStart">
+            <summary>
+            Indicates whether a start time is specified.
+            </summary>
+        </member>
+        <member name="F:RGN.Modules.Store.TimeInfo.start">
+            <summary>
+            The start time. This field is relevant only if <see cref="F:RGN.Modules.Store.TimeInfo.hasStart"/> is true.
+            </summary>
+        </member>
+        <member name="F:RGN.Modules.Store.TimeInfo.hasEnd">
+            <summary>
+            Indicates whether an end time is specified.
+            </summary>
+        </member>
+        <member name="F:RGN.Modules.Store.TimeInfo.end">
+            <summary>
+            The end time. This field is relevant only if <see cref="F:RGN.Modules.Store.TimeInfo.hasEnd"/> is true.
+            </summary>
+        </member>
+        <member name="F:RGN.Modules.Store.TimeInfo.hasInterval">
+            <summary>
+            Indicates whether an interval is specified.
+            </summary>
+        </member>
+        <member name="F:RGN.Modules.Store.TimeInfo.intervalDuration">
+            <summary>
+            The interval duration. This field is relevant only if <see cref="F:RGN.Modules.Store.TimeInfo.hasInterval"/> is true.
+            </summary>
+        </member>
+        <member name="F:RGN.Modules.Store.TimeInfo.intervalDelay">
+            <summary>
+            The interval delay. This field is relevant only if <see cref="F:RGN.Modules.Store.TimeInfo.hasInterval"/> is true.
+            </summary>
+        </member>
+        <member name="M:RGN.Modules.Store.TimeInfo.#ctor">
+            <summary>
+            Default parameterless ctor
+            </summary>
+        </member>
+        <member name="M:RGN.Modules.Store.TimeInfo.#ctor(System.Boolean,System.Int64,System.Boolean,System.Int64,System.Boolean,System.Int64,System.Int64)">
+            <summary>
+            Constructs TimeInfo
+            </summary>
+            <param name="hasStart"></param>
+            <param name="start"></param>
+            <param name="hasEnd"></param>
+            <param name="end"></param>
+            <param name="hasInterval"></param>
+            <param name="intervalDuration"></param>
+            <param name="intervalDelay"></param>
+        </member>
+        <member name="M:RGN.Modules.Store.TimeInfo.ToString">
+            <summary>
+            Converts the object's properties to strings representation
+            </summary>
+            <returns>A string that represents the object's properties</returns>
+        </member>
+        <member name="M:RGN.Modules.Store.TimeInfo.Equals(RGN.Modules.Store.TimeInfo)">
+            <summary>
+            Implements standart Equals operation
+            </summary>
+            <param name="other"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RGN.Modules.Store.TimeInfo.Equals(System.Object)">
+            <summary>
+            Implements standart Equals operation
+            </summary>
+            <param name="obj"></param>
+            <returns></returns>
+        </member>
+        <member name="M:RGN.Modules.Store.TimeInfo.GetHashCode">
+            <summary>
+            Returns hash code
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:RGN.Modules.Store.TimeInfo.CreatePermanent">
+            <summary>
+            Creates a <see cref="T:RGN.Modules.Store.TimeInfo"/> object that represents a permanent time, with no specific start, end or interval.
+            </summary>
+            <returns>A new <see cref="T:RGN.Modules.Store.TimeInfo"/> instance.</returns>
+        </member>
+        <member name="M:RGN.Modules.Store.TimeInfo.CreateWithStartTime(System.Int64)">
+            <summary>
+            Creates a <see cref="T:RGN.Modules.Store.TimeInfo"/> object with a specified start time.
+            </summary>
+            <param name="start">The start time.</param>
+            <returns>A new <see cref="T:RGN.Modules.Store.TimeInfo"/> instance.</returns>
+        </member>
+        <member name="M:RGN.Modules.Store.TimeInfo.CreateWithEndTime(System.Int64)">
+            <summary>
+            Creates a <see cref="T:RGN.Modules.Store.TimeInfo"/> object with a specified end time.
+            </summary>
+            <param name="end">The end time.</param>
+            <returns>A new <see cref="T:RGN.Modules.Store.TimeInfo"/> instance.</returns>
+        </member>
+        <member name="M:RGN.Modules.Store.TimeInfo.CreateWithStartAndEndTime(System.Int64,System.Int64)">
+            <summary>
+            Creates a <see cref="T:RGN.Modules.Store.TimeInfo"/> object with specified start and end times.
+            </summary>
+            <param name="start">The start time.</param>
+            <param name="end">The end time.</param>
+            <returns>A new <see cref="T:RGN.Modules.Store.TimeInfo"/> instance.</returns>
+        </member>
+        <member name="M:RGN.Modules.Store.TimeInfo.CreateWithStartTimeAndInterval(System.Int64,System.Int64,System.Int64)">
+            <summary>
+            Creates a <see cref="T:RGN.Modules.Store.TimeInfo"/> object with a specified start time and interval.
+            </summary>
+            <param name="start">The start time.</param>
+            <param name="intervalDuration">The interval duration.</param>
+            <param name="intervalDelay">The interval delay.</param>
+            <returns>A new <see cref="T:RGN.Modules.Store.TimeInfo"/> instance.</returns>
+        </member>
+        <member name="M:RGN.Modules.Store.TimeInfo.CreateWithEndTimeAndInterval(System.Int64,System.Int64,System.Int64)">
+            <summary>
+            Creates a <see cref="T:RGN.Modules.Store.TimeInfo"/> object with a specified end time and interval.
+            </summary>
+            <param name="end">The end time.</param>
+            <param name="intervalDuration">The interval duration.</param>
+            <param name="intervalDelay">The interval delay.</param>
+            <returns>A new <see cref="T:RGN.Modules.Store.TimeInfo"/> instance.</returns>
+        </member>
+        <member name="M:RGN.Modules.Store.TimeInfo.CreateWithStartEndTimeAndInterval(System.Int64,System.Int64,System.Int64,System.Int64)">
+            <summary>
+            Creates a <see cref="T:RGN.Modules.Store.TimeInfo"/> object with specified start time, end time, and interval.
+            </summary>
+            <param name="start">The start time.</param>
+            <param name="end">The end time.</param>
+            <param name="intervalDuration">The interval duration.</param>
+            <param name="intervalDelay">The interval delay.</param>
+        </member>
+        <member name="T:RGN.Modules.Store.StoreModule">
+            <summary>
+            Represents a module within the Ready Games Network (RGN) specifically designed to interact with the Store functionality.
+            It provides a collection of methods to manipulate and retrieve data related to Store Offers.
+            </summary>
+        </member>
+        <member name="M:RGN.Modules.Store.StoreModule.SetRGNCore(RGN.IRGNRolesCore)">
+            <summary>
+            Sets the Ready Games Network (RGN) core reference.
+            </summary>
+            <param name="rgnCore">The RGN core to be set.</param>
+        </member>
+        <member name="M:RGN.Modules.Store.StoreModule.Init">
+            <summary>
+            Initializes the StoreModule.
+            This method is currently empty and can be filled with initial setup logic if needed in the future.
+            </summary>
+        </member>
+        <member name="M:RGN.Modules.Store.StoreModule.Dispose">
+            <summary>
+            Releases all resources used by the StoreModule.
+            This method is currently empty and can be filled with cleanup logic if needed in the future.
             </summary>
         </member>
         <member name="M:RGN.Modules.Store.StoreModule.BuyVirtualItemsAsync(System.Collections.Generic.List{System.String},System.Collections.Generic.List{System.String},System.String)">
             <summary>
-            Purchase virtual virtualItems
+            Asynchronously initiates a purchase transaction for a list of virtual items in the Ready Games Network (RGN) store.
             </summary>
-            <param name="itemIds"></param>
-            <param name="currencies">Specify to use concrete currencies while purchasing, leave null to make choice automatically (may throws an exception)</param>
-            <param name="offerId">Specify to use offer while purchasing</param>
-            <returns></returns>
+            <param name="itemIds">A list of virtual item identifiers to be purchased.</param>
+            <param name="currencies">An optional list of currency identifiers used for the transaction.
+            Specify to use concrete currencies while purchasing, leave null to make choice automatically (may throws an Exception)
+            The default is null.</param>
+            <param name="offerId">An optional parameter representing an offer identifier associated with the purchase transaction.
+            The default is an empty string.</param>
+            <exception cref="T:System.ArgumentNullException">Thrown when the provided itemIds list is null or empty.</exception>
+            <returns>A Task representing the asynchronous purchase operation.
+            The Result property of the Task returns a <see cref="T:RGN.Modules.Store.PurchaseResult"/> object,
+            indicating the outcome of the purchase transaction, which includes the purchased items and updated currency balances.</returns>
         </member>
         <member name="M:RGN.Modules.Store.StoreModule.BuyStoreOfferAsync(System.String,System.Collections.Generic.List{System.String})">
             <summary>
-            Purchase store offer
+            Asynchronously initiates a purchase transaction for a store offer in the Ready Games Network (RGN) store.
             </summary>
-            <param name="offerId"></param>
-            <param name="currencies">Specify to use concrete currencies while purchasing, leave null to make choice automatically (may throws an exception)</param>
-            <returns></returns>
+            <param name="offerId">The identifier for the offer to be purchased.</param>
+            <param name="currencies">An optional list of currency identifiers used for the transaction. The default is null.
+            Specify to use concrete currencies while purchasing, leave null to make choice automatically (may throws an Exception)
+            The default is null.</param>
+            <exception cref="T:System.ArgumentNullException">Thrown when the provided offerId is null or empty.</exception>
+            <returns>A Task representing the asynchronous purchase operation.
+            The Result property of the Task returns a <see cref="T:RGN.Modules.Store.PurchaseResult"/> object,
+            indicating the outcome of the purchase transaction, which includes
+            the purchased items from the offer and updated currency balances.</returns>
+        </member>
+        <member name="M:RGN.Modules.Store.StoreModule.LootboxIsAvailableAsync(System.String)">
+            <summary>
+            Asynchronously checks if a lootbox associated with the specified tag is
+            available in the Ready Games Network (RGN) store.
+            The tag specifies the virtual items that are included into the lootbox.
+            </summary>
+            <param name="tag">The unique identifier tag associated with the lootbox to be checked.
+            Specifies the virtual items that are included into the lootbox.</param>
+            <exception cref="T:System.ArgumentNullException">Thrown when the provided tag is null or empty.</exception>
+            <returns>A Task representing the asynchronous operation. The Result property of the Task indicates whether
+            the lootbox is available (returns true) or not (returns false).</returns>
+        </member>
+        <member name="M:RGN.Modules.Store.StoreModule.OpenLootboxAsync(System.String)">
+            <summary>
+            Asynchronously opens a lootbox associated with the specified tag in the Ready Games Network (RGN) store.
+            The tag specifies the virtual items that are included into the lootbox.
+            Randomly selects a virtual item to purchase. Goes with the selected virtual item through purchase process
+            <see cref="M:RGN.Modules.Store.StoreModule.BuyVirtualItemsAsync(System.Collections.Generic.List{System.String},System.Collections.Generic.List{System.String},System.String)"/>
+            if the virtual item does not have price specified, it is added to users inventory for free
+            </summary>
+            <param name="tag">The unique identifier tag associated with the lootbox to be opened.
+            Specifies the virtual items that are included into the lootbox.</param>
+            <exception cref="T:System.ArgumentNullException">Thrown when the provided tag is null or empty.</exception>
+            <returns>A Task representing the asynchronous operation. The Result property of the Task returns the
+            <see cref="T:RGN.Modules.Inventory.InventoryItemData"/> object representing the items obtained from the opened lootbox.</returns>
+        </member>
+        <member name="M:RGN.Modules.Store.StoreModule.AddVirtualItemsStoreOfferAsync(System.Collections.Generic.List{System.String},System.Collections.Generic.List{System.String},System.String,System.String,System.String[],System.Int32)">
+            <summary>
+            Asynchronously adds a new store offer for virtual items to the Ready Games Network (RGN) store.
+            </summary>
+            <param name="appIds">A list of application identifiers which this store offer is associated with.</param>
+            <param name="itemIds">A list of identifiers for the virtual items included in this offer.</param>
+            <param name="name">An optional parameter representing the name of the store offer.
+            The default is an empty string.</param>
+            <param name="description">An optional parameter representing the description of the store offer.
+            The default is an empty string.</param>
+            <param name="tags">An optional array of tags associated with the store offer.
+            The default is null.</param>
+            <param name="quantity">An optional parameter representing the quantity of the items included in the store offer.
+            The default is 1.</param>
+            <exception cref="T:System.ArgumentNullException">Thrown when the provided appIds or itemIds list is null or empty.</exception>
+            <returns>A Task representing the asynchronous operation. The Result property of the Task returns the
+            <see cref="T:RGN.Modules.Store.StoreOffer"/> object representing the newly created store offer.</returns>
+        </member>
+        <member name="M:RGN.Modules.Store.StoreModule.ImportStoreOffersFromCSVAsync(System.String,System.String,System.Threading.CancellationToken)">
+            <summary>
+            Asynchronously imports a list of store offers from a CSV formatted string to the Ready Games Network (RGN) store.
+            </summary>
+            <param name="content">A string representing the CSV content that contains the store offers to be imported.</param>
+            <param name="delimiter">A string representing the character used as a delimiter in the CSV content.</param>
+            <param name="cancellationToken">An optional parameter for the CancellationToken that propagates a notification
+            that operations should be cancelled. The default value is None.</param>
+            <exception cref="T:System.ArgumentNullException">Thrown when the provided content string is null or empty.</exception>
+            <exception cref="T:System.OperationCanceledException">Thrown when the operation has been cancelled via the provided CancellationToken.</exception>
+            <returns>A Task representing the asynchronous operation. The Result property of the Task returns
+            a list of <see cref="T:RGN.Modules.Store.StoreOffer"/> objects representing the successfully imported store offers.</returns>
+        </member>
+        <member name="M:RGN.Modules.Store.StoreModule.GetByTagsAsync(System.Collections.Generic.List{System.String},System.String,System.Boolean)">
+            <summary>
+            Asynchronously retrieves a list of store offers from the Ready Games Network (RGN) store based on the provided tags.
+            </summary>
+            <param name="tags">A list of tags used to filter the store offers.</param>
+            <param name="appId">An optional parameter representing the application identifier for further filtering of the store offers.
+            The default is an empty string.</param>
+            <param name="ignoreTimestamp">An optional parameter that indicates whether to ignore the timestamp
+            in the store offers retrieval process. The default is false.</param>
+            <exception cref="T:System.ArgumentNullException">Thrown when the provided tags list is null or empty.</exception>
+            <returns>A Task representing the asynchronous operation. The Result property of the Task returns a list of
+            <see cref="T:RGN.Modules.Store.StoreOffer"/> objects representing the store offers that match the specified tags and other optional parameters.</returns>
+        </member>
+        <member name="M:RGN.Modules.Store.StoreModule.GetByTimestampAsync(System.String,System.DateTime)">
+            <summary>
+            Asynchronously retrieves a list of store offers from the Ready Games Network (RGN) store based on a provided timestamp.
+            </summary>
+            <param name="appId">The application identifier used for filtering the store offers.</param>
+            <param name="timestamp">A DateTime object representing the timestamp for filtering the store offers.</param>
+            <exception cref="T:System.ArgumentNullException">Thrown when the provided appId string is null or empty.</exception>
+            <returns>A Task representing the asynchronous operation. The Result property of the Task returns a list
+            of <see cref="T:RGN.Modules.Store.StoreOffer"/> objects representing the store offers that match the specified appId and timestamp.</returns>
+        </member>
+        <member name="M:RGN.Modules.Store.StoreModule.GetByAppIdsAsync(System.Collections.Generic.List{System.String},System.Int32,System.String,System.Boolean)">
+            <summary>
+            Asynchronously retrieves a list of store offers from the Ready Games Network (RGN) store based on
+            the provided application identifiers.
+            </summary>
+            <param name="appIds">A list of application identifiers used to filter the store offers.</param>
+            <param name="limit">An integer indicating the maximum number of store offers to retrieve.</param>
+            <param name="startAfter">An optional parameter representing an store offer id after which to
+            start retrieving the store offers. The default is an empty string.</param>
+            <param name="ignoreTimestamp">An optional parameter that indicates whether to ignore the timestamp in the store
+            offers retrieval process. The default is false.</param>
+            <exception cref="T:System.ArgumentNullException">Thrown when the provided appIds list is null or empty.</exception>
+            <exception cref="T:System.ArgumentException">Thrown when the provided limit value is zero.</exception>
+            <returns>A Task representing the asynchronous operation. The Result property of the Task returns a list of
+            <see cref="T:RGN.Modules.Store.StoreOffer"/> objects representing the store offers that match the specified application identifiers,
+            limit and other optional parameters.</returns>
+        </member>
+        <member name="M:RGN.Modules.Store.StoreModule.GetForCurrentAppAsync(System.Int32,System.String,System.Boolean)">
+            <summary>
+            Asynchronously retrieves a list of store offers for the current application from the Ready Games Network (RGN) store.
+            </summary>
+            <param name="limit">An integer indicating the maximum number of store offers to retrieve.</param>
+            <param name="startAfter">An optional parameter representing an store offer id after which to
+            start retrieving the store offers. The default is an empty string.</param>
+            <param name="ignoreTimestamp">An optional parameter that indicates whether to ignore the timestamp in the store offers
+            retrieval process. The default is false.</param>
+            <exception cref="T:System.ArgumentException">Thrown when the provided limit value is zero.</exception>
+            <returns>A Task representing the asynchronous operation. The Result property of the Task returns a list
+            of <see cref="T:RGN.Modules.Store.StoreOffer"/> objects representing the store offers that match the current application identifier,
+            limit and other optional parameters.</returns>
+        </member>
+        <member name="M:RGN.Modules.Store.StoreModule.GetWithVirtualItemsDataForCurrentAppAsync(System.Int32,System.String,System.Boolean)">
+            <summary>
+            Asynchronously retrieves a list of store offers with their associated virtual items data for the current application
+            from the Ready Games Network (RGN) store.
+            </summary>
+            <param name="limit">An integer indicating the maximum number of store offers to retrieve.</param>
+            <param name="startAfter">An optional parameter representing an stor offer id after which to start retrieving the store offers.
+            The default is an empty string.</param>
+            <param name="ignoreTimestamp">An optional parameter that indicates whether to ignore the timestamp in the store
+            offers retrieval process. The default is false.</param>
+            <exception cref="T:System.ArgumentException">Thrown when the provided limit value is zero.</exception>
+            <returns>A Task representing the asynchronous operation. The Result property of the Task returns a list of
+            <see cref="T:RGN.Modules.Store.StoreOffer"/> objects with their associated store offer items data that match the current application identifier,
+            limit and other optional parameters.</returns>
+        </member>
+        <member name="M:RGN.Modules.Store.StoreModule.GetWithVirtualItemsDataByAppIdsAsync(System.Collections.Generic.List{System.String},System.Int32,System.String,System.Boolean)">
+            <summary>
+            Asynchronously retrieves a list of store offers along with their associated virtual items data from
+            the Ready Games Network (RGN) store based on the provided application identifiers.
+            </summary>
+            <param name="appIds">A list of application identifiers used to filter the store offers.</param>
+            <param name="limit">An integer indicating the maximum number of store offers to retrieve.</param>
+            <param name="startAfter">An optional parameter representing an store offer id after which to start retrieving the store offers.
+            The default is an empty string.</param>
+            <param name="ignoreTimestamp">An optional parameter that indicates whether to ignore the timestamp in the store
+            offers retrieval process. The default is false.</param>
+            <exception cref="T:System.ArgumentNullException">Thrown when the provided appIds list is null or empty.</exception>
+            <exception cref="T:System.ArgumentException">Thrown when the provided limit value is zero.</exception>
+            <returns>A Task representing the asynchronous operation. The Result property of the Task returns a list of
+            <see cref="T:RGN.Modules.Store.StoreOffer"/> objects along with their associated virtual items data, matching the specified application identifiers,
+            limit and other optional parameters.</returns>
+        </member>
+        <member name="M:RGN.Modules.Store.StoreModule.GetByIdsAsync(System.Collections.Generic.List{System.String})">
+            <summary>
+            Asynchronously retrieves a list of store offers from the Ready Games Network (RGN)
+            store based on the provided store offer identifiers.
+            </summary>
+            <param name="ids">A list of store offer identifiers used to filter the store offers.</param>
+            <exception cref="T:System.ArgumentNullException">Thrown when the provided ids list is null or empty.</exception>
+            <returns>A Task representing the asynchronous operation. The Result property of the Task returns a list of
+            <see cref="T:RGN.Modules.Store.StoreOffer"/> objects representing the store offers that match the specified identifiers.</returns>
+        </member>
+        <member name="M:RGN.Modules.Store.StoreModule.GetTagsAsync(System.String)">
+            <summary>
+            Asynchronously retrieves a list of tags associated with a specific store offer from the Ready Games Network (RGN) store.
+            </summary>
+            <param name="offerId">The identifier of the store offer for which to retrieve tags.</param>
+            <exception cref="T:System.ArgumentNullException">Thrown when the provided offerId is null or empty.</exception>
+            <returns>A Task representing the asynchronous operation. The Result property of the Task returns a list of tags
+            associated with the specified store offer.</returns>
+        </member>
+        <member name="M:RGN.Modules.Store.StoreModule.SetTagsAsync(System.String,System.Collections.Generic.List{System.String},System.String)">
+            <summary>
+            Asynchronously sets a list of tags for a specific store offer in the Ready Games Network (RGN) store.
+            </summary>
+            <param name="offerId">The identifier of the store offer for which to set tags.</param>
+            <param name="tags">A list of tags to be set for the specified store offer.</param>
+            <param name="appId">Optional parameter that you can use to retrieve items only for your app
+            When you set the tags for Virtual Item, you can use the appId optional parameter
+            The app id is attached to every tag and stored in the tags array
+            For example:
+            tags without appId could look like: "weapons", "rifles"
+            tags with appId could look like: "weapons_your.app.id", "rifles_your.app.id"
+            The default is an empty string.</param>
+            <exception cref="T:System.ArgumentNullException">Thrown when the provided offerId is null or empty or when the
+            provided tags list is null or empty.</exception>
+            <returns>A Task representing the asynchronous operation. The task result does not return a value.</returns>
+        </member>
+        <member name="M:RGN.Modules.Store.StoreModule.SetNameAsync(System.String,System.String)">
+            <summary>
+            Asynchronously sets the name for a specific store offer in the Ready Games Network (RGN) store.
+            </summary>
+            <param name="offerId">The identifier of the store offer for which to set the name.</param>
+            <param name="name">The new name to be set for the specified store offer.</param>
+            <exception cref="T:System.ArgumentNullException">Thrown when the provided offerId or name is null or empty.</exception>
+            <returns>A Task representing the asynchronous operation. The task result does not return a value.</returns>
+        </member>
+        <member name="M:RGN.Modules.Store.StoreModule.SetDescriptionAsync(System.String,System.String)">
+            <summary>
+            Asynchronously sets the description for a specific store offer in the Ready Games Network (RGN) store.
+            </summary>
+            <param name="offerId">The identifier of the store offer for which to set the description.</param>
+            <param name="description">The new description to be set for the specified store offer.</param>
+            <exception cref="T:System.ArgumentNullException">Thrown when the provided offerId or description is null or empty.</exception>
+            <returns>A Task representing the asynchronous operation. The task result does not return a value.</returns>
+        </member>
+        <member name="M:RGN.Modules.Store.StoreModule.SetPricesAsync(System.String,System.Collections.Generic.List{RGN.Modules.VirtualItems.PriceInfo})">
+            <summary>
+            Asynchronously sets the prices for a specific store offer in the Ready Games Network (RGN) store.
+            </summary>
+            <param name="offerId">The identifier of the store offer for which to set the prices.</param>
+            <param name="prices">A list of PriceInfo objects to be set for the specified store offer.</param>
+            <exception cref="T:System.ArgumentNullException">Thrown when the provided offerId is null or empty or
+            when the provided prices list is null or empty.</exception>
+            <returns>A Task representing the asynchronous operation. The task result does not return a value.</returns>
+        </member>
+        <member name="M:RGN.Modules.Store.StoreModule.SetTimeAsync(System.String,RGN.Modules.Store.TimeInfo)">
+            <summary>
+            Asynchronously sets the time information for a specific store offer in the Ready Games Network (RGN) store.
+            </summary>
+            <param name="offerId">The identifier of the store offer for which to set the time information.</param>
+            <param name="time">A TimeInfo object containing the time information to be set for the specified store offer.</param>
+            <exception cref="T:System.ArgumentNullException">Thrown when the provided offerId is null or empty or when the
+            provided TimeInfo object is null.</exception>
+            <returns>A Task representing the asynchronous operation. The task result does not return a value.</returns>
+        </member>
+        <member name="M:RGN.Modules.Store.StoreModule.SetImageUrlAsync(System.String,System.String)">
+            <summary>
+            Asynchronously sets the image URL for a specific store offer in the Ready Games Network (RGN) store.
+            </summary>
+            <param name="offerId">The identifier of the store offer for which to set the image URL.</param>
+            <param name="imageUrl">The URL of the image to be set for the specified store offer.</param>
+            <exception cref="T:System.ArgumentNullException">Thrown when the provided offerId or imageUrl is null or empty.</exception>
+            <returns>A Task representing the asynchronous operation. The task result does not return a value.</returns>
+        </member>
+        <member name="M:RGN.Modules.Store.StoreModule.DeleteStoreOfferAsync(System.String)">
+            <summary>
+            Asynchronously deletes a specific store offer from the Ready Games Network (RGN) store.
+            </summary>
+            <param name="offerId">The identifier of the store offer to be deleted.</param>
+            <exception cref="T:System.ArgumentNullException">Thrown when the provided offerId is null or empty.</exception>
+            <returns>A Task representing the asynchronous operation. The task result does not return a value.</returns>
         </member>
         <member name="M:RGN.Modules.Store.StoreModule.GetPropertiesAsync(System.String)">
             <summary>
-            Returns json string or throws an exception if there are no json for store offer
+            Asynchronously retrieves the properties of a specific store offer in the Ready Games Network (RGN) store.
             </summary>
-            <param name="storeOfferId"></param>
-            <returns>Returns json as string</returns>
+            <param name="storeOfferId">The identifier of the store offer whose properties are to be retrieved.</param>
+            <exception cref="T:System.ArgumentNullException">Thrown when the provided storeOfferId is null or empty.</exception>
+            <returns>A Task representing the asynchronous operation. The Task result contains a string that represents the JSON-formatted properties of the store offer.</returns>
         </member>
         <member name="M:RGN.Modules.Store.StoreModule.SetPropertiesAsync(System.String,System.String)">
             <summary>
-            Set json on a given store offer id.
+            Asynchronously sets the properties of a specific store offer in the Ready Games Network (RGN) store.
             </summary>
-            <param name="storeOfferId"></param>
-            <param name="json"></param>
-            <returns>Returns json as string</returns>
+            <param name="storeOfferId">The identifier of the store offer whose properties are to be set.</param>
+            <param name="json">A string containing the JSON representation of the properties to be set.</param>
+            <exception cref="T:System.ArgumentNullException">Thrown when the provided storeOfferId or json is null or empty.</exception>
+            <returns>A Task representing the asynchronous operation. The Task result contains a string confirmation of the properties' update.</returns>
         </member>
     </members>
 </doc>
