@@ -252,6 +252,55 @@
             It provides a collection of methods to manipulate and retrieve data related to Store Offers.
             </summary>
         </member>
+        <member name="T:RGN.Modules.Store.StoreModule.Admin">
+            <summary>
+            Handle critical operations on Store data
+            </summary>
+        </member>
+        <member name="M:RGN.Modules.Store.StoreModule.Admin.SetRGNCore(RGN.IRGNRolesCore)">
+            <summary>
+            Sets the Ready Games Network (RGN) core reference.
+            </summary>
+            <param name="rgnCore">The RGN core to be set.</param>
+        </member>
+        <member name="M:RGN.Modules.Store.StoreModule.Admin.Init">
+            <summary>
+            Initializes the VirtualItemsModule.
+            This method is currently empty and can be filled with initial setup logic if needed in the future.
+            </summary>
+        </member>
+        <member name="M:RGN.Modules.Store.StoreModule.Admin.Dispose">
+            <summary>
+            Releases all resources used by the VirtualItemsModule.
+            This method is currently empty and can be filled with cleanup logic if needed in the future.
+            </summary>
+        </member>
+        <member name="M:RGN.Modules.Store.StoreModule.Admin.CreateLootBoxAsync(System.String,System.Collections.Generic.List{RGN.Modules.VirtualItems.PriceInfo})">
+            <summary>
+            Asynchronously creates lootbox document. Tries to find virtual items by lootBoxName_appId to add to the loot box.
+            </summary>
+            <param name="lootBoxName">The identifier of new lootbox. At the backend we try to find virual items
+            with a tag [lootBoxName_appId]. If no items found, this method will throw an exception</param>
+            <param name="prices">The prices parameter. How much it costs to open the loot box. Optional</param>
+            <exception cref="T:System.ArgumentNullException">Thrown when the provided lootBoxId is null or empty.</exception>
+            <returns>A Task representing the asynchronous operation. The task result contains the new loot box id.</returns>
+        </member>
+        <member name="M:RGN.Modules.Store.StoreModule.Admin.DeleteLootBoxAsync(System.String)">
+            <summary>
+            Asynchronously deletes lootbox document.
+            </summary>
+            <param name="lootBoxId">The id of the loot box to delete</param>
+            <exception cref="T:System.ArgumentNullException">Thrown when the provided lootBoxId is null or empty.</exception>
+            <returns>A Task representing the asynchronous operation. The task result contains the deleted loot box id.</returns>
+        </member>
+        <member name="M:RGN.Modules.Store.StoreModule.Admin.DeleteStoreOfferAsync(System.String)">
+            <summary>
+            Asynchronously deletes a specific store offer from the Ready Games Network (RGN) store.
+            </summary>
+            <param name="offerId">The identifier of the store offer to be deleted.</param>
+            <exception cref="T:System.ArgumentNullException">Thrown when the provided offerId is null or empty.</exception>
+            <returns>A Task representing the asynchronous operation. The task result does not return a value.</returns>
+        </member>
         <member name="M:RGN.Modules.Store.StoreModule.SetRGNCore(RGN.IRGNRolesCore)">
             <summary>
             Sets the Ready Games Network (RGN) core reference.
@@ -301,27 +350,38 @@
         </member>
         <member name="M:RGN.Modules.Store.StoreModule.LootboxIsAvailableAsync(System.String)">
             <summary>
-            Asynchronously checks if a lootbox associated with the specified tag is
+            Asynchronously checks if a lootbox associated with the specified name is
             available in the Ready Games Network (RGN) store.
-            The tag specifies the virtual items that are included into the lootbox.
+            The name specifies the virtual items that are included into the lootbox.
             </summary>
-            <param name="tag">The unique identifier tag associated with the lootbox to be checked.
+            <param name="name">The unique identifier name associated with the lootbox to be checked.
             Specifies the virtual items that are included into the lootbox.</param>
-            <exception cref="T:System.ArgumentNullException">Thrown when the provided tag is null or empty.</exception>
+            <exception cref="T:System.ArgumentNullException">Thrown when the provided name is null or empty.</exception>
             <returns>A Task representing the asynchronous operation. The Result property of the Task indicates whether
             the lootbox is available (returns true) or not (returns false).</returns>
         </member>
+        <member name="M:RGN.Modules.Store.StoreModule.GetAvailableLootBoxItemsCountAsync(System.String)">
+            <summary>
+            Asynchronously gets the number of virtual items available for a lootbox
+            The name specifies the virtual items that are included into the lootbox.
+            </summary>
+            <param name="name">The unique identifier name associated with the lootbox to be checked.
+            Specifies the virtual items that are included into the lootbox.</param>
+            <exception cref="T:System.ArgumentNullException">Thrown when the provided name is null or empty.</exception>
+            <returns>A Task representing the asynchronous operation. The Result property of the Task returns
+            the amount of virtual items available in the loot box</returns>
+        </member>
         <member name="M:RGN.Modules.Store.StoreModule.OpenLootboxAsync(System.String)">
             <summary>
-            Asynchronously opens a lootbox associated with the specified tag in the Ready Games Network (RGN) store.
-            The tag specifies the virtual items that are included into the lootbox.
+            Asynchronously opens a lootbox associated with the specified name in the Ready Games Network (RGN) store.
+            The name specifies the virtual items that are included into the lootbox.
             Randomly selects a virtual item to purchase. Goes with the selected virtual item through purchase process
             <see cref="M:RGN.Modules.Store.StoreModule.BuyVirtualItemsAsync(System.Collections.Generic.List{System.String},System.Collections.Generic.List{System.String},System.String)"/>
             if the virtual item does not have price specified, it is added to users inventory for free
             </summary>
-            <param name="tag">The unique identifier tag associated with the lootbox to be opened.
+            <param name="name">The unique identifier name associated with the lootbox to be opened.
             Specifies the virtual items that are included into the lootbox.</param>
-            <exception cref="T:System.ArgumentNullException">Thrown when the provided tag is null or empty.</exception>
+            <exception cref="T:System.ArgumentNullException">Thrown when the provided name is null or empty.</exception>
             <returns>A Task representing the asynchronous operation. The Result property of the Task returns the
             <see cref="T:RGN.Modules.Inventory.InventoryItemData"/> object representing the items obtained from the opened lootbox.</returns>
         </member>
@@ -469,7 +529,7 @@
             <param name="tags">A list of tags to be set for the specified store offer.</param>
             <param name="appId">Optional parameter that you can use to retrieve items only for your app
             When you set the tags for Virtual Item, you can use the appId optional parameter
-            The app id is attached to every tag and stored in the tags array
+            The app id is attached to every name and stored in the tags array
             For example:
             tags without appId could look like: "weapons", "rifles"
             tags with appId could look like: "weapons_your.app.id", "rifles_your.app.id"
@@ -523,14 +583,6 @@
             <param name="offerId">The identifier of the store offer for which to set the image URL.</param>
             <param name="imageUrl">The URL of the image to be set for the specified store offer.</param>
             <exception cref="T:System.ArgumentNullException">Thrown when the provided offerId or imageUrl is null or empty.</exception>
-            <returns>A Task representing the asynchronous operation. The task result does not return a value.</returns>
-        </member>
-        <member name="M:RGN.Modules.Store.StoreModule.DeleteStoreOfferAsync(System.String)">
-            <summary>
-            Asynchronously deletes a specific store offer from the Ready Games Network (RGN) store.
-            </summary>
-            <param name="offerId">The identifier of the store offer to be deleted.</param>
-            <exception cref="T:System.ArgumentNullException">Thrown when the provided offerId is null or empty.</exception>
             <returns>A Task representing the asynchronous operation. The task result does not return a value.</returns>
         </member>
         <member name="M:RGN.Modules.Store.StoreModule.GetPropertiesAsync(System.String)">
