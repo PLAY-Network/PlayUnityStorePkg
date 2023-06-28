@@ -410,7 +410,7 @@
             indicating the outcome of the purchase transaction, which includes
             the purchased items from the offer and updated currency balances.</returns>
         </member>
-        <member name="M:RGN.Modules.Store.StoreModule.GetLootBoxByIdsAsync(System.Collections.Generic.List{System.String})">
+        <member name="M:RGN.Modules.Store.StoreModule.GetLootBoxesByIdsAsync(System.Collections.Generic.List{System.String})">
             <summary>
             Asynchronously retrieves a list of lootBoxes from the Ready Games Network (RGN)
             </summary>
