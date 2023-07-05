@@ -39,6 +39,7 @@
             <summary>
             Date and time when the store offer was created
             In milliseconds since midnight, January 1, 1970 UTC.
+            Refer to <see cref="T:RGN.Utility.DateTimeUtility"/> for helper methods.
             This field is automatically populated by the backend
             </summary>
         </member>
@@ -46,6 +47,7 @@
             <summary>
             Date and time when the store offer data was last time updated
             In milliseconds since midnight, January 1, 1970 UTC.
+            Refer to <see cref="T:RGN.Utility.DateTimeUtility"/> for helper methods.
             This field is automatically populated by the backend
             </summary>
         </member>
@@ -106,6 +108,7 @@
             <summary>
             Date and time when the store offer was created
             In milliseconds since midnight, January 1, 1970 UTC.
+            Refer to <see cref="T:RGN.Utility.DateTimeUtility"/> for helper methods.
             This field is automatically populated by the backend
             </summary>
         </member>
@@ -113,6 +116,7 @@
             <summary>
             Date and time when the store offer data was last time updated
             In milliseconds since midnight, January 1, 1970 UTC.
+            Refer to <see cref="T:RGN.Utility.DateTimeUtility"/> for helper methods.
             This field is automatically populated by the backend
             </summary>
         </member>
