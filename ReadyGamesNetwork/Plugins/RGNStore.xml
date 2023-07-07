@@ -341,12 +341,12 @@
             This method is currently empty and can be filled with cleanup logic if needed in the future.
             </summary>
         </member>
-        <member name="M:RGN.Modules.Store.StoreModule.Admin.CreateLootBoxAsync(System.String,System.Collections.Generic.List{RGN.Modules.VirtualItems.PriceInfo})">
+        <member name="M:RGN.Modules.Store.StoreModule.Admin.CreateLootBoxAsync(System.String,System.Collections.Generic.List{System.String},System.Collections.Generic.List{RGN.Modules.VirtualItems.PriceInfo})">
             <summary>
             Asynchronously creates lootbox document. Tries to find virtual items by lootBoxName_appId to add to the loot box.
             </summary>
-            <param name="lootBoxName">The identifier of new lootbox. At the backend we try to find virual items
-            with a tag [lootBoxName_appId]. If no items found, this method will throw an exception</param>
+            <param name="lootBoxName">The name of new lootbox.</param>
+            <param name="virtualItemTags">Define what items should be added to lootBox by them tags</param>
             <param name="prices">The prices parameter. How much it costs to open the loot box. Optional</param>
             <exception cref="T:System.ArgumentNullException">Thrown when the provided lootBoxId is null or empty.</exception>
             <returns>A Task representing the asynchronous operation. The task result contains the new loot box id.</returns>
