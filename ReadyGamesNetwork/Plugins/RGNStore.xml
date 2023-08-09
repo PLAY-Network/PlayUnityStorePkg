@@ -323,24 +323,6 @@
             Handle critical operations on Store data
             </summary>
         </member>
-        <member name="M:RGN.Modules.Store.StoreModule.Admin.SetRGNCore(RGN.IRGNRolesCore)">
-            <summary>
-            Sets the Ready Games Network (RGN) core reference.
-            </summary>
-            <param name="rgnCore">The RGN core to be set.</param>
-        </member>
-        <member name="M:RGN.Modules.Store.StoreModule.Admin.Init">
-            <summary>
-            Initializes the StoreModule.Admin.
-            This method is currently empty and can be filled with initial setup logic if needed in the future.
-            </summary>
-        </member>
-        <member name="M:RGN.Modules.Store.StoreModule.Admin.Dispose">
-            <summary>
-            Releases all resources used by the StoreModule.Admin.
-            This method is currently empty and can be filled with cleanup logic if needed in the future.
-            </summary>
-        </member>
         <member name="M:RGN.Modules.Store.StoreModule.Admin.CreateLootBoxAsync(System.String,System.Collections.Generic.List{System.String},System.Collections.Generic.List{RGN.Modules.VirtualItems.PriceInfo})">
             <summary>
             Asynchronously creates lootbox document. Tries to find virtual items by lootBoxName_appId to add to the loot box.
@@ -366,24 +348,6 @@
             <param name="offerId">The identifier of the store offer to be deleted.</param>
             <exception cref="T:System.ArgumentNullException">Thrown when the provided offerId is null or empty.</exception>
             <returns>A Task representing the asynchronous operation. The task result does not return a value.</returns>
-        </member>
-        <member name="M:RGN.Modules.Store.StoreModule.SetRGNCore(RGN.IRGNRolesCore)">
-            <summary>
-            Sets the Ready Games Network (RGN) core reference.
-            </summary>
-            <param name="rgnCore">The RGN core to be set.</param>
-        </member>
-        <member name="M:RGN.Modules.Store.StoreModule.Init">
-            <summary>
-            Initializes the StoreModule.
-            This method is currently empty and can be filled with initial setup logic if needed in the future.
-            </summary>
-        </member>
-        <member name="M:RGN.Modules.Store.StoreModule.Dispose">
-            <summary>
-            Releases all resources used by the StoreModule.
-            This method is currently empty and can be filled with cleanup logic if needed in the future.
-            </summary>
         </member>
         <member name="M:RGN.Modules.Store.StoreModule.BuyVirtualItemsAsync(System.Collections.Generic.List{System.String},System.Collections.Generic.List{System.String},System.String)">
             <summary>
