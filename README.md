@@ -1,2 +1,2 @@
 # RGN Store
-Package version: 0.7.0-dev.339
+Package version: 0.7.0-dev.340
