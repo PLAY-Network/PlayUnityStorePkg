@@ -27,6 +27,8 @@
   ],
   "dependencies": {
     "io.getready.rgn.core": "0.8.0",
-    "io.getready.rgn.virtualitems": "0.8.0"
+    "io.getready.rgn.virtualitems": "0.8.0",
+    "io.getready.rgn.inventory": "0.8.0",
+    "io.getready.rgn.currency": "0.8.0"
   }
 }
