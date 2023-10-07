@@ -1,2 +1,2 @@
 # RGN Store
-Package version: 0.8.0-dev.371
+Package version: 0.8.0-dev.372
