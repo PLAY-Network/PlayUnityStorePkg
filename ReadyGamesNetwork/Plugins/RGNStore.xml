@@ -166,8 +166,6 @@
             Specifies if the user need to have a gamepass or virtual item or complete an
             achivement to purchase the store offer.
             List of requirements to met before the store offer can be purchased.
-            If you specify more than one requirement, then at least one of them
-            must be met.
             In case the user does not meet the requirements, the purchase will fail.
             </summary>
         </member>
@@ -530,7 +528,8 @@
             </summary>
             <param name="storeOfferId">The identifier of the store offer.</param>
             <exception cref="T:System.ArgumentNullException">Thrown when the provided storeOfferId is null or empty.</exception>
-            <returns>A Task representing the asynchronous operation. The Task result contains a bool value to indicate if the store offer is available</returns>
+            <returns>A Task representing the asynchronous operation. The Task result contains a <see cref="T:RGN.Modules.Leaderboard.IsStoreOfferAvailableResponseData"/>
+            value to indicate if the store offer is available</returns>
         </member>
         <member name="M:RGN.Modules.Store.StoreModule.GetPropertiesAsync(System.String)">
             <summary>
@@ -548,6 +547,21 @@
             <param name="json">A string containing the JSON representation of the properties to be set.</param>
             <exception cref="T:System.ArgumentNullException">Thrown when the provided storeOfferId or json is null or empty.</exception>
             <returns>A Task representing the asynchronous operation. The Task result contains a string confirmation of the properties' update.</returns>
+        </member>
+        <member name="T:RGN.Modules.Leaderboard.IsStoreOfferAvailableResponseData">
+            <summary>
+            Availability information
+            </summary>
+        </member>
+        <member name="F:RGN.Modules.Leaderboard.IsStoreOfferAvailableResponseData.isAvailable">
+            <summary>
+            Indicates if the store offer is available.
+            </summary>
+        </member>
+        <member name="F:RGN.Modules.Leaderboard.IsStoreOfferAvailableResponseData.reason">
+            <summary>
+            The reason why the store offer is not available.
+            </summary>
         </member>
     </members>
 </doc>
