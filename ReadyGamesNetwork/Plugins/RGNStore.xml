@@ -320,7 +320,7 @@
             <returns>A Task representing the asynchronous operation. The Result property of the Task returns the
             <see cref="T:RGN.Modules.Inventory.InventoryItemData"/> object representing the items obtained from the opened lootbox.</returns>
         </member>
-        <member name="M:RGN.Modules.Store.StoreModule.AddVirtualItemsStoreOfferAsync(System.Collections.Generic.List{System.String},System.Collections.Generic.List{System.String},System.String[],System.String,System.String,System.Int32)">
+        <member name="M:RGN.Modules.Store.StoreModule.AddAsync(System.Collections.Generic.List{System.String},System.Collections.Generic.List{System.String},System.String[],System.String,System.String,System.Int32)">
             <summary>
             Asynchronously adds a new store offer for virtual items to the Ready Games Network (RGN) store.
             </summary>
