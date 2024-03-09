@@ -161,6 +161,14 @@
             by using the group field. To "group" currencies and prices together.
             </summary>
         </member>
+        <member name="F:RGN.Modules.Store.StoreOffer.requiredToPurchase">
+            <summary>
+            Specifies if the user need to have a gamepass or virtual item or complete an
+            achivement to purchase the store offer.
+            List of requirements to met before the store offer can be purchased.
+            In case the user does not meet the requirements, the purchase will fail.
+            </summary>
+        </member>
         <member name="M:RGN.Modules.Store.StoreOffer.GetVirtualItems">
             <summary>
             Gets the list of associated <see cref="T:RGN.Modules.VirtualItems.VirtualItem"/> objects for this store offer.
@@ -312,7 +320,7 @@
             <returns>A Task representing the asynchronous operation. The Result property of the Task returns the
             <see cref="T:RGN.Modules.Inventory.InventoryItemData"/> object representing the items obtained from the opened lootbox.</returns>
         </member>
-        <member name="M:RGN.Modules.Store.StoreModule.AddVirtualItemsStoreOfferAsync(System.Collections.Generic.List{System.String},System.Collections.Generic.List{System.String},System.String[],System.String,System.String,System.Int32)">
+        <member name="M:RGN.Modules.Store.StoreModule.AddAsync(System.Collections.Generic.List{System.String},System.Collections.Generic.List{System.String},System.String[],System.String,System.String,System.Int32)">
             <summary>
             Asynchronously adds a new store offer for virtual items to the Ready Games Network (RGN) store.
             </summary>
@@ -512,6 +520,17 @@
             <exception cref="T:System.ArgumentNullException">Thrown when the provided offerId or imageUrl is null or empty.</exception>
             <returns>A Task representing the asynchronous operation. The task result does not return a value.</returns>
         </member>
+        <member name="M:RGN.Modules.Store.StoreModule.IsAvailableAsync(System.String)">
+            <summary>
+            Asynchronously checks if the store offer meets all requirements to be available for the user.
+            The check is performed for the store offer specified <see cref="F:RGN.Modules.Store.StoreOffer.time"/> and
+            <see cref="F:RGN.Modules.Store.StoreOffer.requiredToPurchase"/>
+            </summary>
+            <param name="storeOfferId">The identifier of the store offer.</param>
+            <exception cref="T:System.ArgumentNullException">Thrown when the provided storeOfferId is null or empty.</exception>
+            <returns>A Task representing the asynchronous operation. The Task result contains a <see cref="T:RGN.Modules.Leaderboard.IsStoreOfferAvailableResponseData"/>
+            value to indicate if the store offer is available</returns>
+        </member>
         <member name="M:RGN.Modules.Store.StoreModule.GetPropertiesAsync(System.String)">
             <summary>
             Asynchronously retrieves the properties of a specific store offer in the Ready Games Network (RGN) store.
@@ -528,6 +547,21 @@
             <param name="json">A string containing the JSON representation of the properties to be set.</param>
             <exception cref="T:System.ArgumentNullException">Thrown when the provided storeOfferId or json is null or empty.</exception>
             <returns>A Task representing the asynchronous operation. The Task result contains a string confirmation of the properties' update.</returns>
+        </member>
+        <member name="T:RGN.Modules.Leaderboard.IsStoreOfferAvailableResponseData">
+            <summary>
+            Availability information
+            </summary>
+        </member>
+        <member name="F:RGN.Modules.Leaderboard.IsStoreOfferAvailableResponseData.isAvailable">
+            <summary>
+            Indicates if the store offer is available.
+            </summary>
+        </member>
+        <member name="F:RGN.Modules.Leaderboard.IsStoreOfferAvailableResponseData.reason">
+            <summary>
+            The reason why the store offer is not available.
+            </summary>
         </member>
     </members>
 </doc>
