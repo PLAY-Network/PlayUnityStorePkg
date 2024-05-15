@@ -175,8 +175,8 @@
             </summary>
             <remarks>
             This property is populated only when the 
-            <see cref="M:RGN.Modules.Store.StoreModule.GetWithVirtualItemsDataForCurrentAppAsync(System.Int32,System.String,System.Boolean)"/> or
-            <see cref="M:RGN.Modules.Store.StoreModule.GetWithVirtualItemsDataByAppIdsAsync(System.Collections.Generic.List{System.String},System.Int32,System.String,System.Boolean)"/>
+            <see cref="!:StoreModule.GetWithVirtualItemsDataForCurrentAppAsync(int, string, bool)"/> or
+            <see cref="!:StoreModule.GetWithVirtualItemsDataByAppIdsAsync(List&lt;string&gt;, int, string, bool)"/>
             methods are used. In all other cases, this method will return null.
             </remarks>
             <returns>A list of <see cref="T:RGN.Modules.VirtualItems.VirtualItem"/> objects associated with this store offer, or null if not available.</returns>
@@ -192,33 +192,36 @@
             Handle critical operations on Store data
             </summary>
         </member>
-        <member name="M:RGN.Modules.Store.StoreModule.Admin.CreateLootBoxAsync(System.String,System.Collections.Generic.List{System.String},System.Collections.Generic.List{RGN.Modules.VirtualItems.PriceInfo})">
+        <member name="M:RGN.Modules.Store.StoreModule.Admin.CreateLootBoxAsync(System.String,System.Collections.Generic.List{System.String},System.Collections.Generic.List{RGN.Modules.VirtualItems.PriceInfo},System.Threading.CancellationToken)">
             <summary>
             Asynchronously creates lootbox document. Tries to find virtual items by lootBoxName_appId to add to the loot box.
             </summary>
             <param name="lootBoxName">The name of new lootbox.</param>
             <param name="virtualItemTags">Define what items should be added to lootBox by them tags</param>
             <param name="prices">The prices parameter. How much it costs to open the loot box. Optional</param>
+            <param name="cancellationToken">A token to cancel the operation.</param>
             <exception cref="T:System.ArgumentNullException">Thrown when the provided lootBoxId is null or empty.</exception>
             <returns>A Task representing the asynchronous operation. The task result contains the new loot box id.</returns>
         </member>
-        <member name="M:RGN.Modules.Store.StoreModule.Admin.DeleteLootBoxAsync(System.String)">
+        <member name="M:RGN.Modules.Store.StoreModule.Admin.DeleteLootBoxAsync(System.String,System.Threading.CancellationToken)">
             <summary>
             Asynchronously deletes lootbox document.
             </summary>
             <param name="lootBoxId">The id of the loot box to delete</param>
+            <param name="cancellationToken">A token to cancel the operation.</param>
             <exception cref="T:System.ArgumentNullException">Thrown when the provided lootBoxId is null or empty.</exception>
             <returns>A Task representing the asynchronous operation. The task result contains the deleted loot box id.</returns>
         </member>
-        <member name="M:RGN.Modules.Store.StoreModule.Admin.DeleteStoreOfferAsync(System.String)">
+        <member name="M:RGN.Modules.Store.StoreModule.Admin.DeleteStoreOfferAsync(System.String,System.Threading.CancellationToken)">
             <summary>
             Asynchronously deletes a specific store offer from the Ready Games Network (RGN) store.
             </summary>
             <param name="offerId">The identifier of the store offer to be deleted.</param>
+            <param name="cancellationToken">A token to cancel the operation.</param>
             <exception cref="T:System.ArgumentNullException">Thrown when the provided offerId is null or empty.</exception>
             <returns>A Task representing the asynchronous operation. The task result does not return a value.</returns>
         </member>
-        <member name="M:RGN.Modules.Store.StoreModule.BuyVirtualItemsAsync(System.Collections.Generic.List{System.String},System.Collections.Generic.List{System.String},System.String)">
+        <member name="M:RGN.Modules.Store.StoreModule.BuyVirtualItemsAsync(System.Collections.Generic.List{System.String},System.Collections.Generic.List{System.String},System.String,System.Threading.CancellationToken)">
             <summary>
             Asynchronously initiates a purchase transaction for a list of virtual items in the Ready Games Network (RGN) store.
             </summary>
@@ -228,12 +231,13 @@
             The default is null.</param>
             <param name="offerId">An optional parameter representing an offer identifier associated with the purchase transaction.
             The default is an empty string.</param>
+            <param name="cancellationToken">A token to cancel the operation.</param>
             <exception cref="T:System.ArgumentNullException">Thrown when the provided itemIds list is null or empty.</exception>
             <returns>A Task representing the asynchronous purchase operation.
             The Result property of the Task returns a <see cref="T:RGN.Modules.Store.PurchaseResult"/> object,
             indicating the outcome of the purchase transaction, which includes the purchased items and updated currency balances.</returns>
         </member>
-        <member name="M:RGN.Modules.Store.StoreModule.BuyStoreOfferAsync(System.String,System.Collections.Generic.List{System.String})">
+        <member name="M:RGN.Modules.Store.StoreModule.BuyStoreOfferAsync(System.String,System.Collections.Generic.List{System.String},System.Threading.CancellationToken)">
             <summary>
             Asynchronously initiates a purchase transaction for a store offer in the Ready Games Network (RGN) store.
             </summary>
@@ -241,22 +245,24 @@
             <param name="currencies">An optional list of currency identifiers used for the transaction. The default is null.
             Specify to use concrete currencies while purchasing, leave null to make choice automatically (may throws an Exception)
             The default is null.</param>
+            <param name="cancellationToken">A token to cancel the operation.</param>
             <exception cref="T:System.ArgumentNullException">Thrown when the provided offerId is null or empty.</exception>
             <returns>A Task representing the asynchronous purchase operation.
             The Result property of the Task returns a <see cref="T:RGN.Modules.Store.PurchaseResult"/> object,
             indicating the outcome of the purchase transaction, which includes
             the purchased items from the offer and updated currency balances.</returns>
         </member>
-        <member name="M:RGN.Modules.Store.StoreModule.GetLootBoxesByIdsAsync(System.Collections.Generic.List{System.String})">
+        <member name="M:RGN.Modules.Store.StoreModule.GetLootBoxesByIdsAsync(System.Collections.Generic.List{System.String},System.Threading.CancellationToken)">
             <summary>
             Asynchronously retrieves a list of lootBoxes from the Ready Games Network (RGN)
             </summary>
             <param name="ids">A list of lootBox identifiers used to filter the lootBoxes.</param>
+            <param name="cancellationToken">A token to cancel the operation.</param>
             <exception cref="T:System.ArgumentNullException">Thrown when the provided ids list is null or empty.</exception>
             <returns>A Task representing the asynchronous operation. The Result property of the Task returns a list of
             <see cref="T:RGN.Modules.Store.LootBox"/> objects representing the lootBox that match the specified identifiers.</returns>
         </member>
-        <member name="M:RGN.Modules.Store.StoreModule.GetLootBoxesByAppIdAsync(System.String,System.Int32,System.String)">
+        <member name="M:RGN.Modules.Store.StoreModule.GetLootBoxesByAppIdAsync(System.String,System.Int32,System.String,System.Threading.CancellationToken)">
             <summary>
             Asynchronously retrieves a list of lootBoxes from the Ready Games Network (RGN) store based on
             the provided application identifiers.
@@ -265,25 +271,27 @@
             <param name="limit">An integer indicating the maximum number of store offers to retrieve.</param>
             <param name="startAfter">An optional parameter representing an store offer id after which to
             start retrieving the store offers. The default is an empty string.</param>
+            <param name="cancellationToken">A token to cancel the operation.</param>
             <exception cref="T:System.ArgumentNullException">Thrown when the provided appId list is empty.</exception>
             <exception cref="T:System.ArgumentException">Thrown when the provided limit value is zero.</exception>
             <returns>A Task representing the asynchronous operation. The Result property of the Task returns a list of
             <see cref="T:RGN.Modules.Store.LootBox"/> objects representing the lootBoxes that match the specified application identifiers,
             limit and other optional parameters.</returns>
         </member>
-        <member name="M:RGN.Modules.Store.StoreModule.GetLootBoxesForCurrentAppAsync(System.Int32,System.String)">
+        <member name="M:RGN.Modules.Store.StoreModule.GetLootBoxesForCurrentAppAsync(System.Int32,System.String,System.Threading.CancellationToken)">
             <summary>
             Asynchronously retrieves a list of lootBoxes for the current application from the Ready Games Network (RGN) store.
             </summary>
             <param name="limit">An integer indicating the maximum number of lootBoxes to retrieve.</param>
             <param name="startAfter">An optional parameter representing an lootBox id after which to
             start retrieving the lootBoxes. The default is an empty string.</param>
+            <param name="cancellationToken">A token to cancel the operation.</param>
             <exception cref="T:System.ArgumentException">Thrown when the provided limit value is zero.</exception>
             <returns>A Task representing the asynchronous operation. The Result property of the Task returns a list
             of <see cref="T:RGN.Modules.Store.LootBox"/> objects representing the lootBoxes that match the current application identifier,
             limit and other optional parameters.</returns>
         </member>
-        <member name="M:RGN.Modules.Store.StoreModule.LootboxIsAvailableAsync(System.String)">
+        <member name="M:RGN.Modules.Store.StoreModule.LootboxIsAvailableAsync(System.String,System.Threading.CancellationToken)">
             <summary>
             Asynchronously checks if a lootbox associated with the specified name is
             available in the Ready Games Network (RGN) store.
@@ -291,36 +299,39 @@
             </summary>
             <param name="name">The unique identifier name associated with the lootbox to be checked.
             Specifies the virtual items that are included into the lootbox.</param>
+            <param name="cancellationToken">A token to cancel the operation.</param>
             <exception cref="T:System.ArgumentNullException">Thrown when the provided name is null or empty.</exception>
             <returns>A Task representing the asynchronous operation. The Result property of the Task indicates whether
             the lootbox is available (returns true) or not (returns false).</returns>
         </member>
-        <member name="M:RGN.Modules.Store.StoreModule.GetAvailableLootBoxItemsCountAsync(System.String)">
+        <member name="M:RGN.Modules.Store.StoreModule.GetAvailableLootBoxItemsCountAsync(System.String,System.Threading.CancellationToken)">
             <summary>
             Asynchronously gets the number of virtual items available for a lootbox
             The name specifies the virtual items that are included into the lootbox.
             </summary>
             <param name="name">The unique identifier name associated with the lootbox to be checked.
             Specifies the virtual items that are included into the lootbox.</param>
+            <param name="cancellationToken">A token to cancel the operation.</param>
             <exception cref="T:System.ArgumentNullException">Thrown when the provided name is null or empty.</exception>
             <returns>A Task representing the asynchronous operation. The Result property of the Task returns
             the amount of virtual items available in the loot box</returns>
         </member>
-        <member name="M:RGN.Modules.Store.StoreModule.OpenLootboxAsync(System.String)">
+        <member name="M:RGN.Modules.Store.StoreModule.OpenLootboxAsync(System.String,System.Threading.CancellationToken)">
             <summary>
             Asynchronously opens a lootbox associated with the specified name in the Ready Games Network (RGN) store.
             The name specifies the virtual items that are included into the lootbox.
             Randomly selects a virtual item to purchase. Goes with the selected virtual item through purchase process
-            <see cref="M:RGN.Modules.Store.StoreModule.BuyVirtualItemsAsync(System.Collections.Generic.List{System.String},System.Collections.Generic.List{System.String},System.String)"/>
+            <see cref="!:BuyVirtualItemsAsync(List&lt;string&gt;, List&lt;string&gt;, string)"/>
             if the virtual item does not have price specified, it is added to users inventory for free
             </summary>
             <param name="name">The unique identifier name associated with the lootbox to be opened.
             Specifies the virtual items that are included into the lootbox.</param>
+            <param name="cancellationToken">A token to cancel the operation.</param>
             <exception cref="T:System.ArgumentNullException">Thrown when the provided name is null or empty.</exception>
             <returns>A Task representing the asynchronous operation. The Result property of the Task returns the
             <see cref="T:RGN.Modules.Inventory.InventoryItemData"/> object representing the items obtained from the opened lootbox.</returns>
         </member>
-        <member name="M:RGN.Modules.Store.StoreModule.AddAsync(System.Collections.Generic.List{System.String},System.Collections.Generic.List{System.String},System.String[],System.String,System.String,System.Int32)">
+        <member name="M:RGN.Modules.Store.StoreModule.AddAsync(System.Collections.Generic.List{System.String},System.Collections.Generic.List{System.String},System.String[],System.String,System.String,System.Int32,System.Threading.CancellationToken)">
             <summary>
             Asynchronously adds a new store offer for virtual items to the Ready Games Network (RGN) store.
             </summary>
@@ -334,6 +345,7 @@
             The default is null.</param>
             <param name="quantity">An optional parameter representing the quantity of the items included in the store offer.
             The default is 1.</param>
+            <param name="cancellationToken">A token to cancel the operation.</param>
             <exception cref="T:System.ArgumentNullException">Thrown when the provided appIds or itemIds list is null or empty.</exception>
             <returns>A Task representing the asynchronous operation. The Result property of the Task returns the
             <see cref="T:RGN.Modules.Store.StoreOffer"/> object representing the newly created store offer.</returns>
@@ -351,7 +363,7 @@
             <returns>A Task representing the asynchronous operation. The Result property of the Task returns
             a list of <see cref="T:RGN.Modules.Store.StoreOffer"/> objects representing the successfully imported store offers.</returns>
         </member>
-        <member name="M:RGN.Modules.Store.StoreModule.GetByTagsAsync(System.Collections.Generic.List{System.String},System.String,System.Boolean)">
+        <member name="M:RGN.Modules.Store.StoreModule.GetByTagsAsync(System.Collections.Generic.List{System.String},System.String,System.Boolean,System.Threading.CancellationToken)">
             <summary>
             Asynchronously retrieves a list of store offers from the Ready Games Network (RGN) store based on the provided tags.
             </summary>
@@ -360,21 +372,23 @@
             The default is an empty string.</param>
             <param name="ignoreTimestamp">An optional parameter that indicates whether to ignore the timestamp
             in the store offers retrieval process. The default is false.</param>
+            <param name="cancellationToken">A token to cancel the operation.</param>
             <exception cref="T:System.ArgumentNullException">Thrown when the provided tags list is null or empty.</exception>
             <returns>A Task representing the asynchronous operation. The Result property of the Task returns a list of
             <see cref="T:RGN.Modules.Store.StoreOffer"/> objects representing the store offers that match the specified tags and other optional parameters.</returns>
         </member>
-        <member name="M:RGN.Modules.Store.StoreModule.GetByTimestampAsync(System.String,System.Int64)">
+        <member name="M:RGN.Modules.Store.StoreModule.GetByTimestampAsync(System.String,System.Int64,System.Threading.CancellationToken)">
             <summary>
             Asynchronously retrieves a list of store offers from the Ready Games Network (RGN) store based on a provided timestamp.
             </summary>
             <param name="appId">The application identifier used for filtering the store offers.</param>
             <param name="timestamp">A long type argument representing the timestamp for filtering the store offers.</param>
+            <param name="cancellationToken">A token to cancel the operation.</param>
             <exception cref="T:System.ArgumentNullException">Thrown when the provided appId string is null or empty.</exception>
             <returns>A Task representing the asynchronous operation. The Result property of the Task returns a list
             of <see cref="T:RGN.Modules.Store.StoreOffer"/> objects representing the store offers that match the specified appId and timestamp.</returns>
         </member>
-        <member name="M:RGN.Modules.Store.StoreModule.GetByAppIdsAsync(System.Collections.Generic.List{System.String},System.Int32,System.String,System.Boolean)">
+        <member name="M:RGN.Modules.Store.StoreModule.GetByAppIdsAsync(System.Collections.Generic.List{System.String},System.Int32,System.String,System.Boolean,System.Threading.CancellationToken)">
             <summary>
             Asynchronously retrieves a list of store offers from the Ready Games Network (RGN) store based on
             the provided application identifiers.
@@ -385,13 +399,14 @@
             start retrieving the store offers. The default is an empty string.</param>
             <param name="ignoreTimestamp">An optional parameter that indicates whether to ignore the timestamp in the store
             offers retrieval process. The default is false.</param>
+            <param name="cancellationToken">A token to cancel the operation.</param>
             <exception cref="T:System.ArgumentNullException">Thrown when the provided appIds list is null or empty.</exception>
             <exception cref="T:System.ArgumentException">Thrown when the provided limit value is zero.</exception>
             <returns>A Task representing the asynchronous operation. The Result property of the Task returns a list of
             <see cref="T:RGN.Modules.Store.StoreOffer"/> objects representing the store offers that match the specified application identifiers,
             limit and other optional parameters.</returns>
         </member>
-        <member name="M:RGN.Modules.Store.StoreModule.GetForCurrentAppAsync(System.Int32,System.String,System.Boolean)">
+        <member name="M:RGN.Modules.Store.StoreModule.GetForCurrentAppAsync(System.Int32,System.String,System.Boolean,System.Threading.CancellationToken)">
             <summary>
             Asynchronously retrieves a list of store offers for the current application from the Ready Games Network (RGN) store.
             </summary>
@@ -400,12 +415,13 @@
             start retrieving the store offers. The default is an empty string.</param>
             <param name="ignoreTimestamp">An optional parameter that indicates whether to ignore the timestamp in the store offers
             retrieval process. The default is false.</param>
+            <param name="cancellationToken">A token to cancel the operation.</param>
             <exception cref="T:System.ArgumentException">Thrown when the provided limit value is zero.</exception>
             <returns>A Task representing the asynchronous operation. The Result property of the Task returns a list
             of <see cref="T:RGN.Modules.Store.StoreOffer"/> objects representing the store offers that match the current application identifier,
             limit and other optional parameters.</returns>
         </member>
-        <member name="M:RGN.Modules.Store.StoreModule.GetWithVirtualItemsDataForCurrentAppAsync(System.Int32,System.String,System.Boolean)">
+        <member name="M:RGN.Modules.Store.StoreModule.GetWithVirtualItemsDataForCurrentAppAsync(System.Int32,System.String,System.Boolean,System.Threading.CancellationToken)">
             <summary>
             Asynchronously retrieves a list of store offers with their associated virtual items data for the current application
             from the Ready Games Network (RGN) store.
@@ -415,12 +431,13 @@
             The default is an empty string.</param>
             <param name="ignoreTimestamp">An optional parameter that indicates whether to ignore the timestamp in the store
             offers retrieval process. The default is false.</param>
+            <param name="cancellationToken">A token to cancel the operation.</param>
             <exception cref="T:System.ArgumentException">Thrown when the provided limit value is zero.</exception>
             <returns>A Task representing the asynchronous operation. The Result property of the Task returns a list of
             <see cref="T:RGN.Modules.Store.StoreOffer"/> objects with their associated store offer items data that match the current application identifier,
             limit and other optional parameters.</returns>
         </member>
-        <member name="M:RGN.Modules.Store.StoreModule.GetWithVirtualItemsDataByAppIdsAsync(System.Collections.Generic.List{System.String},System.Int32,System.String,System.Boolean)">
+        <member name="M:RGN.Modules.Store.StoreModule.GetWithVirtualItemsDataByAppIdsAsync(System.Collections.Generic.List{System.String},System.Int32,System.String,System.Boolean,System.Threading.CancellationToken)">
             <summary>
             Asynchronously retrieves a list of store offers along with their associated virtual items data from
             the Ready Games Network (RGN) store based on the provided application identifiers.
@@ -431,32 +448,35 @@
             The default is an empty string.</param>
             <param name="ignoreTimestamp">An optional parameter that indicates whether to ignore the timestamp in the store
             offers retrieval process. The default is false.</param>
+            <param name="cancellationToken">A token to cancel the operation.</param>
             <exception cref="T:System.ArgumentNullException">Thrown when the provided appIds list is null or empty.</exception>
             <exception cref="T:System.ArgumentException">Thrown when the provided limit value is zero.</exception>
             <returns>A Task representing the asynchronous operation. The Result property of the Task returns a list of
             <see cref="T:RGN.Modules.Store.StoreOffer"/> objects along with their associated virtual items data, matching the specified application identifiers,
             limit and other optional parameters.</returns>
         </member>
-        <member name="M:RGN.Modules.Store.StoreModule.GetByIdsAsync(System.Collections.Generic.List{System.String})">
+        <member name="M:RGN.Modules.Store.StoreModule.GetByIdsAsync(System.Collections.Generic.List{System.String},System.Threading.CancellationToken)">
             <summary>
             Asynchronously retrieves a list of store offers from the Ready Games Network (RGN)
             store based on the provided store offer identifiers.
             </summary>
             <param name="ids">A list of store offer identifiers used to filter the store offers.</param>
+            <param name="cancellationToken">A token to cancel the operation.</param>
             <exception cref="T:System.ArgumentNullException">Thrown when the provided ids list is null or empty.</exception>
             <returns>A Task representing the asynchronous operation. The Result property of the Task returns a list of
             <see cref="T:RGN.Modules.Store.StoreOffer"/> objects representing the store offers that match the specified identifiers.</returns>
         </member>
-        <member name="M:RGN.Modules.Store.StoreModule.GetTagsAsync(System.String)">
+        <member name="M:RGN.Modules.Store.StoreModule.GetTagsAsync(System.String,System.Threading.CancellationToken)">
             <summary>
             Asynchronously retrieves a list of tags associated with a specific store offer from the Ready Games Network (RGN) store.
             </summary>
             <param name="offerId">The identifier of the store offer for which to retrieve tags.</param>
+            <param name="cancellationToken">A token to cancel the operation.</param>
             <exception cref="T:System.ArgumentNullException">Thrown when the provided offerId is null or empty.</exception>
             <returns>A Task representing the asynchronous operation. The Result property of the Task returns a list of tags
             associated with the specified store offer.</returns>
         </member>
-        <member name="M:RGN.Modules.Store.StoreModule.SetTagsAsync(System.String,System.Collections.Generic.List{System.String},System.String)">
+        <member name="M:RGN.Modules.Store.StoreModule.SetTagsAsync(System.String,System.Collections.Generic.List{System.String},System.String,System.Threading.CancellationToken)">
             <summary>
             Asynchronously sets a list of tags for a specific store offer in the Ready Games Network (RGN) store.
             </summary>
@@ -469,82 +489,91 @@
             tags without appId could look like: "weapons", "rifles"
             tags with appId could look like: "weapons_your.app.id", "rifles_your.app.id"
             The default is an empty string.</param>
+            <param name="cancellationToken">A token to cancel the operation.</param>
             <exception cref="T:System.ArgumentNullException">Thrown when the provided offerId is null or empty or when the
             provided tags list is null or empty.</exception>
             <returns>A Task representing the asynchronous operation. The task result does not return a value.</returns>
         </member>
-        <member name="M:RGN.Modules.Store.StoreModule.SetNameAsync(System.String,System.String)">
+        <member name="M:RGN.Modules.Store.StoreModule.SetNameAsync(System.String,System.String,System.Threading.CancellationToken)">
             <summary>
             Asynchronously sets the name for a specific store offer in the Ready Games Network (RGN) store.
             </summary>
             <param name="offerId">The identifier of the store offer for which to set the name.</param>
             <param name="name">The new name to be set for the specified store offer.</param>
+            <param name="cancellationToken">A token to cancel the operation.</param>
             <exception cref="T:System.ArgumentNullException">Thrown when the provided offerId or name is null or empty.</exception>
             <returns>A Task representing the asynchronous operation. The task result does not return a value.</returns>
         </member>
-        <member name="M:RGN.Modules.Store.StoreModule.SetDescriptionAsync(System.String,System.String)">
+        <member name="M:RGN.Modules.Store.StoreModule.SetDescriptionAsync(System.String,System.String,System.Threading.CancellationToken)">
             <summary>
             Asynchronously sets the description for a specific store offer in the Ready Games Network (RGN) store.
             </summary>
             <param name="offerId">The identifier of the store offer for which to set the description.</param>
             <param name="description">The new description to be set for the specified store offer.</param>
+            <param name="cancellationToken">A token to cancel the operation.</param>
             <exception cref="T:System.ArgumentNullException">Thrown when the provided offerId or description is null or empty.</exception>
             <returns>A Task representing the asynchronous operation. The task result does not return a value.</returns>
         </member>
-        <member name="M:RGN.Modules.Store.StoreModule.SetPricesAsync(System.String,System.Collections.Generic.List{RGN.Modules.VirtualItems.PriceInfo})">
+        <member name="M:RGN.Modules.Store.StoreModule.SetPricesAsync(System.String,System.Collections.Generic.List{RGN.Modules.VirtualItems.PriceInfo},System.Threading.CancellationToken)">
             <summary>
             Asynchronously sets the prices for a specific store offer in the Ready Games Network (RGN) store.
             </summary>
             <param name="offerId">The identifier of the store offer for which to set the prices.</param>
             <param name="prices">A list of PriceInfo objects to be set for the specified store offer.</param>
+            <param name="cancellationToken">A token to cancel the operation.</param>
             <exception cref="T:System.ArgumentNullException">Thrown when the provided offerId is null or empty or
             when the provided prices list is null or empty.</exception>
             <returns>A Task representing the asynchronous operation. The task result does not return a value.</returns>
         </member>
-        <member name="M:RGN.Modules.Store.StoreModule.SetTimeAsync(System.String,RGN.Model.TimeInfo)">
+        <member name="M:RGN.Modules.Store.StoreModule.SetTimeAsync(System.String,RGN.Model.TimeInfo,System.Threading.CancellationToken)">
             <summary>
             Asynchronously sets the time information for a specific store offer in the Ready Games Network (RGN) store.
             </summary>
             <param name="offerId">The identifier of the store offer for which to set the time information.</param>
             <param name="time">A TimeInfo object containing the time information to be set for the specified store offer.</param>
+            <param name="cancellationToken">A token to cancel the operation.</param>
             <exception cref="T:System.ArgumentNullException">Thrown when the provided offerId is null or empty or when the
             provided TimeInfo object is null.</exception>
             <returns>A Task representing the asynchronous operation. The task result does not return a value.</returns>
         </member>
-        <member name="M:RGN.Modules.Store.StoreModule.SetImageUrlAsync(System.String,System.String)">
+        <member name="M:RGN.Modules.Store.StoreModule.SetImageUrlAsync(System.String,System.String,System.Threading.CancellationToken)">
             <summary>
             Asynchronously sets the image URL for a specific store offer in the Ready Games Network (RGN) store.
             </summary>
             <param name="offerId">The identifier of the store offer for which to set the image URL.</param>
             <param name="imageUrl">The URL of the image to be set for the specified store offer.</param>
+            <param name="cancellationToken">A token to cancel the operation.</param>
             <exception cref="T:System.ArgumentNullException">Thrown when the provided offerId or imageUrl is null or empty.</exception>
             <returns>A Task representing the asynchronous operation. The task result does not return a value.</returns>
         </member>
-        <member name="M:RGN.Modules.Store.StoreModule.IsAvailableAsync(System.String)">
+        <member name="M:RGN.Modules.Store.StoreModule.IsAvailableAsync(System.String,System.Threading.CancellationToken)">
             <summary>
             Asynchronously checks if the store offer meets all requirements to be available for the user.
             The check is performed for the store offer specified <see cref="F:RGN.Modules.Store.StoreOffer.time"/> and
             <see cref="F:RGN.Modules.Store.StoreOffer.requiredToPurchase"/>
             </summary>
             <param name="storeOfferId">The identifier of the store offer.</param>
+            <param name="cancellationToken">A token to cancel the operation.</param>
             <exception cref="T:System.ArgumentNullException">Thrown when the provided storeOfferId is null or empty.</exception>
             <returns>A Task representing the asynchronous operation. The Task result contains a <see cref="T:RGN.Modules.Leaderboard.IsStoreOfferAvailableResponseData"/>
             value to indicate if the store offer is available</returns>
         </member>
-        <member name="M:RGN.Modules.Store.StoreModule.GetPropertiesAsync(System.String)">
+        <member name="M:RGN.Modules.Store.StoreModule.GetPropertiesAsync(System.String,System.Threading.CancellationToken)">
             <summary>
             Asynchronously retrieves the properties of a specific store offer in the Ready Games Network (RGN) store.
             </summary>
             <param name="storeOfferId">The identifier of the store offer whose properties are to be retrieved.</param>
+            <param name="cancellationToken">A token to cancel the operation.</param>
             <exception cref="T:System.ArgumentNullException">Thrown when the provided storeOfferId is null or empty.</exception>
             <returns>A Task representing the asynchronous operation. The Task result contains a string that represents the JSON-formatted properties of the store offer.</returns>
         </member>
-        <member name="M:RGN.Modules.Store.StoreModule.SetPropertiesAsync(System.String,System.String)">
+        <member name="M:RGN.Modules.Store.StoreModule.SetPropertiesAsync(System.String,System.String,System.Threading.CancellationToken)">
             <summary>
             Asynchronously sets the properties of a specific store offer in the Ready Games Network (RGN) store.
             </summary>
             <param name="storeOfferId">The identifier of the store offer whose properties are to be set.</param>
             <param name="json">A string containing the JSON representation of the properties to be set.</param>
+            <param name="cancellationToken">A token to cancel the operation.</param>
             <exception cref="T:System.ArgumentNullException">Thrown when the provided storeOfferId or json is null or empty.</exception>
             <returns>A Task representing the asynchronous operation. The Task result contains a string confirmation of the properties' update.</returns>
         </member>
