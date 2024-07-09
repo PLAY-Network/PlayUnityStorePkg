@@ -363,13 +363,11 @@
             <returns>A Task representing the asynchronous operation. The Result property of the Task returns
             a list of <see cref="T:RGN.Modules.Store.StoreOffer"/> objects representing the successfully imported store offers.</returns>
         </member>
-        <member name="M:RGN.Modules.Store.StoreModule.GetByTagsAsync(System.Collections.Generic.List{System.String},System.String,System.Boolean,System.Threading.CancellationToken)">
+        <member name="M:RGN.Modules.Store.StoreModule.GetByTagsAsync(System.Collections.Generic.List{System.String},System.Boolean,System.Threading.CancellationToken)">
             <summary>
             Asynchronously retrieves a list of store offers from the Ready Games Network (RGN) store based on the provided tags.
             </summary>
             <param name="tags">A list of tags used to filter the store offers.</param>
-            <param name="appId">An optional parameter representing the application identifier for further filtering of the store offers.
-            The default is an empty string.</param>
             <param name="ignoreTimestamp">An optional parameter that indicates whether to ignore the timestamp
             in the store offers retrieval process. The default is false.</param>
             <param name="cancellationToken">A token to cancel the operation.</param>
@@ -476,19 +474,12 @@
             <returns>A Task representing the asynchronous operation. The Result property of the Task returns a list of tags
             associated with the specified store offer.</returns>
         </member>
-        <member name="M:RGN.Modules.Store.StoreModule.SetTagsAsync(System.String,System.Collections.Generic.List{System.String},System.String,System.Threading.CancellationToken)">
+        <member name="M:RGN.Modules.Store.StoreModule.SetTagsAsync(System.String,System.Collections.Generic.List{System.String},System.Threading.CancellationToken)">
             <summary>
             Asynchronously sets a list of tags for a specific store offer in the Ready Games Network (RGN) store.
             </summary>
             <param name="offerId">The identifier of the store offer for which to set tags.</param>
             <param name="tags">A list of tags to be set for the specified store offer.</param>
-            <param name="appId">Optional parameter that you can use to retrieve items only for your app
-            When you set the tags for Virtual Item, you can use the appId optional parameter
-            The app id is attached to every name and stored in the tags array
-            For example:
-            tags without appId could look like: "weapons", "rifles"
-            tags with appId could look like: "weapons_your.app.id", "rifles_your.app.id"
-            The default is an empty string.</param>
             <param name="cancellationToken">A token to cancel the operation.</param>
             <exception cref="T:System.ArgumentNullException">Thrown when the provided offerId is null or empty or when the
             provided tags list is null or empty.</exception>
