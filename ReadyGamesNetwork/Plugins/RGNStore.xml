@@ -363,13 +363,15 @@
             <returns>A Task representing the asynchronous operation. The Result property of the Task returns
             a list of <see cref="T:RGN.Modules.Store.StoreOffer"/> objects representing the successfully imported store offers.</returns>
         </member>
-        <member name="M:RGN.Modules.Store.StoreModule.GetByTagsAsync(System.Collections.Generic.List{System.String},System.Boolean,System.Threading.CancellationToken)">
+        <member name="M:RGN.Modules.Store.StoreModule.GetByTagsAsync(System.Collections.Generic.List{System.String},System.Int32,System.Int64,System.Boolean,System.Threading.CancellationToken)">
             <summary>
             Asynchronously retrieves a list of store offers from the Ready Games Network (RGN) store based on the provided tags.
             </summary>
             <param name="tags">A list of tags used to filter the store offers.</param>
-            <param name="ignoreTimestamp">An optional parameter that indicates whether to ignore the timestamp
-            in the store offers retrieval process. The default is false.</param>
+            <param name="limit">An integer indicating the maximum number of store offers to retrieve.</param>
+            <param name="startAfter">An optional parameter representing a store offer 'updatedAt' field after which start the retrieval</param>
+            <param name="ignoreTimestamp">An optional parameter that indicates whether to ignore the timestamp in the store
+            offers retrieval process. The default is false.</param>
             <param name="cancellationToken">A token to cancel the operation.</param>
             <exception cref="T:System.ArgumentNullException">Thrown when the provided tags list is null or empty.</exception>
             <returns>A Task representing the asynchronous operation. The Result property of the Task returns a list of
@@ -386,15 +388,14 @@
             <returns>A Task representing the asynchronous operation. The Result property of the Task returns a list
             of <see cref="T:RGN.Modules.Store.StoreOffer"/> objects representing the store offers that match the specified appId and timestamp.</returns>
         </member>
-        <member name="M:RGN.Modules.Store.StoreModule.GetByAppIdsAsync(System.Collections.Generic.List{System.String},System.Int32,System.String,System.Boolean,System.Threading.CancellationToken)">
+        <member name="M:RGN.Modules.Store.StoreModule.GetByAppIdsAsync(System.Collections.Generic.List{System.String},System.Int32,System.Int64,System.Boolean,System.Threading.CancellationToken)">
             <summary>
             Asynchronously retrieves a list of store offers from the Ready Games Network (RGN) store based on
             the provided application identifiers.
             </summary>
             <param name="appIds">A list of application identifiers used to filter the store offers.</param>
             <param name="limit">An integer indicating the maximum number of store offers to retrieve.</param>
-            <param name="startAfter">An optional parameter representing an store offer id after which to
-            start retrieving the store offers. The default is an empty string.</param>
+            <param name="startAfter">An optional parameter representing a store offer 'updatedAt' field after which start the retrieval</param>
             <param name="ignoreTimestamp">An optional parameter that indicates whether to ignore the timestamp in the store
             offers retrieval process. The default is false.</param>
             <param name="cancellationToken">A token to cancel the operation.</param>
@@ -404,13 +405,12 @@
             <see cref="T:RGN.Modules.Store.StoreOffer"/> objects representing the store offers that match the specified application identifiers,
             limit and other optional parameters.</returns>
         </member>
-        <member name="M:RGN.Modules.Store.StoreModule.GetForCurrentAppAsync(System.Int32,System.String,System.Boolean,System.Threading.CancellationToken)">
+        <member name="M:RGN.Modules.Store.StoreModule.GetForCurrentAppAsync(System.Int32,System.Int64,System.Boolean,System.Threading.CancellationToken)">
             <summary>
             Asynchronously retrieves a list of store offers for the current application from the Ready Games Network (RGN) store.
             </summary>
             <param name="limit">An integer indicating the maximum number of store offers to retrieve.</param>
-            <param name="startAfter">An optional parameter representing an store offer id after which to
-            start retrieving the store offers. The default is an empty string.</param>
+            <param name="startAfter">An optional parameter representing a store offer 'updatedAt' field after which start the retrieval</param>
             <param name="ignoreTimestamp">An optional parameter that indicates whether to ignore the timestamp in the store offers
             retrieval process. The default is false.</param>
             <param name="cancellationToken">A token to cancel the operation.</param>
@@ -419,14 +419,13 @@
             of <see cref="T:RGN.Modules.Store.StoreOffer"/> objects representing the store offers that match the current application identifier,
             limit and other optional parameters.</returns>
         </member>
-        <member name="M:RGN.Modules.Store.StoreModule.GetWithVirtualItemsDataForCurrentAppAsync(System.Int32,System.String,System.Boolean,System.Threading.CancellationToken)">
+        <member name="M:RGN.Modules.Store.StoreModule.GetWithVirtualItemsDataForCurrentAppAsync(System.Int32,System.Int64,System.Boolean,System.Threading.CancellationToken)">
             <summary>
             Asynchronously retrieves a list of store offers with their associated virtual items data for the current application
             from the Ready Games Network (RGN) store.
             </summary>
             <param name="limit">An integer indicating the maximum number of store offers to retrieve.</param>
-            <param name="startAfter">An optional parameter representing an stor offer id after which to start retrieving the store offers.
-            The default is an empty string.</param>
+            <param name="startAfter">An optional parameter representing a store offer 'updatedAt' field after which start the retrieval</param>
             <param name="ignoreTimestamp">An optional parameter that indicates whether to ignore the timestamp in the store
             offers retrieval process. The default is false.</param>
             <param name="cancellationToken">A token to cancel the operation.</param>
@@ -435,15 +434,14 @@
             <see cref="T:RGN.Modules.Store.StoreOffer"/> objects with their associated store offer items data that match the current application identifier,
             limit and other optional parameters.</returns>
         </member>
-        <member name="M:RGN.Modules.Store.StoreModule.GetWithVirtualItemsDataByAppIdsAsync(System.Collections.Generic.List{System.String},System.Int32,System.String,System.Boolean,System.Threading.CancellationToken)">
+        <member name="M:RGN.Modules.Store.StoreModule.GetWithVirtualItemsDataByAppIdsAsync(System.Collections.Generic.List{System.String},System.Int32,System.Int64,System.Boolean,System.Threading.CancellationToken)">
             <summary>
             Asynchronously retrieves a list of store offers along with their associated virtual items data from
             the Ready Games Network (RGN) store based on the provided application identifiers.
             </summary>
             <param name="appIds">A list of application identifiers used to filter the store offers.</param>
             <param name="limit">An integer indicating the maximum number of store offers to retrieve.</param>
-            <param name="startAfter">An optional parameter representing an store offer id after which to start retrieving the store offers.
-            The default is an empty string.</param>
+            <param name="startAfter">An optional parameter representing a store offer 'updatedAt' field after which start the retrieval</param>
             <param name="ignoreTimestamp">An optional parameter that indicates whether to ignore the timestamp in the store
             offers retrieval process. The default is false.</param>
             <param name="cancellationToken">A token to cancel the operation.</param>
