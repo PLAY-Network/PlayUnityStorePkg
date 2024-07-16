@@ -451,12 +451,16 @@
             <see cref="T:RGN.Modules.Store.StoreOffer"/> objects along with their associated virtual items data, matching the specified application identifiers,
             limit and other optional parameters.</returns>
         </member>
-        <member name="M:RGN.Modules.Store.StoreModule.GetByIdsAsync(System.Collections.Generic.List{System.String},System.Threading.CancellationToken)">
+        <member name="M:RGN.Modules.Store.StoreModule.GetByIdsAsync(System.Collections.Generic.List{System.String},System.Int32,System.Int64,System.Boolean,System.Threading.CancellationToken)">
             <summary>
             Asynchronously retrieves a list of store offers from the Ready Games Network (RGN)
             store based on the provided store offer identifiers.
             </summary>
             <param name="ids">A list of store offer identifiers used to filter the store offers.</param>
+            <param name="limit">An integer indicating the maximum number of leaderboards to retrieve.</param>
+            <param name="startAfter">An optional parameter representing an leaderboard 'updatedAt' field after which start the retrieval</param>
+            <param name="ignoreTimestamp">An optional parameter that indicates whether to ignore the timestamp in the leaderboard
+            retrieval process. The default is false.</param>
             <param name="cancellationToken">A token to cancel the operation.</param>
             <exception cref="T:System.ArgumentNullException">Thrown when the provided ids list is null or empty.</exception>
             <returns>A Task representing the asynchronous operation. The Result property of the Task returns a list of
