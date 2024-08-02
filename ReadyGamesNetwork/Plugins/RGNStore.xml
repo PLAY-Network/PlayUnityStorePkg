@@ -458,7 +458,7 @@
             </summary>
             <param name="ids">A list of store offer identifiers used to filter the store offers.</param>
             <param name="limit">An integer indicating the maximum number of leaderboards to retrieve.</param>
-            <param name="startAfter">An optional parameter representing an leaderboard 'updatedAt' field after which start the retrieval</param>
+            <param name="startAfter">An optional parameter representing a store offer 'updatedAt' field after which start the retrieval</param>
             <param name="ignoreTimestamp">An optional parameter that indicates whether to ignore the timestamp in the leaderboard
             retrieval process. The default is true.</param>
             <param name="cancellationToken">A token to cancel the operation.</param>
