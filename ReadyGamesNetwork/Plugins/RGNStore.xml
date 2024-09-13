@@ -85,6 +85,12 @@
             Is used also to store localization key for the name
             </summary>
         </member>
+        <member name="F:RGN.Modules.Store.StoreOffer.requestName">
+            <summary>
+            Store offer request name
+            Is used also to identify a store offer in human readable way
+            </summary>
+        </member>
         <member name="F:RGN.Modules.Store.StoreOffer.appIds">
             <summary>
             List of application ids where this item is used
@@ -331,7 +337,7 @@
             <returns>A Task representing the asynchronous operation. The Result property of the Task returns the
             <see cref="T:RGN.Modules.Inventory.InventoryItemData"/> object representing the items obtained from the opened lootbox.</returns>
         </member>
-        <member name="M:RGN.Modules.Store.StoreModule.AddAsync(System.Collections.Generic.List{System.String},System.Collections.Generic.List{System.String},System.String[],System.String,System.String,System.Int32,System.Threading.CancellationToken)">
+        <member name="M:RGN.Modules.Store.StoreModule.AddAsync(System.Collections.Generic.List{System.String},System.Collections.Generic.List{System.String},System.String[],System.String,System.String,System.Int32,System.String,System.Threading.CancellationToken)">
             <summary>
             Asynchronously adds a new store offer for virtual items to the Ready Games Network (RGN) store.
             </summary>
@@ -376,6 +382,25 @@
             <exception cref="T:System.ArgumentNullException">Thrown when the provided tags list is null or empty.</exception>
             <returns>A Task representing the asynchronous operation. The Result property of the Task returns a list of
             <see cref="T:RGN.Modules.Store.StoreOffer"/> objects representing the store offers that match the specified tags and other optional parameters.</returns>
+        </member>
+        <member name="M:RGN.Modules.Store.StoreModule.GetByRequestNameAsync(System.String,System.Threading.CancellationToken)">
+            <summary>
+            Returns a store offer item based on the item request name
+            </summary>
+            <param name="requestName">Request name of the store offer item</param>
+            <param name="cancellationToken">A token to cancel the operation.</param>
+            <returns>Store Offer data</returns>
+        </member>
+        <member name="M:RGN.Modules.Store.StoreModule.GetByRequestNamesAsync(System.Collections.Generic.List{System.String},System.Int32,System.Int64,System.Boolean,System.Threading.CancellationToken)">
+            <summary>
+            Returns a list of store offer items based on request names
+            </summary>
+            <param name="requestNames">List of request names to query the store offers</param>
+            <param name="limit">Maximal count of items to return</param>
+            <param name="startAfter">An optional parameter representing store offer item 'updatedAt' field after which start the retrieval</param>
+            <param name="ignoreTimestamp">An optional parameter used to disable the filtering of the store offers based on store offer time</param>
+            <param name="cancellationToken">A token to cancel the operation.</param>
+            <returns></returns>
         </member>
         <member name="M:RGN.Modules.Store.StoreModule.GetByTimestampAsync(System.String,System.Int64,System.Threading.CancellationToken)">
             <summary>
