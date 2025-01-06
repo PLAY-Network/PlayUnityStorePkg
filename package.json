@@ -1,5 +1,5 @@
 ﻿{
-  "name": "io.getready.rgn.store",
+  "name": "io.play.unity.store",
   "displayName": "PLAY SDK. Store",
   "version": "0.16.0",
   "unity": "2020.3",
@@ -26,9 +26,9 @@
     "/ReadyGamesNetwork.meta"
   ],
   "dependencies": {
-    "io.getready.rgn.core": "0.16.0",
-    "io.getready.rgn.virtualitems": "0.16.0",
-    "io.getready.rgn.inventory": "0.16.0",
-    "io.getready.rgn.currency": "0.16.0"
+    "io.play.unity.core": "0.16.0",
+    "io.play.unity.virtualitems": "0.16.0",
+    "io.play.unity.inventory": "0.16.0",
+    "io.play.unity.currency": "0.16.0"
   }
 }

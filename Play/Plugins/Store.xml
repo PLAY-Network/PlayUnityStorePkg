@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <doc>
     <assembly>
-        <name>RGNStore</name>
+        <name>Store</name>
     </assembly>
     <members>
         <member name="F:RGN.Modules.Store.LootBox.id">
