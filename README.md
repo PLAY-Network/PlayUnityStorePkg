@@ -1,2 +1,2 @@
-# RGN Store
-Package version: 0.16.0-dev.3
+# Play SDK Store
+Package version: 0.16.0-dev.4
