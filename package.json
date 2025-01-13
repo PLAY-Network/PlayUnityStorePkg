@@ -1,5 +1,5 @@
 ﻿{
-  "name": "io.play.unity.store",
+  "name": "network.theplay.unity.store",
   "displayName": "PLAY SDK. Store",
   "version": "0.16.0",
   "unity": "2020.3",
@@ -26,9 +26,9 @@
     "/ReadyGamesNetwork.meta"
   ],
   "dependencies": {
-    "io.play.unity.core": "0.16.0",
-    "io.play.unity.virtualitems": "0.16.0",
-    "io.play.unity.inventory": "0.16.0",
-    "io.play.unity.currency": "0.16.0"
+    "network.theplay.unity.core": "0.16.0",
+    "network.theplay.unity.virtualitems": "0.16.0",
+    "network.theplay.unity.inventory": "0.16.0",
+    "network.theplay.unity.currency": "0.16.0"
   }
 }
